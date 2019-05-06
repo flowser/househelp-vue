@@ -77,6 +77,24 @@
     "rollup": "^0.55.5",
     "rollup-plugin-babel": "^3.0.3",
     "style-loader": "^0.19.1",
-    "uglify-js": "^3.3.22"
+    "uglify-js": "^3.3.22",
+    "macaddress": ">=0.2.9",
+    "tar": ">=4.4.2",
+    "jquery": ">=3.4.0",
+    "extend": ">=3.0.2",
+    "bootstrap": ">=4.3.1",
+    "randomatic": ">=3.0.0",
+    "deep-extend": ">=0.5.1",
+    "cryptiles": ">=4.1.2",
+    "lodash": ">=4.17.11",
+    "mime": ">=1.4.1",
+    "hoek": ">=4.2.1"
+
+
+
+
+
+
+
   }
 }

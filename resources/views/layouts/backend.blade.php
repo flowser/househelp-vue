@@ -77,7 +77,7 @@
         <link rel="stylesheet" href="{{asset('themes/adminlte3/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">  --}}
-        <link rel="stylesheet" href="{{URL::asset('css/app.css')}}">
+        <link rel="stylesheet" href="{{mix('css/app.css')}}">
     </head>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper" id="app">
@@ -1200,5 +1200,5 @@
         <!-- AdminLTE for demo purposes -->
         <script src="{{asset('themes/adminlte3/dist/js/demo.js')}}"></script>
     </body>
-    <script src="{{URL::asset('js/app.js')}}"></script>
+    <script src="{{mix('js/app.js')}}"></script>
 </html>
