@@ -1,0 +1,14 @@
+$factory->define(App\Assessment::class, function (Faker $faker) {
+
+$organizationByRandom = Organization::all()->random(); //or whatever
+$relatedPurchase = organizationByRandom->purchase;
+
+    return [
+        'name' => $faker->name(),
+        'email' => $faker->email(),
+        'organization_id' => $organizationByRandom->id
+        'purchase_id' => $relatedPurchase->id
+    ];
+});
+
+'picture' => $faker->image('public/storage/images',400,300, null, false)

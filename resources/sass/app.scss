@@ -1,0 +1,111 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+$fa-font-path:        "../webfonts";
+
+//support elemnt ui
+@import '~element-ui/lib/theme-chalk/index.css';
+
+
+
+
+// @import "~admin-lte/dist/css/adminlte.css";
+
+
+    //admin lte 3
+    @import '~admin-lte/plugins/font-awesome/css/font-awesome.min.css';
+    // <!-- Ionicons -->
+    @import url('https:// code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
+
+    // <!-- Theme style -->
+    @import '~admin-lte/dist/css/adminlte.min.css';
+    // // <!-- iCheck -->
+    @import '~admin-lte/plugins/iCheck/flat/blue.css';
+    // // <!-- Morris chart -->
+    @import '~admin-lte/plugins/morris/morris.css';
+    // // // <!-- jvectormap -->
+    @import '~admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css';
+    // // // <!-- Date Picker -->
+    @import '~admin-lte/plugins/datepicker/datepicker3.css';
+    // // // <!-- Daterange picker -->
+    @import '~admin-lte/plugins/daterangepicker/daterangepicker-bs3.css';
+    // // // <!-- bootstrap wysihtml5 - text editor -->
+    @import '~admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@import '~vue-tel-input/dist/vue-tel-input.css';
+
+// @import "~@fortawesome/fontawesome-free/scss/light.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_animated.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_bordered-pulled.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_core.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_fixed-width.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_icons.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_larger.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_list.scss";
+@import "~@fortawesome/fontawesome-free/scss/_mixins.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_rotated-flipped.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_screen-reader.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_shims.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_stacked.scss";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~@fortawesome/fontawesome-free/css/brands.css";
+@import "~@fortawesome/fontawesome-free/css/fontawesome.css";
+@import "~@fortawesome/fontawesome-free/css/regular.css";
+@import "~@fortawesome/fontawesome-free/css/solid.css";
+@import "~@fortawesome/fontawesome-free/css/svg-with-js.css";
+@import "~@fortawesome/fontawesome-free/css/v4-shims.css";
+
+
+// @import "~@fortawesome/fontawesome-free/scss/light.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_animated.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_bordered-pulled.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_core.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_fixed-width.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_icons.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_larger.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_list.scss";
+@import "~@fortawesome/fontawesome-free/scss/_mixins.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_rotated-flipped.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_screen-reader.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_shims.scss";
+// @import "~@fortawesome/fontawesome-free/scss/_stacked.scss";
+@import "~@fortawesome/fontawesome-free/scss/_variables.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/v4-shims.scss";
+
+// Bootstrap
+// @import '~bootstrap/scss/bootstrap';
+//bootstrap-vue
+// @import '~bootstrap/dist/css/bootstrap.css';
+// @import '~bootstrap-vue/dist/bootstrap-vue.css';
+//end bootstrap-vue
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+.router-link-exact-active{
+  background-color: purple;
+  color: #fff !important;
+}
