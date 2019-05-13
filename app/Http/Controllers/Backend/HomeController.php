@@ -16,10 +16,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
 
     /**
      * Show the application dashboard.
@@ -29,7 +29,6 @@ class HomeController extends Controller
     public function index()
     {
         // Organisation
-
         if (auth()->check()) {
             if (auth()->user()->hasAnyRole(['Director', 'Superadmin','Admin'])){
                 $logged_user =User::
@@ -54,6 +53,11 @@ class HomeController extends Controller
                                ->first();
 
                   return view('layouts.backend', compact("logged_user", "organisation"));
+
+                // return response()-> json([
+                //     'organisation'=>$organisation,
+                //     'logged_user' => $logged_user
+                // ], 200);
 
             }elseif(auth()->user()->hasAnyRole(['Bureau Director','Bureau Superadmin','Bureau Admin'])){
                 $logged_user =User::

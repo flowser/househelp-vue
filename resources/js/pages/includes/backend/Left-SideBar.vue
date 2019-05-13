@@ -2,25 +2,88 @@
     <div class="backend-left-sidebar">
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
-            <!-- @if($organisation->logo != null) -->
-                <img src="assets/organisation/img/logo/$organisation->logo" alt="$organisation->name"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- @else/ -->
-                <link rel="shortcut icon" type="image/ico" href="assets/organisation/img/website/empty.png"/>
-            <!-- @endif -->
-            <span class="brand-text font-weight-light">$organisation->name</span>
-            </a>
+            <div v-if="User.organisationdirector" >
+                <a  href="index3.html" class="brand-link">
+                    <img :src="organisationLoadImage(User.organisationdirector.organisation_logo)" alt="organisation logo"
+                        class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">{{User.organisationdirector.organisation_name}}</span>
+                </a>
+            </div>
+            <div v-else-if="User.organisationadmin">
+                <a href="index3.html" class="brand-link">
+                    <img :src="organisationLoadImage(User.organisationadmin.organisation_logo)" alt="organisation logo"
+                        class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">{{User.organisationadmin.organisation_name}}</span>
+                </a>
+            </div>
+            <div v-else-if="User.organisationemployee">
+                <a href="index3.html" class="brand-link">
+                    <img :src="organisationLoadImage(User.organisationemployee.organisation_logo)" alt="organisation logo"
+                        class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">{{User.organisationemployee.organisation_name}}</span>
+                </a>
+            </div>
+            <div v-else-if="User.bureaudirector">
+                <a href="index3.html" class="brand-link">
+                    <img :src="bureauLoadImage(User.bureaudirector.bureau_logo)" alt="organisation logo"
+                        class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">{{User.bureaudirector.bureau_name}}</span>
+                </a>
+            </div>
+            <div v-else-if="User.bureauadmin">
+                <a href="index3.html" class="brand-link">
+                    <img :src="bureauLoadImage(User.bureauadmin.bureau_logo)" alt="organisation logo"
+                        class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">{{User.bureauadmin.bureau_name}}</span>
+                </a>
+            </div>
+            <div v-else-if="User.bureauemployee">
+                <a href="index3.html" class="brand-link">
+                    <img :src="bureauLoadImage(User.bureauemployee.bureau_logo)" alt="organisation logo"
+                        class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">{{User.bureauemployee.bureau_name}}</span>
+                </a>
+            </div>
 
             <!-- Sidebar -->
             <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                <img src="themes/adminlte3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <div v-if="User.organisationdirector" >
+                    <a href="" class="image">
+                        <img :src="directorLoadPassPhoto(User.organisationdirector.photo)" class="img-circle elevation-2" alt="User Image">
+                        <span  class="brand-text font-weight-light">{{User.full_name}}</span>
+                    </a>
                 </div>
-                <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <div v-else-if="User.organisationadmin">
+                     <a href="" class="image">
+                        <img :src="adminLoadPassPhoto(User.organisationadmin.photo)" class="img-circle elevation-2" alt="User Image">
+                       <span class="brand-text font-weight-light">{{User.full_name}}</span>
+                    </a>
+                </div>
+                <div v-else-if="User.organisationemployee">
+                     <a href="" class="image">
+                        <img :src="employeeLoadPassPhoto(User.organisationemployee.photo)" class="img-circle elevation-2" alt="User Image">
+                       <span class="brand-text font-weight-light">{{User.full_name}}</span>
+                    </a>
+                </div>
+                <div v-else-if="User.bureaudirector">
+                     <a href="" class="image">
+                        <img :src="bureaudirectorLoadPassPhoto(User.bureaudirector.photo)" class="img-circle elevation-2" alt="User Image">
+                       <span class="brand-text font-weight-light">{{User.full_name}}</span>
+                    </a>
+                </div>
+                <div v-else-if="User.bureauadmin">
+                     <a href="" class="image">
+                        <img :src="bureauadminLoadPassPhoto(User.bureauadmin.photo)" class="img-circle elevation-2" alt="User Image">
+                        <span class="brand-text font-weight-light">{{User.full_name}}</span>
+                    </a>
+                </div>
+                <div v-else-if="User.bureauemployee">
+                     <a href="" class="image">
+                        <img :src="bureauemployeeLoadPassPhoto(User.bureauemployee.photo)" class="img-circle elevation-2" alt="User Image">
+                        <span class="brand-text font-weight-light">{{User.full_name}}</span>
+                    </a>
                 </div>
             </div>
 
@@ -30,26 +93,29 @@
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <router-link :to="`/dashboard`" class="nav-link active">
+                    <router-link :to="`/B/dashboard`" class="nav-link active">
                         <i class="fa fa-circle-o purple nav-icon"></i>
                         <p>Dashboard</p>
                     </router-link>
                 </li>
-                <li class="nav-item has-treeview">
-                    <router-link :to="`/mails`" class="nav-link" title="Mails">
+
+                    <!-- Superadmin -->
+                <li v-if="Roles" v-show="(Roles.name === 'Superadmin')" class="nav-item has-treeview">
+                    <router-link :to="`/B/mails`" class="nav-link" title="Mails">
                         <i class="nav-icon purple fa fa-envelope-o"></i>
                         <p>Mailsbox</p>
                     </router-link>
                 </li>
+                <!-- own email box -->
                 <li class="nav-item has-treeview">
-                    <router-link :to="`/mail`" class="nav-link" title="Mails">
+                    <router-link :to="`/B/mail`" class="nav-link" title="Mails">
                         <i class="nav-icon purple fa fa-envelope-o"></i>
                         <p>Mailbox</p>
                     </router-link>
                 </li>
 
-                <!-- {{--  users  --}} -->
-                <li class="nav-item has-treeview">
+                <!-- {{--  Superadmin users  --}} -->
+                <li v-if="(Roles.name === 'Superadmin')" class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                     <i class="nav-icon purple fas fa-users"></i>
                     <p>
@@ -59,68 +125,68 @@
                     </a>
                     <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <router-link :to="`/directors/credentials`" class="nav-link">
+                        <router-link :to="`/B/directors/credentials`" class="nav-link">
                         <i class="fas fa-users red fas fa-users"></i>
                         <p>Directors</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/admins/credentials`" class="nav-link">
+                        <router-link :to="`/B/admins/credentials`" class="nav-link">
                         <i class="fas fa-users blue fas fa-users"></i>
                         <p>Admins</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/employees/credentials`" class="nav-link">
+                        <router-link :to="`/B/employees/credentials`" class="nav-link">
                         <i class="fas fa-users purple fas fa-users"></i>
                         <p>Other Employees</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/affiliates/credentials`" class="nav-link">
+                        <router-link :to="`/B/affiliates/credentials`" class="nav-link">
                         <i class="fas fa-users yellow fas fa-users"></i>
                         <p>Affiliates</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/househelps/credentials`" class="nav-link">
+                        <router-link :to="`/B/househelps/credentials`" class="nav-link">
                         <i class="fas fa-users yellow fas fa-users"></i>
                         <p>Househelps</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/clients/credentials`" class="nav-link">
+                        <router-link :to="`/B/clients/credentials`" class="nav-link">
                         <i class="fas fa-users yellow fas fa-users"></i>
                         <p>Clients</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/users/credentials`" class="nav-link">
+                        <router-link :to="`/B/users/credentials`" class="nav-link">
                               <i class="fas fa-users yellow fas fa-users"></i>
                               <p>All Users</p>
                         </router-link>
                     </li>
                     <!-- {{--  bureau  their view --}} -->
                     <li class="nav-item">
-                        <router-link :to="`/bureau/househelps/credentials`" class="nav-link">
+                        <router-link :to="`/B/bureau/househelps/credentials`" class="nav-link">
                         <i class="fas fa-users yellow fas fa-users"></i>
                         <p>Househelps</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/bureau/admins/credentials`" class="nav-link">
+                        <router-link :to="`/B/bureau/admins/credentials`" class="nav-link">
                         <i class="fas fa-users blue fas fa-users"></i>
                         <p>Admins</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/bureau/employees/credentials`" class="nav-link">
+                        <router-link :to="`/B/bureau/employees/credentials`" class="nav-link">
                         <i class="fas fa-users purple fas fa-users"></i>
                         <p>Other Employees</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="`/bureau/directors/credentials`" class="nav-link">
+                        <router-link :to="`/B/bureau/directors/credentials`" class="nav-link">
                         <i class="fas fa-users red fas fa-users"></i>
                         <p>Directors</p>
                         </router-link>
@@ -128,33 +194,44 @@
                     </ul>
                 </li>
                 <!-- {{--  organisation View  --}} -->
-                <li class="nav-item has-treeview">
-                    <router-link :to="`/househelps`" class="nav-link">
+                <li  v-if="Roles" v-show="(Roles.name === 'Superadmin') ||
+                          (Roles.name === 'Director')   ||
+                          (Roles.name === 'Admin')      ||
+                          (Roles.name === 'Employee')   ||
+                          (Roles.name === 'Accountant')" class="nav-item has-treeview">
+                    <router-link :to="`/B/househelps`" class="nav-link">
                     <i class="nav-icon purple fas fa-users"></i>
                     <p>
-                        Househelps Details
+                        Househelps
                     </p>
                     </router-link>
                 </li>
+
                 <!-- {{--  bureau View  --}} -->
-                <li class="nav-item has-treeview">
-                    <router-link :to="`/bureau/househelps`" class="nav-link">
-                    <i class="nav-icon purple fas fa-users"></i>
-                    <p>
-                        Househelps Details bureau
-                    </p>
+                <li v-if="Roles" v-show="
+                         (Roles.name === 'Bureau Director') ||
+                         (Roles.name === 'Bureau Admin')    ||
+                         (Roles.name === 'Bureau Employee') ||
+                         (Roles.name === 'Bureau Accountant')"
+                      class="nav-item has-treeview">
+                    <router-link :to="`/B/bureau/househelps`" class="nav-link">
+                            <i class="nav-icon purple fas fa-users"></i>
+                        <p>
+                            Househelps
+                        </p>
                     </router-link>
                 </li>
                 <li class="nav-item has-treeview">
-                    <router-link :to="`/bureau/searchorders`" class="nav-link">
+                    <router-link :to="`/B/bureau/searchorders`" class="nav-link">
                     <i class="nav-icon purple fas fa-school"></i>
                     <p>
+
                         Search Orders
                     </p>
                     </router-link>
                 </li>
                 <li class="nav-item has-treeview">
-                    <router-link :to="`/bureau/househelps/reviews`" class="nav-link">
+                    <router-link :to="`/B/bureau/househelps/reviews`" class="nav-link">
                     <i class="nav-icon purple fas fa-school"></i>
                     <p>
                         Househelp Reviews
@@ -162,7 +239,7 @@
                     </router-link>
                 </li>
                 <li class="nav-item has-treeview">
-                    <router-link :to="`/bureau/settings`" class="nav-link">
+                    <router-link :to="`/B/bureau/settings`" class="nav-link">
                     <i class="fa fa-circle-o purple nav-icon"></i>
                     <p>Settings</p>
                     </router-link>
@@ -179,7 +256,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <router-link :to="`/househelps/reviews`" class="nav-link">
+                        <router-link :to="`/B/househelps/reviews`" class="nav-link">
                         <i class="fas fa-book purple nav-icon"></i>
                         <p>Househelps Reviews</p>
                         </router-link>
@@ -198,7 +275,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <router-link :to="`/searchorders`" class="nav-link">
+                        <router-link :to="`/B/searchorders`" class="nav-link">
                         <i class="fas fa-certificate green nav-icon"></i>
                         <!-- {{-- payment succsfull from the clients search --}} -->
                         <p>Payment Recieved</p>
@@ -432,7 +509,7 @@
                 <!-- </li> -->
                 <!-- {{--Organisation settings --}} -->
                 <li class="nav-item has-treeview">
-                    <router-link :to="`/settings`" class="nav-link">
+                    <router-link :to="`/B/settings`" class="nav-link">
                     <i class="fa fa-circle-o purple nav-icon"></i>
                     <p>Settings</p>
                     </router-link>
@@ -450,8 +527,84 @@
 export default {
     name:"backend-left-sidebar",
      mounted() {
-           console.log('backend-left-sidebar');
-        },
+
+     },
+     computed:{
+            Organisation(){
+               return this.$store.getters.Organisation
+            },
+            User(){
+                return this.$store.getters.LoggedUser
+            },
+            Roles(){
+                return this.$store.getters.UserRoles
+            },
+            Permissions(){
+                return this.$store.getters.UserPermissions
+            },
+     },
+     methods:{
+            organisationLoadImage(organisation_logo){
+                if(organisation_logo){
+                    return "/assets/organisation/img/logo/"+organisation_logo;
+                }else{
+                    return "/assets/organisation/img/website/empty.png";
+                }
+            },
+            bureauLoadImage(bureau_logo){
+                if(bureau_logo){
+                    return "/assets/bureau/img/logo/"+bureau_logo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            //organisation
+            directorLoadPassPhoto(director_photo){
+                if(director_photo){
+                    return "/assets/organisation/img/directors/passports/"+director_photo;
+                }else{
+                    return "/assets/organisation/img/website/empty.png";
+                }
+            },
+            adminLoadPassPhoto(admin_photo){
+                if(admin_photo){
+                    return "/assets/organisation/img/admins/passports/"+admin_photo;
+                }else{
+                    return "/assets/organisation/img/website/empty.png";
+                }
+            },
+            employeeLoadPassPhoto(employee_photo){
+                if(employee_photo){
+                    return "/assets/organisation/img/employees/passports/"+employee_photo;
+                }else{
+                    return "/assets/organisation/img/website/empty.png";
+                }
+            },
+            //bureau
+            bureaudirectorLoadPassPhoto(bureaudirector_photo){
+                if(bureaudirector_photo){
+                    return "/assets/bureau/img/directors/passports/"+bureaudirector_photo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            bureauadminLoadPassPhoto(bureauadmin_photo){
+                if(bureauadmin_photo){
+                    return "/assets/bureau/img/admins/passports/"+bureauadmin_photo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            bureauemployeeLoadPassPhoto(bureauemployee_photo){
+                if(bureauemployee_photo){
+                    return "/assets/bureau/img/employees/passports/"+bureauemployee_photo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+     },
+
+
 
 }
 </script>

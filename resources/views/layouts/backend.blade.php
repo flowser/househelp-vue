@@ -18,7 +18,7 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{$organisation->name}}">
+    {{--  <meta name="twitter:title" content="{{$organisation->name}}">  --}}
     {{--  <meta name="twitter:description" content="{{$organisation->about->who_we_are}}">  --}}
     <meta name="twitter:site" content="@TeifFoundation">
     <meta name="twitter:creator" content="@TeifFoundation">
@@ -27,9 +27,9 @@
 
     <meta property="og:url"         content="{{url('')}}" />
     <meta property="og:type"        content="website" />
-    <meta property="og:title"       content="{{$organisation->name}}" />
+    {{--  <meta property="og:title"       content="{{$organisation->name}}" />  --}}
     {{--  <meta property="og:description" content="{{$organisation->about->who_we_are}}" />  --}}
-    <meta property="og:image" content="{{asset('assets/organisation/img/logo')}}/{{$organisation->logo}}" />
+    {{--  <meta property="og:image" content="{{asset('assets/organisation/img/logo')}}/{{$organisation->logo}}" />  --}}
     <meta property="og:image:type"  content="image/jpeg" />
     <meta property="og:image:width" content="50" />
     <meta property="og:image:height"content="20" />
@@ -81,7 +81,7 @@
     </head>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper" id="app">
-
+            {{--  {{Auth::guard('api')}}  --}}
                 {{--  <!-- Navbar -->
                 <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
                     <!-- Left navbar links -->
@@ -533,7 +533,9 @@
                 </aside>  --}}
 
                 <!-- Content Wrapper. Contains page content -->
-                      <backend></backend>
+
+
+                    <backend></backend>
                 {{--  <div class="content-wrapper">
                     <!-- Content Header (Page header) -->
                     <div class="content-header">
@@ -1140,18 +1142,18 @@
         <!-- ./wrapper -->
 
         <!-- jQuery -->
-        @if(Auth::check())
+        {{--  @if(Auth::check())
             <script>
                     window.logged_user = {!! json_encode($logged_user); !!}
             </script>
         @endif
             <script type="text/javascript">
                   var APP_URL = {!! json_encode(url('')) !!}
-            </script>
+            </script>  --}}
             <script>
                 @auth
-                    window.Roles = {!! json_encode(Auth::user()->allRoles, true) !!};
-                    window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
+                    window.Roles = {!! json_encode( Auth::guard('api')->user()->allRoles, true) !!};
+                    window.Permissions = {!! json_encode( Auth::guard('api')->user()->allPermissions, true) !!};
                 @else
                     window.Roles = [];
                     window.Permissions = [];

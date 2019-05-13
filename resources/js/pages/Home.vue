@@ -12,7 +12,7 @@
 
 				<div class="col-sm-10 col-sm-12 col-xs-12 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Featured Househelps</h2>
+						<h2 class="title text-center"><span>({{Househelps.length}})</span> Featured Househelps </h2>
 						<div class="col-md-2 col-sm-6 col-xs-6" v-for="househelp in Househelps" :key="househelp.id">
 							<div class="product-image-wrapper">
 								<div class="single-products">

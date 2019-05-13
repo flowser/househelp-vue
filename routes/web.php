@@ -16,16 +16,23 @@ use App\Http\Controllers\Frontend\PublicController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 
-Route::get('/', [PublicController::class, 'index'])->name('public');
+Route::get('/B', function () {
+    return view('layouts/backend');
+});
 
-Auth::routes();
-Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-Route::get('/bureau/get', [BureauController::class, 'bureauByUserID'])->name('bureau.bureauByUserID');
-Route::get('/{any?}', [PublicController::class, 'index'])->where('any', '^(?!api\/)[\/\w\.-]*');
+Route::get('/B/{any?}', function () {
+    return view('layouts/backend');
+})->where('any', '^(?!api\/)[\/\w\.-]*');
+
+Route::get('/', function () {
+    return view('layouts/frontend');
+});
+
+Route::get('/{any?}', function () {
+    return view('layouts/frontend');
+})->where('any', '^(?!api\/)[\/\w\.-]*');
+
 
 

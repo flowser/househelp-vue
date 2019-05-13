@@ -59,6 +59,8 @@ import order from './modules/order/order';
 import affiliate from './modules/affiliate/affiliate';
 import referralLink from './modules/affiliate/referralLinks';
 
+//User n tokens roles for redirection when loged in
+import login from './modules/user/login';
 
         export default {
           modules: {
@@ -121,6 +123,9 @@ import referralLink from './modules/affiliate/referralLinks';
                 //affiliate
                 affiliate,
                 referralLink,
+
+                //user logins, tokens roles profiel etc
+                login,
           },
         };
 

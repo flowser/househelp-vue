@@ -22,7 +22,7 @@ class BureauController extends Controller
 
     // public function __construct()
     // {
-    //     $this->middleware('auth');
+    //     $this->middleware('api:auth');
     // }
 
     public function index()
@@ -41,45 +41,46 @@ class BureauController extends Controller
     //get own bureau according to login details
     public function bureauByUserID()
     {
-        // if (auth()->check()) {
-            // if (auth()->user()->hasRole('Bureau Director')) {
-                // $user =User::find(8);
-                return "user";
+        // $bureaudirector = User::where('id', Auth::user()->id)->first();
 
+                return  Auth::user();
+        if (auth()->check()) {
+            if (auth()->user()->hasRole('Bureau Director')) {
+                // $bureaudirector = user()->bureaudirectors()->get();
 
 
                 // ->bureaudirectors()->first();
-                // $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
-                //             'bureauemployees', 'bureauhousehelps')
-                //             ->where('id', $bureaudirector->bureau_id)
-                //             ->first();
-                //     return response()-> json([
-                //         'bureau' => $bureau,
-                //     ], 200);
+                $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
+                            'bureauemployees', 'bureauhousehelps')
+                            ->where('id', $bureaudirector->bureau_id)
+                            ->first();
+                    return response()-> json([
+                        'bureau' => $bureau,
+                    ], 200);
 
-            // }
-            // elseif(auth()->user()->hasRole('Bureau Admin')){
-            //     $bureauadmin = Auth::user()->bureauadmins()->first();
-            //     // return  $bureauadmin->bureau_id;
-            //     $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
-            //                 'bureauemployees', 'bureauhousehelps')
-            //                 ->where('id', $bureauadmin->bureau_id)
-            //                 ->first();
-            //     return response()-> json([
-            //         'bureau' => $bureau,
-            //     ], 200);
+            }
+            elseif(auth()->user()->hasRole('Bureau Admin')){
+                $bureauadmin = Auth::user()->bureauadmins()->first();
+                // return  $bureauadmin->bureau_id;
+                $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
+                            'bureauemployees', 'bureauhousehelps')
+                            ->where('id', $bureauadmin->bureau_id)
+                            ->first();
+                return response()-> json([
+                    'bureau' => $bureau,
+                ], 200);
 
-            // }elseif(auth()->user()->hasRole('Bureau Employee')){
-            //     $bureauemployee = Auth::user()->bureauemployees()->first();
-            //     $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
-            //                 'bureauemployees', 'bureauhousehelps')
-            //                 ->where('id', $bureauemployee->bureau_id)
-            //                 ->first();
-            //     return response()-> json([
-            //         'bureau' => $bureau,
-            //     ], 200);
-            // }
-        // }
+            }elseif(auth()->user()->hasRole('Bureau Employee')){
+                $bureauemployee = Auth::user()->bureauemployees()->first();
+                $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
+                            'bureauemployees', 'bureauhousehelps')
+                            ->where('id', $bureauemployee->bureau_id)
+                            ->first();
+                return response()-> json([
+                    'bureau' => $bureau,
+                ], 200);
+            }
+        }
     }
 
 

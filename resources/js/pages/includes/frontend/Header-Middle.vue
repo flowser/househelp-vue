@@ -50,10 +50,10 @@
                                         <hr style="margin-top: 3px;margin-bottom: 3px;">
                                         </div>
                                 </li>
-								<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
-
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
-
+								<li v-if="loggedIn" ><router-link  :to="{name:'client.dashboard'}"><i class="fa fa-user"></i>Dashboard</router-link></li>
+								<li v-if="!loggedIn"><a href="#" title="Login" @click.prevent="loginModal()"><i class="fa fa-lock"></i> Login</a></li>
+								<li v-if="!loggedIn"><a href="#" title="Register" @click.prevent="registerClientModal()"><i class="fa fa-lock"></i> Register</a></li>
+								<li v-if="loggedIn" ><a href="#" title="Logout" @click.prevent="logout"><i class="fa fa-unlock"></i> Logout</a></li>
 							</ul>
 						</div>
 					</div>
@@ -65,7 +65,197 @@
 
 <script>
 export default {
-    name:"Middle-Header"
+    name:"Middle-Header",
+    components:{
+            // TopHeader,
+            // SideBar,
+            // Footer,
+         },
+         data(){
+            return{
+
+           };
+        },
+        mounted() {
+            this.fetchAccessToken();
+           console.log('top menu mounted.');
+        },
+        computed:{
+            loggedIn(){
+                return this.$store.getters.loggedIn
+            },
+            CartItems(){
+                return this.$store.getters.CartItems
+            },
+            subTotal(){
+                return this.$store.getters.subTotal
+            },
+            Total(){
+                return this.$store.getters.Total
+            },
+        },
+        methods:{
+            fetchAccessToken(){
+                this.$store.dispatch('fetchAccessToken')
+            },
+            fetchUser(){
+                this.$store.dispatch('getUserRoles')
+                let k =  this.$store.getters.loggedIn
+                console.log(k)
+            },
+            loadCartItems(){
+                return this.$store.dispatch("cartItems")
+            },
+            househelpLoadImage(househelp_image){
+                if(househelp_image){
+                    return "/assets/organisation/img/househelps/"+househelp_image;
+                }else{
+                    return "/assets/organisation/img/website/empty.png";
+                }
+            },
+            registerClientModal(){
+                 this.editmodeClient= false;
+                //  this.clientform.reset()
+                //  this.clientform.organisation_id;
+                     $('#ClientModal').modal('show')
+            },
+            registerAffiliateModal(){
+                 this.editmodeAffiliate= false;
+                //  this.affiliateform.reset()
+                     $('#AffiliateModal').modal('show')
+            },
+            loginModal(){
+                //  this.loginform.reset()
+                     $('#LoginModal').modal('show')
+                     $('#ResetModal').modal('hide')
+            },
+            emailresetLinkModal(){
+                //  this.loginform.reset()
+                //  this.emaillinkform.reset()
+                     $('#LoginModal').modal('hide')
+                     $('#EmailResetLinkModal').modal('show')
+            },
+            resetPasswordModal(){
+                //  this.loginform.reset()
+                //  this.emaillinkform.reset()
+                //  this.resetpasswordform.reset()
+
+                var url = new URL(this.Url);
+                console.log(url)
+                var token = url.searchParams.get("token");
+                if(token !=null){
+                    axios.get('/password/reset/'+token)
+                     .then((response)=>{
+                       this.resetpasswordform.token = response.data.token
+                       this.resetpasswordform.email = response.data.email
+                        $('#LoginModal').modal('hide')
+                        $('#EmailResetLinkModal').modal('hide')
+                        $('#ResetPasswordModal').modal('show')
+                        toast({
+                            type: 'success',
+                            title: 'You have successfully fetched your email to windup your passwod reset'
+                        })
+                        this.$Progress.finish()
+                    })
+                    .catch((response)=>{
+                        this.$Progress.fail()
+                        toast({
+                            type: 'error',
+                            title: 'Sorry there seems to be an issue check it your Email and try again.'
+                        })
+                    })
+                }
+            },
+            Remove(cartItem_id){
+                console.log(cartItem_id)
+                axios.get('/cart/remove/'+cartItem_id)
+                .then((response)=>{
+                     toast({
+                        type: 'success',
+                        title: 'househelp Removed successful'
+                        })
+                        this.loadOrders();
+                        this.loadCartItems();
+                        this.$Progress.finish()
+                })
+                .catch((response)=>{
+                    this.$Progress.fail()
+                    toast({
+                        type: 'error',
+                        title: 'househelp Removal not successful.'
+                    })
+                })
+            },
+            Clear(CartItems){
+                console.log(CartItems)
+                axios.get('/cart/clear/'+CartItems)
+                 .then((response)=>{
+                     toast({
+                        type: 'success',
+                        title: 'househelp Cart was Cleared successful'
+                        })
+                        this.loadOrders();
+                        this.loadCartItems();
+                        this.$Progress.finish()
+                })
+                .catch((response)=>{
+                    this.$Progress.fail()
+                    toast({
+                        type: 'error',
+                        title: 'househelp Cart was not Cleared successful.'
+                    })
+                })
+            },
+            openCheckoutModal(CartItems){
+                console.log(CartItems)
+                this.loadCartItems()
+                // this.transactionform.reset()
+                 $('#CheckoutModal').modal('show')
+            },
+            Checkout(CartItems){
+               this.transactionform.cartItems= CartItems
+                console.log(this.transactionform)
+                this.transactionform.patch('/order/checkout/'+CartItems)
+                .then((response)=>{
+                     toast({
+                        type: 'success',
+                        title: 'Payment was successful, wait, for verification'
+                        })
+                        this.loadCartItems();
+                        $('#CheckoutModal').modal('hide')
+                        // this.transactionform.reset()
+                          this.$Progress.finish()
+                })
+                .catch((response)=>{
+                     $('#CheckoutModal').modal('show')
+                    this.$Progress.fail()
+                    toast({
+                        type: 'error',
+                        title: 'Payment was not successful.'
+                    })
+                })
+
+            },
+            logout(){
+                this.$store.dispatch("destroyToken")
+                .then(({response}) => {
+                        window.location.replace('/')
+                        toast({
+                                type: 'success',
+                                title: 'You have been logged out successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                .catch(({response}) => {
+                    this.$Progress.fail()
+                    toast({
+                        type: 'error',
+                        title: "something is wrong"
+                    })
+                });
+            },
+        }
+
 }
 </script>
 

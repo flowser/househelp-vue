@@ -2,6 +2,7 @@
     <div class="backend-Master">
         <!-- Navbar -->
             <TopHeader/>
+
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
@@ -9,6 +10,8 @@
         <!-- Main Sidebar Container -->
 
         <!-- Content Wrapper. Contains page content -->
+        {{loggedIn}},<br>
+        {{LoggedUser}}
             <vue-progress-bar></vue-progress-bar>
             <router-view></router-view>
         <!-- /.content-wrapper -->
@@ -31,7 +34,37 @@ import Footer from "../pages/includes/backend/Footer";
             Footer,
          },
         mounted() {
-            console.log('Component backend master.')
-        }
+            console.log('Component backend master.');
+             this.fetchAccessToken();
+        },
+        computed:{
+            Countries(){
+                return this.$store.getters.Countries
+            },
+            Counties(){
+               return this.$store.getters.CountryCounties
+            },
+            Constituencies(){
+               return this.$store.getters.CountyConstituencies
+            },
+            Wards(){
+               return this.$store.getters.ConstituencyWards
+            },
+            Genders(){
+               return this.$store.getters.Genders
+            },
+            LoggedUser(){
+                return this.$store.getters.LoggedUser
+            },
+            loggedIn(){
+                this.$store.getters.loggedIn
+            }
+        },
+         methods:{
+            fetchAccessToken(){
+                this.$store.dispatch('fetchAccessToken')
+            },
+         }
+
     }
 </script>

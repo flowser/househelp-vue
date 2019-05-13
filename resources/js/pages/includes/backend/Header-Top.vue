@@ -115,8 +115,9 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                            class="fa fa-th-large"></i></a>
+                        <a class="nav-link" href="#" @click.prevent="logout()"><i
+                            class="fa fa-th-large">Logout</i>
+                            </a>
                     </li>
                     </ul>
                 </nav>
@@ -126,7 +127,40 @@
 
 <script>
 export default {
-     name:"backend-Header-Top"
+     name:"backend-Header-Top",
+     mounted() {
+            this.fetchUser();
+        },
+        computed:{
+            loggedIn(){
+                return this.$store.getters.loggedIn
+            },
+        },
+        methods:{
+            fetchUser(){
+                this.$store.dispatch('getUserRoles')
+                let k =  this.$store.getters.loggedIn
+                console.log(k, 'hea top bakcn')
+            },
+            logout(){
+                this.$store.dispatch("destroyToken")
+                .then(({response}) => {
+                     window.location.replace('/')
+                        toast({
+                                type: 'success',
+                                title: 'You have been logged out successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                .catch(({response}) => {
+                    this.$Progress.fail()
+                    toast({
+                        type: 'error',
+                        title: "something is wrong"
+                    })
+                });
+            },
+        }
 }
 </script>
 

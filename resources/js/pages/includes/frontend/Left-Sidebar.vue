@@ -9,7 +9,6 @@
                     <!-- {{Ages}}<br> -->
                     <el-select
                         v-model="filterform.age"
-
                             clearable
                             placeholder="Select Age"
                             @change="remoteMethod"
@@ -27,8 +26,6 @@
                     <el-select
                         v-model="filterform.gender_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Gender"
                             @change="remoteMethod"
                             :loading="loading">
@@ -45,8 +42,6 @@
                     <el-select
                         v-model="filterform.education_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Education"
                             @change="remoteMethod"
                             :loading="loading">
@@ -63,8 +58,6 @@
                     <el-select
                         v-model="filterform.experience_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Experience"
                             @change="remoteMethod"
                             :loading="loading">
@@ -81,8 +74,6 @@
                     <el-select
                         v-model="filterform.maritalstatus_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Maritalstatus"
                             @change="remoteMethod"
                             :loading="loading">
@@ -99,8 +90,6 @@
                     <el-select
                         v-model="filterform.tribe_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Tribe"
                             @change="remoteMethod"
                             :loading="loading">
@@ -117,8 +106,6 @@
                     <el-select
                         v-model="filterform.skill_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Skill"
                             @change="remoteMethod"
                             :loading="loading">
@@ -135,8 +122,6 @@
                     <el-select
                         v-model="filterform.operation_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Operation"
                             @change="remoteMethod"
                             :loading="loading">
@@ -153,8 +138,6 @@
                     <el-select
                         v-model="filterform.duration_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Duration"
                             @change="remoteMethod"
                             :loading="loading">
@@ -171,8 +154,6 @@
                     <el-select
                         v-model="filterform.religion_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Religion"
                             @change="remoteMethod"
                             :loading="loading">
@@ -189,8 +170,6 @@
                     <el-select
                         v-model="filterform.kid_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Kid"
                             @change="remoteMethod"
                             :loading="loading">
@@ -207,8 +186,6 @@
                     <el-select
                         v-model="filterform.englishstatus_id"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select Englishstatus"
                             @change="remoteMethod"
                             :loading="loading">
@@ -225,8 +202,6 @@
                     <el-select
                         v-model="filterform.idstatus"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select IDstatus"
                             @change="remoteMethod"
                             :loading="loading">
@@ -243,8 +218,6 @@
                     <el-select
                         v-model="filterform.healthstatus"
                             clearable
-                            multiple
-                            filterable
                             placeholder="Select IDstatus"
                             @change="remoteMethod"
                             :loading="loading">

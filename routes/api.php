@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Backend\Bureau\BureauController;
 use App\Http\Controllers\Backend\Client\ClientController;
 use App\Http\Controllers\Backend\Standard\WardController;
@@ -58,8 +59,17 @@ use App\Http\Controllers\Backend\Househelp\Filters\MaritalstatusController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/get/user', [AuthController::class, 'user']);
 });
 
 Route::get('user/get', [UserController::class, 'index'])->name('user.index');
@@ -325,7 +335,8 @@ Route::get('advert/delete/{advert}/', [AdvertController::class, 'destroy'])->nam
 
  // bureau
  Route::get('bureaus/get', [BureauController::class, 'index'])->name('bureau.index');
- 
+ Route::get('/bureau/get', [BureauController::class, 'bureauByUserID'])->name('bureau.bureauByUserID');
+
  Route::post('bureau/verify/info/', [BureauController::class, 'verifyBureauInfo'])->name('bureau.verify');
  Route::post('bureau/verify/director/', [BureauController::class, 'verifyDirectorInfo'])->name('bureau.verifydirector');
  Route::post('bureau', [BureauController::class, 'store'])->name('bureau.store');

@@ -1,4 +1,9 @@
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+
 import VueRouter from 'vue-router';
+
         //frontend pages
         import Home from './pages/Home.vue';
         import HousehelpDetails from './pages/frontend/HousehelpDetails.vue';
@@ -101,37 +106,60 @@ import VueRouter from 'vue-router';
         import BureauSettings from './pages/backend/settings/bureau/settings.vue'
         // end of backend pages
 
+        //user login n logout
+        import Logout from './pages/login-out/logout.vue'
 
-const     router= new VueRouter({
-                mode: 'history',
-                routes: [
+
+let routes = [
 
                 // 1. Front End view
                   // 1.1 landing Page home
                       {
                         path:'/', //with Househelps
-                        name:'home',
+                        name:'Home',
                         component: Home,
+                      },
+                      {
+                        path:'/login', //with Househelps
+                        name:'Login',
+                        component: Home,
+                        meta:{
+                            requiresVisitor:true,
+                        }
+                      },
+                      {
+                        path: '/logout',
+                        name: 'Logout',
+                        component: Logout
                       },
 
                   // 1.2. dashboards front
                      // 1.2.1 affiliate
                           {
-                            path: '/affiliate',
-                            name: 'affiliate',
+                            path: '/affiliate/dashboard',
+                            name: 'affiliate.dashboard',
                             component: AffiliateDashboard,
+                            meta:{
+                                requiresAuth:true,
+                            }
                           },
                      //1.2.2 client
                           {
-                            path: '/client',
-                            name: 'client',
+                            path: '/client/dashboard',
+                            name: 'client.dashboard',
                             component: ClientDashboard,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                      //1.2.3 househelp
                           {
-                            path: '/househelp',
-                            name: 'househelp',
+                            path: '/househelp/dashboard',
+                            name: 'househelp.dashboard',
                             component: HousehelpDashboard,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                   // 1.3 pages
                      //1.3.1 Houshelp Details
@@ -165,273 +193,381 @@ const     router= new VueRouter({
                   // organisation landing page
                     //2.1.1 universal
                           {
-                            path: '/dashboard',
+                            path: '/B/dashboard',
                             name: 'dashboard',
                             component: OrganisationDashboard,
+                            meta:{
+                                requiresAuth:true,
+                            }
                           },
                     // bureau
                     //2.1.4 universal
                           {
-                              path: '/bureau',
-                              name: 'bureau',
+                              path: '/B/bureau/dashboard',
+                              name: 'bureau.dashboard',
                               component: BureauDashboard,
+                              meta:{
+                                requiresAuth:true,
+                            }
                           },
                     //2.1.5 mailbox
                           {
-                            path:'/mails',
+                            path:'/B/mails',
                             name: 'mails',
                             component: AllMailbox,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                           {
-                            path:'/mail',
+                            path:'/B/mail',
                             name: 'mail',
                             component: Mailbox,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
-
                     //2.2 Pages
                       //2.2.1 users
                        //2.2.1.1 directors
                           {
-                            path: '/directors/credentials',
-                            name: 'directors',
+                            path: '/B/directors/credentials',
+                            name: 'directors.credentials',
                             component: DirectorsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.1.2 admins
                           {
-                            path: '/admins/credentials',
-                            name: 'admins',
+                            path: '/B/admins/credentials',
+                            name: 'admins.credentials',
                             component:AdminsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.1.3 employees
                           {
-                            path: '/employees/credentials',
-                            name: 'employees',
+                            path: '/B/employees/credentials',
+                            name: 'employees.credentials',
                             component:EmployeesCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.1.4 Affiliates
                           {
-                            path: '/affiliates/credentials',
-                            name: 'affiliates',
+                            path: '/B/affiliates/credentials',
+                            name: 'affiliates.credentials',
                             component:AffiliatesCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.1.5 clients
                           {
-                            path: '/clients/credentials',
-                            name: 'clients',
+                            path: '/B/clients/credentials',
+                            name: 'clients.credentials',
                             component:ClientsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.1.16 Househelps
                           {
-                            path: '/househelps/credentials',
-                            name: 'househelps',
+                            path: '/B/househelps/credentials',
+                            name: 'househelps.credentials',
                             component:HousehelpsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
 
                        //2.2.1.6 users
                           {
-                            path: '/users/credentials',
-                            name: 'users',
+                            path: '/B/users/credentials',
+                            name: 'users.credentials',
                             component:UsersCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                       //bureau
                         //2.2.1.7 users
                           {
-                            path: '/bureau/directors/credentials',
-                            name: 'bureau/directors',
+                            path: '/B/bureau/directors/credentials',
+                            name: 'bureau.directors.credentials',
                             component:BureauDirectorsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.1.8 BureauAdmins
                           {
-                            path: '/bureau/admins/credentials',
-                            name: 'bureau/admins',
+                            path: '/B/bureau/admins/credentials',
+                            name: 'bureau.admins.credentials',
                             component:BureauAdminsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.1.9 BureauEmployees
                           {
-                            path: '/bureau/employees/credentials',
-                            name: 'bureau.employees',
+                            path: '/B/bureau/employees/credentials',
+                            name: 'bureau.employees.credentials',
                             component:BureauEmployeesCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.1.10 BureauClients
                           {
-                            path: '/bureau/clients',
-                            name: 'bureau/clients',
+                            path: '/B/bureau/clients',
+                            name: 'bureau.clients',
                             component:BureauClients,
+                            meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.1.10 BureauHousehelps
                           {
-                            path: '/bureau/househelps/credentials',
-                            name: 'bureau/househelps',
+                            path: '/B/bureau/househelps/credentials',
+                            name: 'bureau.househelps.credentials',
                             component:BureauHousehelpsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
 
                     // 2.2.2 Househelps view details
                        //2.2.2.1 all organisation Househelps
                           {
-                            path: '/househelps',
+                            path: '/B/househelps',
                             name: 'AllHousehelps', //all Househelps
                             component: Househelps,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.2.2 all bureau Househelps
                           {
-                            path: '/bureau/househelps',
+                            path: '/B/bureau/househelps',
                             name: 'bureau.househelps', //all bureau Househelps
                             component: BureauHousehelps,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                         //2.2.2.3 Single Househelp with details
                           {
-                            path: '/househelp/:id',
+                            path: '/B/househelp/:id',
                             name: 'single.Househelp',//view single Househelp with all details
                             component: SingleHousehelp,
                           },
                        //2.2.2.4 all organisation Househelps reviews
                           {
-                            path: '/househelps/reviews',
+                            path: '/B/househelps/reviews',
                             name: 'allhousehelps.reviews', //all Househelps Reviews
                             component: HousehelpsReviews,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.2.5 all bureau Househelps
                           {
-                            path: '/bureau/househelps/reviews',
+                            path: '/B/bureau/househelps/reviews',
                             name: 'bureau.allhousehelps.reviews', //all bureau Househelps Reviews
                             component: BureauHousehelpsReviews,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                           //2.2.2.6 all organisation Househelps reviews
                           {
-                            path: '/househelps/review:id',
+                            path: '/B/househelps/review:id',
                             name: 'single.househelp.review', //single Househelp review
                             component: HousehelpSingleReview,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.2.5 all bureau Househelps
                           {
-                            path: '/bureau/househelps/review/:id',
-                            name: 'bureau.single.househelp.review', //bureau single Househelp review
+                            path: '/B/bureau/househelps/review/:id',
+                            name: 'bureau.single.househelp.review.id', //bureau single Househelp review
                             component: HousehelpSingleReview,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                           //2.2.2.6 all search orders
                           {
-                            path: '/searchorders',
+                            path: '/B/searchorders',
                             name: 'searchorders', //single Househelp review
                             component: SearchOrders,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                           //2.2.2.6 clients search orders
                           {
                             path: '/client/searchorders',
                             name: 'client.searchorders', //single Househelp review
                             component: ClientSearchOrders,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.2.5 all bureau search orders
                           {
-                            path: '/bureau/searchorders',
+                            path: '/B/bureau/searchorders',
                             name: 'bureau.searchorders', //bureau single Househelp review
                             component: BureauSearchOrders,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                            //2.2.2.6 all organisation Househelps reviews
                            {
-                            path: '/searchorder/:id',
+                            path: '/B/searchorder/:id',
                             name: 'single.searchorder', //single Househelp review
                             component: SingleSearchOrder,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                            //2.2.2.6 all organisation Househelps reviews
                            {
-                            path: '/client/searchorder/:id',
+                            path: '/B/client/searchorder/:id',
                             name: 'single.client.searchorder', //single Househelp review
                             component: ClientSingleSearchOrder,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.2.5 all bureau Househelps
                           {
-                            path: '/bureau/searchorder/:id',
-                            name: 'bureau.single.searchorder', //bureau single Househelp review
+                            path: '/B/bureau/searchorder/:id',
+                            name: 'bureau.single.searchorder.id', //bureau single Househelp review
                             component: BureauSingleSearchOrder,
+                            meta:{
+                                  requiresAuth:true,
+                              }
                           },
 
                     // 2.2.2 Settings
                        //2.2.2.1 Roles & permissions
                           {
-                              path: '/permissions',
+                              path: '/B/permissions',
                               name: 'permissions',
                               component: Permissions,
+                              meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.2.2 organisation settings
                           {
-                              path: '/settings',
+                              path: '/B/settings',
                               name: 'settings',
                               component:Settings,
+                              meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.2.2 bureau settings
                           {
-                              path: '/bureau/settings',
+                              path: '/B/bureau/settings',
                               name: 'bureau.settings',
                               component:BureauSettings,
+                              meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                     // 2.2.3 Standard
                        //2.2.3.1 About backend
                           {
-                              path: '/backend/about',
+                              path: '/B/backend/about',
                               name: 'backend.about',
                               component:AboutBackend,
+                              meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                     // 2.2.4 Service backend
                        //2.2.4.1 Service backend
                           {
-                              path: '/backend/services',
+                              path: '/B/backend/services',
                               name: 'backend.services',
                               component:ServicesBackend,
+                              meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                        //2.2.4.2 Single Service backend
                           {
-                              path: '/service/:id',
+                              path: '/B/service/:id',
                               name: 'backend.single.service.id',
                               component:SingleServiceBackend,
+                              meta:{
+                                  requiresAuth:true,
+                              }
 
                           },
                     // 2.2.4 Advert backend
                        //2.2.4.1 Advert backend
                           {
-                              path: '/backend/adverts',
+                              path: '/B/backend/adverts',
                               name: 'backend.adverts',
                               component:AdvertsBackend,
+                              meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.4.2 Single Advert backend
                           {
-                              path: '/advert/:id',
+                              path: '/B/advert/:id',
                               name: 'backend.singe.advert.id',
                               component:SingleAdvertBackend,
+                              meta:{
+                                  requiresAuth:true,
+                              }
                           },
                     // 2.2.4 Policies backend
                        //2.2.4.1 Policies backend
                           {
-                              path: '/backend/policies',
-                              name: 'backend.signle.policies',
+                              path: '/B/backend/policies',
+                              name: 'backend.single.policies',
                               component:PoliciesBackend,
+                              meta:{
+                                  requiresAuth:true,
+                              }
                           },
                        //2.2.4.2 Single Policy backend
                           {
-                              path: '/policy/:id',
-                              name: 'backend.signle.policy.id',
+                              path: '/B/policy/:id',
+                              name: 'backend.single.policy.id',
                               component:SinglePolicyBackend,
+                              meta:{
+                                  requiresAuth:true,
+                              }
                           },
 
-                ]
-        });
+];
 
 
-// const router = new VueRouter({
-//     history: true,
-//     mode: 'history',
-//     routes,
-// });
-export default router;
+
+export default routes;
 

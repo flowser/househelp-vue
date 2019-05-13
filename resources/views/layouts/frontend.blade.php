@@ -31,14 +31,14 @@
             <frontend></frontend>
         </div>
     </body>
-    @if(Auth::check())
+    {{--  @if(Auth::check())
         <script>
                 window.logged_user = {!! json_encode($logged_user); !!}
         </script>
     @endif
     <script type="text/javascript">
           var APP_URL = {!! json_encode(url('')) !!}
-    </script>
+    </script>  --}}
 
     <script>
         @auth

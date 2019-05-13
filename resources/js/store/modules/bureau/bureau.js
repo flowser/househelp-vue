@@ -30,7 +30,7 @@ const actions = {
                   context.commit('bureau', response.data.bureau);
               });
     },
-    bureauByUserID(context, payload){
+    bureauByUserID(context){
         axios.get('/api/bureau/get')
               .then((response)=>{
                   console.log(response.data, 'bueauby userid');

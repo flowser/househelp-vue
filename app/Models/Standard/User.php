@@ -3,22 +3,30 @@
 namespace App\Models\Standard;
 
 use App\Models\Bureau\Bureau;
-
+use App\Models\Bureau\BureauAdmin;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use App\Models\Househelp\Househelp;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Bureau\BureauDirector;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Permission;
 use App\Models\Organisation\Organisation;
 use App\Models\Standard\Webservices\About;
 use App\Models\Standard\Webservices\Advert;
 use App\Models\Standard\Webservices\Feature;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Organisation\OrganisationAdmin;
+use App\Models\Organisation\OrganisationDirector;
+use App\Models\Organisation\OrganisationEmployee;
 use App\Models\Standard\Webservices\ServiceModel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use HasRoles,
+        HasApiTokens,
         Notifiable,
         // SendUserPasswordReset,
         SoftDeletes;
@@ -30,6 +38,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    protected $guard_name = 'api';
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -85,6 +96,29 @@ class User extends Authenticatable
       {
           return $this->full_name;
       }
+
+       //permisions & roles
+       public function getAllRolesAttribute() {
+        $roles = [];
+          foreach (Role::all() as $role) {
+            if (Auth::guard('api')->user()->hasRole($role->name)) {
+              $roles[] = $role->name;
+            }
+          }
+          return $roles;
+      }
+
+      public function getAllPermissionsAttribute() {
+        $permissions = [];
+          foreach (Permission::all() as $permission) {
+            if (Auth::guard('api')->user()->can($permission->name)) {
+              $permissions[] = $permission->name;
+            }
+          }
+          return $permissions;
+      }
+
+
       public function organisationdirectors()
       {
           return $this->belongsToMany(Organisation::class,'organisation_director')
@@ -111,7 +145,8 @@ class User extends Authenticatable
                       ->join('counties', 'organisation_director.county_id', '=', 'counties.id')
                       ->join('constituencies', 'organisation_director.constituency_id', '=', 'constituencies.id')
                       ->join('wards', 'organisation_director.ward_id', '=', 'wards.id')
-                      ->select('organisations.*',
+                      ->select(
+                        'organisations.name as organisation_name', 'organisations.logo as organisation_logo',
                           'organisation_director.*',
                               'countries.name as country_name',
                               'counties.name as county_name',
@@ -388,6 +423,8 @@ class User extends Authenticatable
                     )
                     ->withTimestamps();
     }
+    // //logged in househelp
+
     //houshelps kins
     public function househelpkins()
     {
@@ -425,11 +462,6 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
-    public function organisationadmin()
-    {
-        return $this->hasOne(OrganisationAdmin::class);
-
-    }
     public function abouts()
     {
         return $this->hasMany(About::class);
@@ -446,6 +478,151 @@ class User extends Authenticatable
     {
         return $this->hasMany(Advert::class);
     }
+
+    //logged in users
+
+    public function organisationdirector()
+    {
+        return $this->hasOne(OrganisationDirector::class)
+                    ->join('organisations', 'organisation_director.organisation_id','=', 'organisations.id')
+                    ->join('genders', 'organisation_director.gender_id', '=', 'genders.id')
+                    ->join('positions', 'organisation_director.position_id', '=', 'positions.id')
+                    ->join('countries', 'organisation_director.country_id', '=', 'countries.id')
+                    ->join('counties', 'organisation_director.county_id', '=', 'counties.id')
+                    ->join('constituencies', 'organisation_director.constituency_id', '=', 'constituencies.id')
+                    ->join('wards', 'organisation_director.ward_id', '=', 'wards.id')
+                    ->select(
+                        'organisations.name as organisation_name', 'organisations.logo as organisation_logo',
+                        'organisation_director.*',
+                            'countries.name as country_name',
+                            'counties.name as county_name',
+                            'constituencies.name as constituency_name',
+                            'wards.name as ward_name',
+                            'positions.name as position_name',
+                            'genders.name as gender_name'
+                    );
+
+    }
+    public function organisationadmin()
+    {
+        return $this->hasOne(OrganisationAdmin::class)
+        ->join('organisations', 'organisation_admin.organisation_id','=', 'organisations.id')
+                    ->join('genders', 'organisation_admin.gender_id', '=', 'genders.id')
+                    ->join('positions', 'organisation_admin.position_id', '=', 'positions.id')
+                    ->join('countries', 'organisation_admin.country_id', '=', 'countries.id')
+                    ->join('counties', 'organisation_admin.county_id', '=', 'counties.id')
+                    ->join('constituencies', 'organisation_admin.constituency_id', '=', 'constituencies.id')
+                    ->join('wards', 'organisation_admin.ward_id', '=', 'wards.id')
+                    ->select(
+                        'organisations.name as organisation_name', 'organisations.logo as organisation_logo',
+                        'organisation_admin.*',
+                            'countries.name as country_name',
+                            'counties.name as county_name',
+                            'constituencies.name as constituency_name',
+                            'wards.name as ward_name',
+                            'positions.name as position_name',
+                            'genders.name as gender_name'
+                    );
+
+    }
+    public function organisationemployee()
+    {
+        return $this->hasOne(OrganisationEmployee::class)
+        ->join('organisations', 'organisation_employee.organisation_id','=', 'organisations.id')
+                    ->join('genders', 'organisation_employee.gender_id', '=', 'genders.id')
+                    ->join('positions', 'organisation_employee.position_id', '=', 'positions.id')
+                    ->join('countries', 'organisation_employee.country_id', '=', 'countries.id')
+                    ->join('counties', 'organisation_employee.county_id', '=', 'counties.id')
+                    ->join('constituencies', 'organisation_employee.constituency_id', '=', 'constituencies.id')
+                    ->join('wards', 'organisation_employee.ward_id', '=', 'wards.id')
+                    ->select(
+                        'organisations.name as organisation_name', 'organisations.logo as organisation_logo',
+                        'organisation_employee.*',
+                            'countries.name as country_name',
+                            'counties.name as county_name',
+                            'constituencies.name as constituency_name',
+                            'wards.name as ward_name',
+                            'positions.name as position_name',
+                            'genders.name as gender_name'
+                    );
+
+    }
+    public function bureaudirector()
+    {
+        return $this-> hasOne(BureauDirector::class)
+                    ->join('bureaus', 'bureau_director.bureau_id','=', 'bureaus.id')
+                    ->join('organisations', 'bureaus.organisation_id','=', 'organisations.id')
+                    ->join('genders', 'bureau_director.gender_id', '=', 'genders.id')
+                    ->join('positions', 'bureau_director.position_id', '=', 'positions.id')
+                    ->join('countries', 'bureau_director.country_id', '=', 'countries.id')
+                    ->join('counties', 'bureau_director.county_id', '=', 'counties.id')
+                    ->join('constituencies', 'bureau_director.constituency_id', '=', 'constituencies.id')
+                    ->join('wards', 'bureau_director.ward_id', '=', 'wards.id')
+                    ->select(
+                        'bureaus.name as bureau_name','bureaus.logo as bureau_logo', 'bureaus.bureau_email as bureau_email',
+                        'organisations.name as organisations_name', 'organisations.logo as organisations_logo',
+                        'bureau_director.*',
+                            'countries.name as country_name',
+                            'counties.name as county_name',
+                            'constituencies.name as constituency_name',
+                            'wards.name as ward_name',
+                            'positions.name as position_name',
+                            'genders.name as gender_name'
+                    );
+    }
+    public function bureauadmin()
+    {
+        return $this-> hasOne(BureauAdmin::class)
+                    ->join('bureaus', 'bureau_admin.bureau_id','=', 'bureaus.id')
+                    ->join('organisations', 'bureaus.organisation_id','=', 'organisations.id')
+                    ->join('genders', 'bureau_admin.gender_id', '=', 'genders.id')
+                    ->join('positions', 'bureau_admin.position_id', '=', 'positions.id')
+                    ->join('countries', 'bureau_admin.country_id', '=', 'countries.id')
+                    ->join('counties', 'bureau_admin.county_id', '=', 'counties.id')
+                    ->join('constituencies', 'bureau_admin.constituency_id', '=', 'constituencies.id')
+                    ->join('wards', 'bureau_admin.ward_id', '=', 'wards.id')
+                    ->select(
+                        'bureaus.name as bureau_name','bureaus.logo as bureau_logo', 'bureaus.bureau_email as bureau_email',
+                        'organisations.name as organisations_name', 'organisations.logo as organisations_logo',
+                        'bureau_admin.*',
+                            'countries.name as country_name',
+                            'counties.name as county_name',
+                            'constituencies.name as constituency_name',
+                            'wards.name as ward_name',
+                            'positions.name as position_name',
+                            'genders.name as gender_name'
+                    );
+    }
+    public function bureauemployee()
+    {
+        return $this-> hasOne(BureauAdmin::class)
+                    ->join('bureaus', 'bureau_employee.bureau_id','=', 'bureaus.id')
+                    ->join('organisations', 'bureaus.organisation_id','=', 'organisations.id')
+                    ->join('genders', 'bureau_employee.gender_id', '=', 'genders.id')
+                    ->join('positions', 'bureau_employee.position_id', '=', 'positions.id')
+                    ->join('countries', 'bureau_employee.country_id', '=', 'countries.id')
+                    ->join('counties', 'bureau_employee.county_id', '=', 'counties.id')
+                    ->join('constituencies', 'bureau_employee.constituency_id', '=', 'constituencies.id')
+                    ->join('wards', 'bureau_employee.ward_id', '=', 'wards.id')
+                    ->select(
+                        'bureaus.name as bureau_name','bureaus.logo as bureau_logo', 'bureaus.bureau_email as bureau_email',
+                        'organisations.name as organisations_name', 'organisations.logo as organisations_logo',
+                        'bureau_employee.*',
+                            'countries.name as country_name',
+                            'counties.name as county_name',
+                            'constituencies.name as constituency_name',
+                            'wards.name as ward_name',
+                            'positions.name as position_name',
+                            'genders.name as gender_name'
+                    );
+    }
+
+    public function househelp()
+    {
+        return $this->hasOne(Househelp::class, 'user_id');
+    }
+
+
 
 //
 

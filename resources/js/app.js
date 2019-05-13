@@ -30,9 +30,8 @@ Vue.component('datetime', Datetime);
 
 //vue-router support
 import VueRouter from 'vue-router';
-import router from './router';
-Vue.router = router;
 Vue.use(VueRouter);
+
 
 
 //support laravel pagination
@@ -71,7 +70,7 @@ const toast = Swal.mixin({
 window.toast = toast;
 
 //support laravel spartie persissions
-import Roles from './components/spartiepermissions/Roles';
+import Roles from './components/spartiepermissions/Roles.vue';
 Vue.mixin(Roles);
 
 //vform
@@ -86,14 +85,50 @@ import VueFormWizard from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 Vue.use(VueFormWizard);
 
-//editor support
-// import 'v-markdown-editor/dist/index.css';
-// import Editor from 'v-markdown-editor';
-// // global register
-// Vue.use(Editor);
+import routes from './router';
+
+const router = new VueRouter({
+    mode:'history',
+    routes
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      // this route requires auth, check if logged in
+      // if not, redirect to login page.
+      console.log(store.getters.loggedIn, 'route')
+      if (!store.getters.loggedIn) {
+
+        let reroute =  window.location.replace('/');
+        next({
+                reroute
+        })
+      } else {
+        next()
+      }
+    }
+    // else if (to.matched.some(record => record.meta.requiresAuth)) {
+    //     // if you are logged in buton browser seem snot but if try to log
+    //     // in you will be directed to dashoabrd
+    //     // if logged in, redirect to specified page after loged in.
+    //     if (store.getters.loggedIn) {
+    //       next({
+    //         name: 'About',
+    //       })
+    //     } else {
+    //       next()
+    //     }
+    //   }
+       else {
+      next() // make sure to always call next()!
+    }
+  })
+
+
+
 
 const app = new Vue({
     el: '#app',
-    router,
-    store,
+    router: router,
+    store: store,
 });
