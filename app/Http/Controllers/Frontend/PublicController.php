@@ -2,65 +2,41 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
-use App\Models\Standard\User;
+
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Organisation\Organisation;
-use App\Models\Standard\Webservices\Advert;
-use App\Models\Standard\Webservices\ServiceModel;
+use Spatie\Permission\Models\Permission;
 
 class PublicController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
 
-    public function index(Request $request)
+    public function index()
     {
+        // backend logged user
         if (auth()->check()) {
-            if (auth()->user()->hasAnyRole(['Director', 'Superadmin','Admin'])) {
-                    return redirect('/dashboard');
-            }elseif (auth()->user()->hasAnyRole(['Client', 'Affiliate'])) {
-                $logged_user =Auth::user();
-                $organisation = Organisation::with('about','services', 'servicemodels', 'adverts',
-                              'organisationdirectors', 'organisationadmins', 'organisationemployees')
-                              ->first();
-                return view('layouts.frontend', compact("organisation", "logged_user"));
+            if (auth('api')->user()){
+                $roles = [];
+                $permissions = [];
+
+                foreach (Role::all() as $role) {
+                    if (auth('api')->user()->hasRole($role->name)) {
+                    $roles[] = $role->name;
+                    }
+                }
+
+                foreach (Permission::all() as $permission) {
+                    if (auth('api')->user()->can($permission->name)) {
+                    $permissions[] = $permission->name;
+                    }
+                }
+                return view('layouts.frontend', compact('roles', 'permissions'));
             }
+        }else{
+            return view('layouts.frontend');
         }
-        else{
-            $organisation = Organisation::with('about','services', 'servicemodels', 'adverts')
-                          ->first();
-                return view('layouts.frontend', compact("organisation"));
-        }
-        // return view('layouts.backend');
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }

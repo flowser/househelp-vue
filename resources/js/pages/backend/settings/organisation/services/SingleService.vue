@@ -1,7 +1,9 @@
 <template>
+<div class="content-wrapper">
   <div id="SingleService">
       SingleService
   </div>
+</div>
 </template>
 
 

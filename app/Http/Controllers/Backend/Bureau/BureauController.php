@@ -8,7 +8,6 @@ use App\Models\Standard\User;
 use App\Models\Standard\Gender;
 use App\Models\Standard\Position;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Bureau\BureauDirector;
 use Intervention\Image\Facades\Image;
@@ -20,10 +19,10 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 class BureauController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //     $this->middleware('api:auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
 
     public function index()
     {
@@ -39,17 +38,11 @@ class BureauController extends Controller
     }
 
     //get own bureau according to login details
-    public function bureauByUserID()
+    public function bureauByUserID(Request $request)
     {
-        // $bureaudirector = User::where('id', Auth::user()->id)->first();
-
-                return  Auth::user();
         if (auth()->check()) {
             if (auth()->user()->hasRole('Bureau Director')) {
-                // $bureaudirector = user()->bureaudirectors()->get();
-
-
-                // ->bureaudirectors()->first();
+                $bureaudirector = auth('api')->user()->bureaudirectors()->first();
                 $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
                             'bureauemployees', 'bureauhousehelps')
                             ->where('id', $bureaudirector->bureau_id)
@@ -60,7 +53,7 @@ class BureauController extends Controller
 
             }
             elseif(auth()->user()->hasRole('Bureau Admin')){
-                $bureauadmin = Auth::user()->bureauadmins()->first();
+                $bureauadmin = auth('api')->user()->bureauadmins()->first();
                 // return  $bureauadmin->bureau_id;
                 $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
                             'bureauemployees', 'bureauhousehelps')
@@ -71,7 +64,7 @@ class BureauController extends Controller
                 ], 200);
 
             }elseif(auth()->user()->hasRole('Bureau Employee')){
-                $bureauemployee = Auth::user()->bureauemployees()->first();
+                $bureauemployee = auth('api')->user()->bureauemployees()->first();
                 $bureau = Bureau::with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
                             'bureauemployees', 'bureauhousehelps')
                             ->where('id', $bureauemployee->bureau_id)

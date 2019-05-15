@@ -3,6 +3,7 @@
 namespace App\Models\Standard;
 
 use App\Models\Bureau\Bureau;
+use App\Models\Standard\User;
 use App\Models\Bureau\BureauAdmin;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Models\Role;
@@ -39,7 +40,7 @@ class User extends Authenticatable
      * @var array
      */
 
-    protected $guard_name = 'api';
+
 
     protected $fillable = [
         'first_name',
@@ -97,26 +98,7 @@ class User extends Authenticatable
           return $this->full_name;
       }
 
-       //permisions & roles
-       public function getAllRolesAttribute() {
-        $roles = [];
-          foreach (Role::all() as $role) {
-            if (Auth::guard('api')->user()->hasRole($role->name)) {
-              $roles[] = $role->name;
-            }
-          }
-          return $roles;
-      }
 
-      public function getAllPermissionsAttribute() {
-        $permissions = [];
-          foreach (Permission::all() as $permission) {
-            if (Auth::guard('api')->user()->can($permission->name)) {
-              $permissions[] = $permission->name;
-            }
-          }
-          return $permissions;
-      }
 
 
       public function organisationdirectors()

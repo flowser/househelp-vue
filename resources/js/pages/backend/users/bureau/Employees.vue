@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
   <div class="container-fluid mt-5">
       <!-- Main content -->
     <section class="content">
@@ -160,6 +161,7 @@
 
 
   </div>
+</div>
 
 </template>
 

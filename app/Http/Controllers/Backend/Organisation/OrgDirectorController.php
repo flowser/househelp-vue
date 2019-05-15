@@ -16,24 +16,40 @@ use App\Models\Organisation\OrganisationDirector;
 
 class OrgDirectorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
-        $organisation = Auth::user()->organisationemployees()->first();
-        $directors = User::whereHas('organisationdirectors', function($query) use($organisation)
-                                {
-                                  $query ->where('organisation_id', $organisation->id);
-                                }
-                            )
-                            ->with('roles','permissions','organisationdirectors', 'positions', 'countries', 'counties', 'constituencies', 'wards')
-                            ->get();
+        if (auth()->check()) {
+            if (auth()->user()->hasRole('Superadmin')) {
+                $organisationadmin = auth('api')->user()->organisationadmins()->first();
+                $directors = User::whereHas('organisationdirectors', function($query) use($organisationadmin)
+                                        {
+                                        $query ->where('organisation_id', $organisationadmin->organisation_id);
+                                        }
+                                    )
+                                    ->with('roles','permissions','organisationdirectors')
+                                    ->get();
+            // where('organisation_id', $organisationadmin->organisation_id)
+            //              ->with('roles','permissions','organisationdirectors', 'positions', 'countries', 'counties', 'constituencies', 'wards')
+
+
+                    // return response()-> json([
+                    //     'bureau' => $bureau,
+                    // ], 200);
+
+            }
+        }
+
+        // $organisation = Auth::user()->organisationemployees()->first();
+        // $directors = User::
         return response()-> json([
             'directors'=>$directors,
         ], 200);
+
     }
 
     /**

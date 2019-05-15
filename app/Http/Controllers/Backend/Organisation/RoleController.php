@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Backend\Organisation;
 
 
 use Illuminate\Http\Request;
+use App\Models\Standard\User;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function index()
     {
         $roles = Role::with('permissions')->get();
@@ -24,7 +22,7 @@ class RoleController extends Controller
         ], 200);
     }
 
-    /**
+      /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

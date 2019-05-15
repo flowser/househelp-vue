@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
   <div class="container-fluid mt-5">
       <!-- Main content -->
     <section class="content">
@@ -264,6 +265,7 @@
         </div>
 
   </div>
+  </div>
 
 </template>
 
@@ -317,8 +319,6 @@
             this.loadConstituencies();///linked to methods and actions store
             this.loadWards();///linked to methods and actions store
             this.loadAdmins();
-            this.loadRoles();
-            this.loadPermissions();
         },
         computed:{
             Countries(){
@@ -337,18 +337,6 @@
                 //  console.log('edit permiion')
                 return this.$store.getters.Admins
             },
-            Permissions(){
-                return this.$store.getters.Permissions
-            },
-            Roles(){
-                return this.$store.getters.Roles
-            },
-            selectedRoles () {
-            return this.selected_roles
-            },
-            selectedPermissions () {
-            return this.selected_permissions
-            }
         },
         methods:{
             //Admin info verification
@@ -427,14 +415,6 @@
             },
             loadAdmins(){
                 return this.$store.dispatch( "admins")//get all from admins.index
-            },
-            //Permissions
-            loadPermissions(){
-                return this.$store.dispatch( "permissions")//get all from roles.index
-            },
-            //Roles
-            loadRoles(){
-                return this.$store.dispatch( "roles")//get all from roles.index
             },
             newAdminModal(){
                  this.editmodeAdmin= false;

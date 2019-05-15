@@ -1,7 +1,9 @@
 <template>
+<div class="content-wrapper">
   <div id="SinglePolicy">
       SinglePolicy
   </div>
+</div>
 </template>
 
 

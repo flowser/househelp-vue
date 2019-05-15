@@ -1,5 +1,5 @@
 <template>
-    <div>client signle </div>
+    <div class="content-wrapper">client signle </div>
 </template>
 
 <script>

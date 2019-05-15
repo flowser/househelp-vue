@@ -360,6 +360,7 @@ import BottomFooter from "../pages/includes/frontend/Footer-Bottom";
             if(path === 'Login'){
                 console.log('mis mie')
             }
+            this.fetchAccessToken();
             this.fetchUser();
             this.loadOrganisation();
             this.loadCountries();
@@ -389,6 +390,9 @@ import BottomFooter from "../pages/includes/frontend/Footer-Bottom";
             }
         },
         methods:{
+            fetchAccessToken(){
+                this.$store.dispatch('fetchAccessToken')
+            },
             fetchUser(){
                 this.$store.dispatch('getUserRoles')
             },

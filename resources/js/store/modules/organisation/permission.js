@@ -7,7 +7,7 @@ const state = {
     getters = {
       Permissions(state){
         return state.permissions
-      }
+      },
     }
 const actions = {
       permissions(context){//permission.index route laravel
@@ -16,12 +16,12 @@ const actions = {
           console.log(response.data.permissions)
           context.commit('permissions', response.data.permissions)
         })
-      }
+      },
     }
 const mutations = {
       permissions(state, data){
         return state.permissions = data
-      }
+      },
     }
 
   export default {

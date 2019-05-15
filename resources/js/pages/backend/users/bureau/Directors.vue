@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
   <div class="container-fluid mt-5">
       <!-- Main content -->
     <section class="content">
@@ -181,7 +182,7 @@
                                             <has-error style="color: #e83e8c" :form="directorform" field="id_no"></has-error>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="address" class=" col-form-label">Addresdddds</label>
+                                            <label for="address" class=" col-form-label">Address</label>
                                             <input v-model="directorform.address" type="text" name="address" placeholder="Address"
                                                 class="form-control" :class="{ 'is-invalid': directorform.errors.has('address') }" >
                                             <has-error style="color: #e83e8c" :form="directorform" field="country_id"></has-error>
@@ -263,6 +264,7 @@
             </div>
         </div>
 
+  </div>
   </div>
 
 </template>
@@ -428,14 +430,7 @@
             loadDirectors(){
                 return this.$store.dispatch( "directors")//get all from directors.index
             },
-            //Permissions
-            loadPermissions(){
-                return this.$store.dispatch( "permissions")//get all from roles.index
-            },
-            //Roles
-            loadRoles(){
-                return this.$store.dispatch( "roles")//get all from roles.index
-            },
+
             newDirectorModal(){
                  this.editmodeDirector= false;
                  this.directorform.reset()

@@ -1,10 +1,11 @@
 <template>
+<div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
             <div class="card card-widget widget-user" >
               <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header text-white" style="background: url('assets/bureau/img/background/background-1.jpg')
-                     center center;width:100%;height:300px">
+                <div class="widget-user-header text-white"  :style="{ background: `url(${imageUrl}) no-repeat center
+                          center;width:100%;height:300px` }">
                     <div class="clearfix">
                         <span class="float-left">
                             <h3 class="widget-user-username" v-if="Househelp.user">{{Househelp.user.full_name}}</h3>
@@ -720,12 +721,14 @@
 
     </section>
     <!-- /.content -->
+    </div>
 </template>
 
 <script>
     export default {
         data(){
             return{
+                 imageUrl:'',
                 IDstatus:"HasID",    //id status check
                 Healthstatus: "HEALTHY",
                 househelpform: new Form({
@@ -907,6 +910,8 @@
         },
         methods:{
             singlehousehelp(){
+               this.imageUrl = "/assets/bureau/img/background/background-1.jpg";
+
                 console.log(this.$route.params.id, 'jjjjj')
                 this.$store.dispatch('HousehelpById', this.$route.params.id);
             },

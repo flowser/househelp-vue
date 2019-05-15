@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="content-wrapper">
         kkkdkk
     </div>
 </template>

@@ -1,7 +1,9 @@
 <template>
+<div class="content-wrapper">
   <div id="Adverts">
       Adverts
   </div>
+</div>
 </template>
 
 

@@ -3,42 +3,42 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <div v-if="User.organisationdirector" >
-                <a  href="index3.html" class="brand-link">
+                <a  href="" class="brand-link">
                     <img :src="organisationLoadImage(User.organisationdirector.organisation_logo)" alt="organisation logo"
                         class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">{{User.organisationdirector.organisation_name}}</span>
                 </a>
             </div>
             <div v-else-if="User.organisationadmin">
-                <a href="index3.html" class="brand-link">
+                <a href="" class="brand-link">
                     <img :src="organisationLoadImage(User.organisationadmin.organisation_logo)" alt="organisation logo"
                         class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">{{User.organisationadmin.organisation_name}}</span>
                 </a>
             </div>
             <div v-else-if="User.organisationemployee">
-                <a href="index3.html" class="brand-link">
+                <a href="" class="brand-link">
                     <img :src="organisationLoadImage(User.organisationemployee.organisation_logo)" alt="organisation logo"
                         class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">{{User.organisationemployee.organisation_name}}</span>
                 </a>
             </div>
             <div v-else-if="User.bureaudirector">
-                <a href="index3.html" class="brand-link">
+                <a href="" class="brand-link">
                     <img :src="bureauLoadImage(User.bureaudirector.bureau_logo)" alt="organisation logo"
                         class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">{{User.bureaudirector.bureau_name}}</span>
                 </a>
             </div>
             <div v-else-if="User.bureauadmin">
-                <a href="index3.html" class="brand-link">
+                <a href="" class="brand-link">
                     <img :src="bureauLoadImage(User.bureauadmin.bureau_logo)" alt="organisation logo"
                         class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">{{User.bureauadmin.bureau_name}}</span>
                 </a>
             </div>
             <div v-else-if="User.bureauemployee">
-                <a href="index3.html" class="brand-link">
+                <a href="" class="brand-link">
                     <img :src="bureauLoadImage(User.bureauemployee.bureau_logo)" alt="organisation logo"
                         class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">{{User.bureauemployee.bureau_name}}</span>
@@ -92,15 +92,20 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
-                <li class="nav-item">
+                <li v-if="$hasrole(['Superadmin','Director','Admin', 'Employee', 'Accountant'])" class="nav-item">
                     <router-link :to="`/B/dashboard`" class="nav-link active">
                         <i class="fa fa-circle-o purple nav-icon"></i>
                         <p>Dashboard</p>
                     </router-link>
                 </li>
-
+                <li v-if="$hasrole(['Bureau Director','Bureau Admin','Bureau Employee','Bureau Accountant'])" class="nav-item">
+                    <router-link :to="`/B/bureau/dashboard`" class="nav-link active">
+                        <i class="fa fa-circle-o purple nav-icon"></i>
+                        <p>Dashboard</p>
+                    </router-link>
+                </li>
                     <!-- Superadmin -->
-                <li v-if="Roles" v-show="(Roles.name === 'Superadmin')" class="nav-item has-treeview">
+                <li v-if="$hasrole('Superadmin')" class="nav-item has-treeview">
                     <router-link :to="`/B/mails`" class="nav-link" title="Mails">
                         <i class="nav-icon purple fa fa-envelope-o"></i>
                         <p>Mailsbox</p>
@@ -115,8 +120,8 @@
                 </li>
 
                 <!-- {{--  Superadmin users  --}} -->
-                <li v-if="(Roles.name === 'Superadmin')" class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li v-if="$hasrole('Superadmin')" class="nav-item has-treeview">
+                    <a href="" class="nav-link">
                     <i class="nav-icon purple fas fa-users"></i>
                     <p>
                         Users Logins
@@ -124,12 +129,7 @@
                     </p>
                     </a>
                     <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <router-link :to="`/B/directors/credentials`" class="nav-link">
-                        <i class="fas fa-users red fas fa-users"></i>
-                        <p>Directors</p>
-                        </router-link>
-                    </li>
+
                     <li class="nav-item">
                         <router-link :to="`/B/admins/credentials`" class="nav-link">
                         <i class="fas fa-users blue fas fa-users"></i>
@@ -194,25 +194,16 @@
                     </ul>
                 </li>
                 <!-- {{--  organisation View  --}} -->
-                <li  v-if="Roles" v-show="(Roles.name === 'Superadmin') ||
-                          (Roles.name === 'Director')   ||
-                          (Roles.name === 'Admin')      ||
-                          (Roles.name === 'Employee')   ||
-                          (Roles.name === 'Accountant')" class="nav-item has-treeview">
+                <li  v-if="$hasrole('Superadmin')" class="nav-item has-treeview">
                     <router-link :to="`/B/househelps`" class="nav-link">
-                    <i class="nav-icon purple fas fa-users"></i>
-                    <p>
-                        Househelps
-                    </p>
+                        <i class="nav-icon purple fas fa-users"></i>
+                        <p >
+                                Househelps
+                        </p>
                     </router-link>
                 </li>
-
                 <!-- {{--  bureau View  --}} -->
-                <li v-if="Roles" v-show="
-                         (Roles.name === 'Bureau Director') ||
-                         (Roles.name === 'Bureau Admin')    ||
-                         (Roles.name === 'Bureau Employee') ||
-                         (Roles.name === 'Bureau Accountant')"
+                <li v-if="$hasrole(['Bureau Director','Bureau Admin','Bureau Employee','Bureau Accountant'])"
                       class="nav-item has-treeview">
                     <router-link :to="`/B/bureau/househelps`" class="nav-link">
                             <i class="nav-icon purple fas fa-users"></i>
@@ -221,16 +212,15 @@
                         </p>
                     </router-link>
                 </li>
-                <li class="nav-item has-treeview">
+                <li   v-if="$hasrole(['Bureau Director','Bureau Admin'])" class="nav-item has-treeview">
                     <router-link :to="`/B/bureau/searchorders`" class="nav-link">
                     <i class="nav-icon purple fas fa-school"></i>
                     <p>
-
                         Search Orders
                     </p>
                     </router-link>
                 </li>
-                <li class="nav-item has-treeview">
+                <li v-if="$hasrole(['Bureau Director','Bureau Admin'])" class="nav-item has-treeview">
                     <router-link :to="`/B/bureau/househelps/reviews`" class="nav-link">
                     <i class="nav-icon purple fas fa-school"></i>
                     <p>
@@ -238,7 +228,7 @@
                     </p>
                     </router-link>
                 </li>
-                <li class="nav-item has-treeview">
+                <li v-if="$hasrole(['Bureau Director','Bureau Admin'])" class="nav-item has-treeview">
                     <router-link :to="`/B/bureau/settings`" class="nav-link">
                     <i class="fa fa-circle-o purple nav-icon"></i>
                     <p>Settings</p>
@@ -246,9 +236,9 @@
                 </li>
 
                 <!-- {{--  Househelp adminstrator  --}} -->
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                    <i class="nav-icon purple fas fa-user"></i>
+                <li v-if="$hasrole(['Superadmin','Director','Admin'])" class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon purple fas fa-user"></i>
                     <p>
                         Adminstrator
                         <i class="fa fa-angle-left right"></i>
@@ -265,9 +255,9 @@
                 </li>
 
                 <!-- {{--  accounts  --}} -->
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                    <i class="nav-icon purple fa fa-book"></i>
+                <li v-if="$hasrole(['Superadmin','Director','Admin','Accountant'])" class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                         <i class="nav-icon purple fa fa-book"></i>
                     <p>
                         Accounts
                         <i class="fa fa-angle-left right"></i>
@@ -315,7 +305,7 @@
                 </li>
                 <!-- {{--  human Resource  --}} -->
                 <!-- <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="" class="nav-link">
                     <i class="nav-icon purple fa fa-book"></i>
                     <p>
                         Human Resource
@@ -402,7 +392,7 @@
                 </li> -->
                 <!-- {{-- Reports --}} -->
                 <!-- <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="" class="nav-link">
                     <i class="nav-icon purple fa fa-book"></i>
                     <p>
                         Reports
@@ -508,7 +498,8 @@
                     </ul> -->
                 <!-- </li> -->
                 <!-- {{--Organisation settings --}} -->
-                <li class="nav-item has-treeview">
+                <li v-if="$hasrole(['Superadmin','Director'])"
+                           class="nav-item has-treeview">
                     <router-link :to="`/B/settings`" class="nav-link">
                     <i class="fa fa-circle-o purple nav-icon"></i>
                     <p>Settings</p>
@@ -527,6 +518,7 @@
 export default {
     name:"backend-left-sidebar",
      mounted() {
+          this.fetchUser();
 
      },
      computed:{
@@ -536,14 +528,11 @@ export default {
             User(){
                 return this.$store.getters.LoggedUser
             },
-            Roles(){
-                return this.$store.getters.UserRoles
-            },
-            Permissions(){
-                return this.$store.getters.UserPermissions
-            },
      },
      methods:{
+         fetchUser(){
+                this.$store.dispatch('getUserRoles')
+            },
             organisationLoadImage(organisation_logo){
                 if(organisation_logo){
                     return "/assets/organisation/img/logo/"+organisation_logo;
@@ -602,6 +591,7 @@ export default {
                     return "/assets/bureau/img/website/empty.png";
                 }
             },
+
      },
 
 

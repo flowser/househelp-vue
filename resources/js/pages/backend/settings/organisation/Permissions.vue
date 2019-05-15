@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
     <div class="container-fluid">
    <!-- Main content -->
     <section class="content">
@@ -190,6 +191,7 @@
 
 
   </div>
+</div>
 </template>
 
 <script>

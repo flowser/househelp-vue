@@ -6,12 +6,14 @@ use App\Events\UserReferred;
 use Illuminate\Http\Request;
 use App\Models\Client\Client;
 use App\Models\Standard\User;
+use Spatie\Permission\Models\Role;
 use App\Models\Househelp\Househelp;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Bureau\BureauDirector;
 use Intervention\Image\Facades\Image;
+use Spatie\Permission\Models\Permission;
 use App\Models\Organisation\Organisation;
 
 class AuthController extends Controller
@@ -130,9 +132,23 @@ class AuthController extends Controller
                       ->first();
             }
 
-                $roles = $user->roles()->pluck('name');
-                $permissions = $user->permissions()->pluck('name');
+                // $roles = $user->roles()->pluck('name');
+                // $permissions = $user->permissions()->pluck('name');
+                // $roless = $user->AllROles()->get();
+                $roles = [];
+                $permissions = [];
 
+                foreach (Role::all() as $role) {
+                    if ($user->hasAnyRole($role->name)) {
+                    $roles[] = $role->name;
+                    }
+                }
+
+                foreach (Permission::all() as $permission) {
+                    if ($user->can($permission->name)) {
+                    $permissions[] = $permission->name;
+                    }
+                }
                 return response()-> json([
                     'user'=>$user,
                     'roles'=> $roles,

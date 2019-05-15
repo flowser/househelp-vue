@@ -372,6 +372,12 @@ let routes = [
                             name: 'single.Househelp',//view single Househelp with all details
                             component: SingleHousehelp,
                           },
+                        //2.2.2.3 Single Househelp with details
+                          {
+                            path: '/B/bureau/househelp/:id',
+                            name: 'single.bureau.Househelp',//view single Househelp with all details
+                            component: SingleHousehelp,
+                          },
                        //2.2.2.4 all organisation Househelps reviews
                           {
                             path: '/B/househelps/reviews',

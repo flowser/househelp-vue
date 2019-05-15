@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
     <div id="allusers">
          <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -174,6 +175,7 @@
             </div>
         </div>
     </div>
+</div>
 
 </template>
 

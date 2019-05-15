@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
   <div class="container-fluid mt-5">
       <!-- Main content -->
         <div class="col-md-12">
@@ -1401,6 +1402,7 @@
 
 
   </div>
+</div>
 </template>
 
 <script>

@@ -9,11 +9,10 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
         // latest()->paginate(10);
@@ -22,6 +21,7 @@ class PermissionController extends Controller
             'permissions'=>$permissions
         ], 200);
     }
+
 
     /**
      * Show the form for creating a new resource.

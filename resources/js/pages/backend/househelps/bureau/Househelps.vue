@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
   <div class="container-fluid mt-5">
       <!-- Main content -->
     <div class="col-md-12">
@@ -8,7 +9,7 @@
           <div class="card">
             <div class="card-header">
               <!-- <h3 class="card-title">Welcome to {{Bureau.name}} Househelps</h3> -->
-              <h3 class="card-title">Househelps And Their Next of Kins Table</h3>{{Bureau}} llglglgl<br>
+              <h3 class="card-title">Househelps And Their Next of Kins Table</h3>
               <div class="card-tools">
                     <button class="btn btn-success"  @click.prevent="newHousehelpKinModal()">Add New Househelp and Their Next of Kins                         <i class="fas fa-plus fw"></i>
                      </button>
@@ -118,7 +119,7 @@
                         <br>
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left">
-                                <router-link  :to="`/househelp/${househelp.id}`">
+                                <router-link  :to="`/B/bureau/househelp/${househelp.id}`">
                                         <i class="fa fa-eye "></i>
                                 </router-link>
                             </span>
@@ -649,6 +650,7 @@
 
 
   </div>
+</div>
 </template>
 <script>
 
@@ -855,6 +857,7 @@
             this.loadGenders(); //from methods
             this.loadRelationships(); //from methods
             this.loadBureau(); //from methods
+            this.fetchAccessToken();
         },
         computed:{
             Countries(){
@@ -914,6 +917,9 @@
             // },
         },
         methods:{
+            fetchAccessToken(){
+                this.$store.dispatch('fetchAccessToken')
+            },
             //Househelp Demographic
             validateHousehelpDemograhic() {
                 if(this.IDstatus === 'HasID'){

@@ -58,6 +58,12 @@ import Footer from "../pages/includes/backend/Footer";
             },
             loggedIn(){
                 this.$store.getters.loggedIn
+            },
+            Permissions(){
+                    return this.$store.getters.UserPermissions
+            },
+            Roles(){
+                    return this.$store.getters.UserRoles
             }
         },
          methods:{

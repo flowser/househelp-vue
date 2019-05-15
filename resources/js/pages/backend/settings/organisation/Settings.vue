@@ -1,4 +1,5 @@
 <template>
+<div class="content-wrapper">
   <div class="container-fluid mt-5">
       <!-- Main content -->
         <div class="col-md-12">
@@ -11,8 +12,8 @@
                 <!-- </div> -->
                 <div class="card card-widget widget-user" >
                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header text-white" style="background: url('assets/organisation/img/background/background-1.jpg')
-                    center center;width:100%;height:300px">
+                    <div class="widget-user-header text-white" :style="{ background: `url(${imageUrl}) no-repeat center
+                          center;width:100%;height:300px` }">
                     <div class="clearfix">
                                 <span class="float-left">
                                     <h3 class="widget-user-username">{{Organisation.name}}</h3>
@@ -1925,6 +1926,7 @@
         </div>
 
   </div>
+  </div>
 </template>
 
 <script>
@@ -1933,6 +1935,7 @@
         name:"List",
         data(){
             return{
+                  imageUrl:'',
                newOrganisationDirector: false,
                 editmodeOrganisation: false,
                 organisationOutput:'',//view form data and confirm if is ok before submit
@@ -2132,6 +2135,14 @@
 
         },
         computed:{
+            backgroundImage(){
+                 let Image = false;
+                 if(Image = true){
+                        this.imageUrl = "/assets/organisation/img/background/"+Image;
+                    }else{
+                        this.imageUrl = "/assets/organisation/img/background/background-1.jpg"
+                 }
+            },
             Countries(){
                 return this.$store.getters.Countries
             },

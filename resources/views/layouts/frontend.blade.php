@@ -40,7 +40,7 @@
           var APP_URL = {!! json_encode(url('')) !!}
     </script>  --}}
 
-    <script>
+    {{-- <script>
         @auth
             window.Roles = {!! json_encode(Auth::user()->allRoles, true) !!};
             window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
@@ -48,7 +48,7 @@
             window.Roles = [];
             window.Permissions = [];
         @endauth
-    </script>
+    </script> --}}
     <!-- REQUIRED SCRIPTS -->
     <script src="{{URL::asset('js/app.js')}}"></script>
     <script src="{{URL::asset('themes/eshopper/js/jquery.js')}}"></script>

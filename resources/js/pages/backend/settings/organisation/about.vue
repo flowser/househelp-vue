@@ -1,7 +1,9 @@
 <template>
+<div class="content-wrapper">
   <div id="about">
       about
   </div>
+</div>
 </template>
 
 
