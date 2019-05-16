@@ -15,6 +15,11 @@ use Intervention\Image\Facades\Image;
 
 class BureauEmployeeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
         // $bureau = Auth::user()->bureauemployees()->first();
@@ -25,14 +30,18 @@ class BureauEmployeeController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function BureauEmployeeList()
     {
-        //
+           if (auth()->check()) {
+               if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $directors = User::whereHas('bureauemployees')->with('roles','permissions','bureauemployees')->role('Bureau Employee')
+                            ->get();
+               }
+           }
+           return response()-> json([
+               'directors'=>$directors,
+           ], 200);
+
     }
 
     public function store(Request $request, $id)

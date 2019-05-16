@@ -14,19 +14,26 @@ const state = {
     }
   };
 const actions = {
-    constituencies(context){
+    constituencies(context,dispatch){
         axios.get('/api/constituencies/get')
         .then((response)=>{
           context.commit('constituencies', response.data.constituencies);
+        })
+        .catch((error) => {
+            dispatch('constituencies');
         });
     },
-    countyconstituencies(context, payload){
+    countyconstituencies(context, payload, dispatch){
         axios.get('/api/constituency/get/list/'+payload)//constituencies by countyconstituencies id
         .then((response)=>{
             // console.log(response.data);
           context.commit('countyconstituencies', response.data.constituencies);
           console.log(response.data.constituencies);
         })
+        .catch((error) => {
+            dispatch('countyconstituencies');
+
+        });
     }
   };
 const mutations = {

@@ -29,18 +29,18 @@
                 <tbody>
                   <tr v-for="(admin, index) in Admins" :key="admin.id">
                     <td >{{index+1}}</td>
-                    <td >
-                        <div class="row" v-for="organisation in admin.organisationemployees" :key="organisation.id">
-                            <div class="col" style="padding: 3px;">
+                    <td style="width: 550px;">
+                        <div class="row" style="width:100%" v-for="organisation in admin.organisationadmins" :key="organisation.id">
+                            <div class="col-sm-3" style="padding: 3px;">
                                  <img class="card-img-top" :src="adminLoadPassPhoto(organisation.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col" style="padding: 3px;">
+                            <div class="col-sm-3" style="padding: 3px;">
                                 <img class="card-img-top" :src="adminLoadIDFrontPhoto(organisation.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
                                 <img class="card-img-top" :src="adminLoadIDBackPhoto(organisation.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                            <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
                                 <div>{{admin.full_name}},</div>
-                                <div v-for="position in admin.orgemployeepositions" :key="position.id">
+                                <div v-for="position in admin.positions" :key="position.id">
                                     {{position.name}},
                                     <span style="color:#9a009a;">
                                         {{organisation.name}},
@@ -54,14 +54,14 @@
                                 </div>
                                     <div>P. O. Box , <span style="color:#9a009a;">{{organisation.pivot.address}}</span>,
                                     </div>
-                                <div v-for="ward in admin.orgemployeewards" :key="ward.id">
+                                <div v-for="ward in admin.wards" :key="ward.id">
                                     <span style="color:#9a009a;">{{ward.name}}</span> ward,
-                                    <span v-for="constituency in admin.orgemployeeconstituencies" :key="constituency.id" style="color:#9a009a;">
+                                    <span v-for="constituency in admin.constituencies" :key="constituency.id" style="color:#9a009a;">
                                         {{constituency.name}}</span> constituency,
                                 </div>
-                                <div v-for="county in admin.orgemployeecounties" :key="county.id" >
+                                <div v-for="county in admin.counties" :key="county.id" >
                                     <span style="color:#9a009a;">{{county.name}}</span> county,
-                                    <span v-for="country in admin.orgemployeecountries" :key="country.id" style="color:#9a009a;">
+                                    <span v-for="country in admin.countries" :key="country.id" style="color:#9a009a;">
                                         {{country.name}},
                                     </span>
                                 </div>
@@ -110,7 +110,7 @@
     </section>
 
     <!-- Role Modal -->
-    <div class="modal fade " id="AdminModal" tabindex="-1" role="dialog" aria-labelledby="AdminModalLabel" aria-hidden="true">
+        <div class="modal fade " id="AdminModal" tabindex="-1" role="dialog" aria-labelledby="AdminModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -118,7 +118,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form role="form" @submit.prevent="editmodeAdmin ? updateAdmin(adminform.id) : addAdmin(adminform.organisation_id)" >
+                    <form role="form" @submit.prevent="editmodeAdmin ? updateAdmin(adminform.id) : addAdmin()" >
                         <div class="modal-body">
                             <h5 class="modal-title" v-show="editmodeAdmin" id="AdminModalLabel">Update Admin</h5>
                             <h5 class="modal-title" v-show="!editmodeAdmin" id="AdminModalLabel">Add New Admin</h5>
@@ -187,6 +187,15 @@
                                                 class="form-control" :class="{ 'is-invalid': adminform.errors.has('address') }" >
                                             <has-error style="color: #e83e8c" :form="adminform" field="country_id"></has-error>
                                         </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="gender_id">Select Gender</label>
+                                            <select class="form-control" v-model="adminform.gender_id"
+                                                    :class="{ 'is-invalid':adminform.errors.has('gender_id') }">
+                                                    <option disabled value="">Select gender</option>
+                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
+                                            </select>
+                                                <has-error style="color: #e83e8c" :form="adminform" field="gender_id"></has-error>
+                                        </div>
                                     </div>
                                     <div class=" row">
                                         <div class="form-group col-md-3">
@@ -220,7 +229,7 @@
                                             <label for="ward_id" class="col-form-label"> Ward </label>
                                             <select class="form-control"
                                             v-model="adminform.ward_id" :class="{ 'is-invalid': adminform.errors.has('ward_id') }">
-                                                    <option disabled value="">Select Ward</option>{{adminform.ward_id}}
+                                                    <option disabled value="">Select Ward</option>
                                                     <option v-for="ward in Wards" :value="ward.id" :key="ward.id">{{ward.name}}</option>
                                             </select>
                                             <has-error style="color: #e83e8c" :form="adminform" field="ward_id"></has-error>
@@ -265,13 +274,13 @@
         </div>
 
   </div>
-  </div>
+</div>
 
 </template>
 
 <script>
     export default {
-        name:"List",
+        name:"Organisation-Admins",
         data(){
             return{
                 newAdmin: false,
@@ -282,12 +291,11 @@
                         last_name:'',
                         email:'',
                         password:'',
-                        admin_type:'',
-                        permissions:[],
-                        roles:[],
+                        user_type:'',
                         user_id:'',
                         organisation_id:'',
                         position_id:'',
+                        gender_id:'',
                         photo:'',
                         active:'',
                         id_no:'',
@@ -316,8 +324,9 @@
         mounted() {
             this.loadCountries();
             this.loadCounties();
-            this.loadConstituencies();///linked to methods and actions store
-            this.loadWards();///linked to methods and actions store
+            this.loadConstituencies();
+            this.loadWards();
+            this.loadGenders();
             this.loadAdmins();
         },
         computed:{
@@ -333,54 +342,15 @@
             Wards(){
                return this.$store.getters.ConstituencyWards
             },
+            Genders(){
+               return this.$store.getters.Genders
+            },
             Admins(){
-                //  console.log('edit permiion')
                 return this.$store.getters.Admins
             },
+
         },
         methods:{
-            //Admin info verification
-            validateAdmin() {
-                this.$Progress.start()
-                return this.adminform.post('/orgadmin/verify/admin')
-                    .then((response)=>{
-                        return true;
-                        toast({
-                            type: 'success',
-                            title: 'Admin Info Verifed successfully'
-                        })
-                        this.$Progress.finish()
-                    })
-                    .catch(()=>{
-                        this.$Progress.fail()
-                        toast({
-                            type: 'error',
-                            title: 'The Admin Info failed Verification.'
-                        })
-                    })
-            },
-             //Admin info verification
-            validateAdminUpdate() {
-                 let id = this.adminform.id;
-                console.log('mix me down',id);
-                this.$Progress.start()
-                return this.adminform.patch('/orgadmin/updateverify/admin/'+id)
-                    .then((response)=>{
-                        return true;
-                        toast({
-                            type: 'success',
-                            title: 'Admin Update Info Verifed successfully'
-                        })
-                        this.$Progress.finish()
-                    })
-                    .catch(()=>{
-                        this.$Progress.fail()
-                        toast({
-                            type: 'error',
-                            title: 'The Admin update Info failed Verification.'
-                        })
-                    })
-            },
             //admin
             InputPhone({ number, isValid, country }) {
             this.adminform.phone = number;
@@ -413,6 +383,9 @@
             loadWards(){
                 return this.$store.dispatch( "constituencywards")//get all from towns.index
             },
+            loadGenders(){
+               return this.$store.dispatch("genders")
+            },
             loadAdmins(){
                 return this.$store.dispatch( "admins")//get all from admins.index
             },
@@ -422,6 +395,7 @@
                      $('#AdminModal').modal('show')
             },
             adminLoadPassPhoto(adminpivot_photo){
+                console.log(adminpivot_photo)
                 if(adminpivot_photo){
                     return "/assets/organisation/img/admins/passports/"+adminpivot_photo;
                 }else{
@@ -447,8 +421,8 @@
                         reader.readAsDataURL(file);
                 }
             },
-            updateAdminPassPhoto(adminform_organisationadmin_photo){
-                // console.log(adminform_organisationadmin_photo)
+            updateAdminPassPhoto(organisationadmin_photo){
+                console.log(organisationadmin_photo, 'edit')
                 let img = this.adminform.photo;
                       if(img ==null){
                           return "/assets/organisation/img/website/empty.png";
@@ -457,8 +431,8 @@
                           if(img.length>100){
                             return this.adminform.photo;
                         }else{
-                            if(adminform_organisationadmin_photo){
-                                return "assets/organisation/img/admins/passports/"+adminform_organisationadmin_photo;
+                            if(organisationadmin_photo){
+                                return "/assets/organisation/img/admins/passports/"+organisationadmin_photo;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -500,7 +474,7 @@
                             return this.adminform.id_photo_front;
                         }else{
                             if(adminform_id_photo_front){
-                                return "assets/organisation/img/admins/IDs/front/"+adminform_id_photo_front;
+                                return "/assets/organisation/img/admins/IDs/front/"+adminform_id_photo_front;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -541,7 +515,7 @@
                             return this.adminform.id_photo_back;
                         }else{
                             if(adminform_id_photo_back){
-                                return "assets/organisation/img/admins/IDs/back/"+adminform_id_photo_back;
+                                return "/assets/organisation/img/admins/IDs/back/"+adminform_id_photo_back;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -550,44 +524,41 @@
 
             },
 
-             editAdminModal(id){
+            editAdminModal(id){
                  this.editmodeAdmin = true;
                  this.adminform.reset()
                     this.$Progress.start();
-                      axios.get('/orgadmin/edit/'+id)
+                      axios.get('/api/orgadmin/edit/'+id)
                         .then((response)=>{
                            $('#AdminModal').modal('show')
                            toast({
                             type: 'success',
                             title: 'Fetched the Admin data successfully'
                             })
-                            console.log(response.data.admin.orgemployeecountries[0].name)
-                            console.log(response.data.admin.orgemployeecounties[0].name)
-                            console.log(response.data.admin.orgemployeeconstituencies[0].name)
-                            console.log(response.data.admin.orgemployeewards[0].name)
+                            console.log(response.data)
                             this.adminform.fill(response.data.admin)
-                            this.adminform.user_id = response.data.admin.organisationemployees[0].pivot.user_id
-                            this.adminform.organisation_id = response.data.admin.organisationemployees[0].pivot.organisation_id
-                            this.adminform.position_id = response.data.admin.organisationemployees[0].pivot.position_id
-                            this.adminform.photo = response.data.admin.organisationemployees[0].pivot.photo
-                            this.adminform.id_no = response.data.admin.organisationemployees[0].pivot.id_no
-                            this.adminform.id_photo_front = response.data.admin.organisationemployees[0].pivot.id_photo_front
-                            this.adminform.id_photo_back = response.data.admin.organisationemployees[0].pivot.id_photo_back
-                            this.adminform.phone = response.data.admin.organisationemployees[0].pivot.phone
-                            this.adminform.landline = response.data.admin.organisationemployees[0].pivot.landline
-                            this.adminform.address = response.data.admin.organisationemployees[0].pivot.address
+                            this.adminform.user_id = response.data.admin.organisationadmins[0].pivot.user_id
+                            this.adminform.organisation_id = response.data.admin.organisationadmins[0].pivot.organisation_id
+                            this.adminform.position_id = response.data.admin.organisationadmins[0].pivot.position_id
+                            this.adminform.gender_id = response.data.admin.organisationadmins[0].pivot.gender_id
+                            this.adminform.photo = response.data.admin.organisationadmins[0].pivot.photo
+                            this.adminform.id_no = response.data.admin.organisationadmins[0].pivot.id_no
+                            this.adminform.id_photo_front = response.data.admin.organisationadmins[0].pivot.id_photo_front
+                            this.adminform.id_photo_back = response.data.admin.organisationadmins[0].pivot.id_photo_back
+                            this.adminform.phone = response.data.admin.organisationadmins[0].pivot.phone
+                            this.adminform.landline = response.data.admin.organisationadmins[0].pivot.landline
+                            this.adminform.address = response.data.admin.organisationadmins[0].pivot.address
 
-                        //    get country id
-                            this.adminform.country_id = response.data.admin.orgemployeecountries[0].id
+                            this.adminform.country_id = response.data.admin.organisationadmins[0].pivot.country_id
                             //get county id using the country id
-                            this.adminform.county_id = response.data.admin.orgemployeecounties[0].id
-                            this.$store.dispatch('countrycounties', response.data.admin.orgemployeecountries[0].id);
+                            this.adminform.county_id = response.data.admin.organisationadmins[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.admin.organisationadmins[0].pivot.country_id);
                             //get contituency using county id
-                            this.adminform.constituency_id = response.data.admin.orgemployeeconstituencies[0].id
-                            this.$store.dispatch('countyconstituencies', response.data.admin.orgemployeecounties[0].id);
-                            //get ward usng constituency id
-                            this.adminform.ward_id = response.data.admin.orgemployeewards[0].id
-                            this.$store.dispatch('constituencywards', response.data.admin.orgemployeeconstituencies[0].id);
+                            this.adminform.constituency_id = response.data.admin.organisationadmins[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.admin.organisationadmins[0].pivot.county_id);
+                            // //get ward usng constituency id
+                            this.adminform.ward_id = response.data.admin.organisationadmins[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.admin.organisationadmins[0].pivot.constituency_id);
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -599,11 +570,11 @@
                             title: 'There was something Wrong'
                             })
                         })
-             },
-            addAdmin(adminform_organisation_id) {
-                console.log(adminform_organisation_id)
+            },
+            addAdmin() {
+                 this.adminform.user_type = "Organisation Admin";
                 this.$Progress.start();
-                this.adminform.post('/orgadmin')
+                this.adminform.patch('/api/orgadmin')
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -615,9 +586,10 @@
                             $('#AdminModal').modal('hide')
                               this.$Progress.finish()
                     })
-                    .catch(()=>{
+                    .catch((response)=>{
                         this.$Progress.fail()
                         //errors
+                        console.log(response,'response')
                             $('#AdminModal').modal('show');
                             toast({
                                 type: 'error',
@@ -628,7 +600,7 @@
             updateAdmin(id){
                   console.log('update admin')
                   this.$Progress.start();
-                     this.adminform.patch('/orgadmin/update/'+id)
+                     this.adminform.patch('/api/orgadmin/update/'+id)
                         .then(()=>{
                             this.$store.dispatch( "admins")
                          $('#AdminModal').modal('hide')

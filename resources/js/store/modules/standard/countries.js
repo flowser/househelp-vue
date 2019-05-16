@@ -10,12 +10,16 @@ const state = {
     }
   }
 const actions = {
-    countries(context){
+    countries(context,dispatch){
         axios.get('/api/country/get')
         .then((response)=>{
           console.log(response.data.countries);
           context.commit('countries', response.data.countries);
         })
+        .catch((error) => {
+            dispatch('countries');
+        });
+
     }
   }
 const mutations = {

@@ -61,7 +61,7 @@ const actions = {
             });
         }
       },
-      getUserRoles(context){
+      getUserRoles(context,dispatch){
         if(context.getters.loggedIn){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.accessToken;
             return new Promise((resolve, reject) =>{
@@ -74,9 +74,11 @@ const actions = {
                         resolve(response)
                     })
                     .catch(error => {
-                        commit('user', null);
-                        commit('roles', null);
-                        commit('permissions', null);
+                        context.commit('user', null);
+                        context.commit('roles', null);
+                        context.commit('permissions', null);
+                        dispatch('fetchAccessToken');
+                        dispatch('getUserRoles');
                         reject(error);
                     });
             });

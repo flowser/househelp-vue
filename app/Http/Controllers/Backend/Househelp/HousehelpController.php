@@ -16,6 +16,10 @@ use App\Models\Househelp\Standard\Healthstatus;
 
 class HousehelpController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
           $househelps = Househelp::
@@ -29,6 +33,20 @@ class HousehelpController extends Controller
                     ], 200);
 
 
+
+    }
+
+    public function HousehelpsList()
+    {
+           if (auth()->check()) {
+               if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $househelps = User::whereHas('bureauhousehelps')->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                            ->get();
+               }
+           }
+           return response()-> json([
+               'househelps'=>$househelps,
+           ], 200);
 
     }
 

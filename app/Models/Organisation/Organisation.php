@@ -176,9 +176,10 @@ class Organisation extends Model
                         'county_id',
                         'constituency_id',
                         'ward_id',
-                        'position_id'
+                        'position_id',
+                        'gender_id'
                     )
-                    ->join('positions', 'organisation_affiliate.position_id', '=', 'positions.id')
+                    ->join('genders', 'organisation_affiliate.gender_id', '=', 'genders.id')
                     ->join('countries', 'organisation_affiliate.country_id', '=', 'countries.id')
                     ->join('counties', 'organisation_affiliate.county_id', '=', 'counties.id')
                     ->join('constituencies', 'organisation_affiliate.constituency_id', '=', 'constituencies.id')
@@ -189,10 +190,44 @@ class Organisation extends Model
                             'counties.name as county_name',
                             'constituencies.name as constituency_name',
                             'wards.name as ward_name',
-                            'positions.name as position_name'
+                            'genders.name as gender_name'
                     )
                     ->withTimestamps();
     }
+    public function organisationclients()
+      {
+          return $this->belongsToMany(User::class,'organisation_client')
+                      ->withPivot(
+                          'photo',
+                          'active',
+                          'id_no',
+                          'id_photo_front',
+                          'id_photo_back',
+                          'about_me',
+                          'phone',
+                          'landline',
+                          'address',
+                          'country_id',
+                          'county_id',
+                          'constituency_id',
+                          'ward_id',
+                          'gender_id'
+                      )
+                      ->join('genders', 'organisation_client.gender_id', '=', 'genders.id')
+                      ->join('countries', 'organisation_client.country_id', '=', 'countries.id')
+                      ->join('counties', 'organisation_client.county_id', '=', 'counties.id')
+                      ->join('constituencies', 'organisation_client.constituency_id', '=', 'constituencies.id')
+                      ->join('wards', 'organisation_client.ward_id', '=', 'wards.id')
+                      ->select('users.*',
+                          'organisation_client.*',
+                              'countries.name as country_name',
+                              'counties.name as county_name',
+                              'constituencies.name as constituency_name',
+                              'wards.name as ward_name',
+                              'genders.name as gender_name'
+                      )
+                      ->withTimestamps();
+      }
 
 
 

@@ -89,7 +89,7 @@
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+              <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                 <li v-if="$hasrole(['Superadmin','Director','Admin', 'Employee', 'Accountant'])" class="nav-item">
@@ -119,80 +119,6 @@
                     </router-link>
                 </li>
 
-                <!-- {{--  Superadmin users  --}} -->
-                <li v-if="$hasrole('Superadmin')" class="nav-item has-treeview">
-                    <a href="" class="nav-link">
-                    <i class="nav-icon purple fas fa-users"></i>
-                    <p>
-                        Users Logins
-                        <i class="fa fa-angle-left right"></i>
-                    </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-
-                    <li class="nav-item">
-                        <router-link :to="`/B/admins/credentials`" class="nav-link">
-                        <i class="fas fa-users blue fas fa-users"></i>
-                        <p>Admins</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/employees/credentials`" class="nav-link">
-                        <i class="fas fa-users purple fas fa-users"></i>
-                        <p>Other Employees</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/affiliates/credentials`" class="nav-link">
-                        <i class="fas fa-users yellow fas fa-users"></i>
-                        <p>Affiliates</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/househelps/credentials`" class="nav-link">
-                        <i class="fas fa-users yellow fas fa-users"></i>
-                        <p>Househelps</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/clients/credentials`" class="nav-link">
-                        <i class="fas fa-users yellow fas fa-users"></i>
-                        <p>Clients</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/users/credentials`" class="nav-link">
-                              <i class="fas fa-users yellow fas fa-users"></i>
-                              <p>All Users</p>
-                        </router-link>
-                    </li>
-                    <!-- {{--  bureau  their view --}} -->
-                    <li class="nav-item">
-                        <router-link :to="`/B/bureau/househelps/credentials`" class="nav-link">
-                        <i class="fas fa-users yellow fas fa-users"></i>
-                        <p>Househelps</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/bureau/admins/credentials`" class="nav-link">
-                        <i class="fas fa-users blue fas fa-users"></i>
-                        <p>Admins</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/bureau/employees/credentials`" class="nav-link">
-                        <i class="fas fa-users purple fas fa-users"></i>
-                        <p>Other Employees</p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="`/B/bureau/directors/credentials`" class="nav-link">
-                        <i class="fas fa-users red fas fa-users"></i>
-                        <p>Directors</p>
-                        </router-link>
-                    </li>
-                    </ul>
-                </li>
                 <!-- {{--  organisation View  --}} -->
                 <li  v-if="$hasrole('Superadmin')" class="nav-item has-treeview">
                     <router-link :to="`/B/househelps`" class="nav-link">
@@ -222,35 +148,28 @@
                 </li>
                 <li v-if="$hasrole(['Bureau Director','Bureau Admin'])" class="nav-item has-treeview">
                     <router-link :to="`/B/bureau/househelps/reviews`" class="nav-link">
-                    <i class="nav-icon purple fas fa-school"></i>
-                    <p>
-                        Househelp Reviews
-                    </p>
+                        <i class="nav-icon purple fas fa-school"></i>
+                        <p>
+                            Househelp Reviews
+                        </p>
                     </router-link>
                 </li>
-                <li v-if="$hasrole(['Bureau Director','Bureau Admin'])" class="nav-item has-treeview">
-                    <router-link :to="`/B/bureau/settings`" class="nav-link">
-                    <i class="fa fa-circle-o purple nav-icon"></i>
-                    <p>Settings</p>
-                    </router-link>
-                </li>
-
                 <!-- {{--  Househelp adminstrator  --}} -->
                 <li v-if="$hasrole(['Superadmin','Director','Admin'])" class="nav-item has-treeview">
                     <a href="" class="nav-link">
                         <i class="nav-icon purple fas fa-user"></i>
-                    <p>
-                        Adminstrator
-                        <i class="fa fa-angle-left right"></i>
-                    </p>
+                        <p>
+                            Adminstrator
+                            <i class="fa fa-angle-left right"></i>
+                        </p>
                     </a>
                     <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <router-link :to="`/B/househelps/reviews`" class="nav-link">
-                        <i class="fas fa-book purple nav-icon"></i>
-                        <p>Househelps Reviews</p>
-                        </router-link>
-                    </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/househelps/reviews`" class="nav-link">
+                            <i class="fas fa-book purple nav-icon"></i>
+                            <p>Househelps Reviews</p>
+                            </router-link>
+                        </li>
                     </ul>
                 </li>
 
@@ -497,6 +416,120 @@
                     </li>
                     </ul> -->
                 <!-- </li> -->
+                <!-- {{--  Superadmin users  --}} -->
+                <li v-if="$hasrole(['Superadmin'])" class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                    <i class="nav-icon purple fas fa-users"></i>
+                    <p>
+                        Users Logins
+                        <i class="fa fa-angle-left right"></i>
+                    </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <router-link :to="`/B/directors/credentials`" class="nav-link">
+                            <i class="fas fa-users red fas fa-users"></i>
+                            <p>Directors</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/admins/credentials`" class="nav-link">
+                            <i class="fas fa-users blue fas fa-users"></i>
+                            <p>Admins</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/employees/credentials`" class="nav-link">
+                            <i class="fas fa-users purple fas fa-users"></i>
+                            <p>Other Employees</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/affiliates/credentials`" class="nav-link">
+                            <i class="fas fa-users yellow fas fa-users"></i>
+                            <p>Affiliates</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/Bdirectors/credentials`" class="nav-link">
+                            <i class="fas fa-users red fas fa-users"></i>
+                            <p>Bureau Directors</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/Badmins/credentials`" class="nav-link">
+                            <i class="fas fa-users blue fas fa-users"></i>
+                            <p>Bureau Admins</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/Bemployees/credentials`" class="nav-link">
+                            <i class="fas fa-users purple fas fa-users"></i>
+                            <p>Bureau Other Employees</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/Bhousehelps/credentials`" class="nav-link">
+                            <i class="fas fa-users yellow fas fa-users"></i>
+                            <p>Househelps</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/clients/credentials`" class="nav-link">
+                            <i class="fas fa-users yellow fas fa-users"></i>
+                            <p>Clients</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/users/credentials`" class="nav-link">
+                                  <i class="fas fa-users yellow fas fa-users"></i>
+                                  <p>All Users</p>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+                <li v-if="$hasrole(['Bureau Director','Bureau Admin'])" class="nav-item has-treeview">
+                        <a href="" class="nav-link">
+                            <i class="nav-icon purple fas fa-users"></i>
+                            <p>
+                                Users Logins
+                                <i class="fa fa-angle-left right"></i>
+                            </p>
+                        </a>
+                    <ul class="nav nav-treeview">
+                        <!-- {{--  bureau  their view --}} -->
+                        <li class="nav-item">
+                            <router-link :to="`/B/bureau/directors/credentials`" class="nav-link">
+                            <i class="fas fa-users red fas fa-users"></i>
+                            <p>Directors</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/bureau/admins/credentials`" class="nav-link">
+                            <i class="fas fa-users blue fas fa-users"></i>
+                            <p>Admins</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/bureau/employees/credentials`" class="nav-link">
+                            <i class="fas fa-users purple fas fa-users"></i>
+                            <p>Other Employees</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="`/B/bureau/househelps/credentials`" class="nav-link">
+                            <i class="fas fa-users yellow fas fa-users"></i>
+                            <p>Househelps</p>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+                <li v-if="$hasrole(['Bureau Director','Bureau Admin'])" class="nav-item has-treeview">
+                    <router-link :to="`/B/bureau/settings`" class="nav-link">
+                        <i class="fa fa-circle-o purple nav-icon"></i>
+                        <p>Settings</p>
+                    </router-link>
+                </li>
                 <!-- {{--Organisation settings --}} -->
                 <li v-if="$hasrole(['Superadmin','Director'])"
                            class="nav-item has-treeview">
@@ -505,7 +538,7 @@
                     <p>Settings</p>
                     </router-link>
                 </li>
-                </ul>
+              </ul>
             </nav>
             <!-- /.sidebar-menu -->
             </div>

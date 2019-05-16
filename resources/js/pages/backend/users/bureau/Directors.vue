@@ -319,8 +319,7 @@
             this.loadConstituencies();///linked to methods and actions store
             this.loadWards();///linked to methods and actions store
             this.loadDirectors();
-            this.loadRoles();
-            this.loadPermissions();
+
         },
         computed:{
             Countries(){

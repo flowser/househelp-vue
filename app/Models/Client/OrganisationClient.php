@@ -16,7 +16,7 @@ use App\Models\Client\Standard\Certificate;
 use App\Models\Client\Standard\Manual_Collection;
 use App\Models\Client\Standard\Parcel_Collection;
 
-class Client extends Model
+class OrganisationClient extends Model
 {
     protected $fillable = [
         'user_id',

@@ -15,11 +15,10 @@ use App\Models\Organisation\OrganisationDirector;
 
 class OrganisationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
         $organisation = Organisation::

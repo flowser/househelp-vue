@@ -1,8 +1,6 @@
 <template>
 <div class="content-wrapper">
-    <div id="allusers">
          <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
@@ -19,6 +17,7 @@
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
+
             <!-- Main content -->
             <section class="content">
                 <div class="row justify-content-around">
@@ -96,11 +95,6 @@
 
                             <form role="form" @submit.prevent="editmodeUser ? updateUser(userform.id) : addUser ()" >
                                 <div class="modal-body">
-                                    <!-- <div class="form-group">
-                                            <input v-model="userform.first_name" type="text" name="name" placeholder="Role Name"
-                                                class="form-control" :class="{ 'is-invalid': userform.errors.has('name') }">
-                                            <has-error :form="userform" field="name"></has-error>
-                                    </div> -->
                                     <div class=" row">
                                         <div class="form-group col-md-6">
                                             <label for="first_name" class="col-form-label"> First Name</label>
@@ -126,16 +120,15 @@
                                     </div>
                                     <div class=" row">
                                         <div class="form-group col-md-6">
-                                            <select name="user_type" v-model="userform.user_type" id="user_type" class="form-control"
-                                            :class="{ 'is-invalid': userform.errors.has('user_type') }">
-                                                <option value="">Select User Role</option>
-                                                <option value="Director">Director</option>
-                                                <option value="Admin"> Admin</option>
-                                                <option value="Accounts"> Accounts</option>
+                                            <label for="user_type" class="col-form-label">User Type</label>
+                                            <select class="form-control" v-model="userform.user_type" :class="{ 'is-invalid': userform.errors.has('user_type') }">
+                                                    <option disabled value="">Select User Type</option>
+                                                    <option v-for="user_type in UserTypes" :value="user_type.name" :key="user_type.name">{{user_type.name}}</option>
                                             </select>
-                                            <has-error :form="userform" field="user_type"></has-error>
+                                            <has-error style="color: #e83e8c" :form="userform" field="user_type"></has-error>
                                         </div>
                                         <div class="form-group col-md-6">
+                                            <label for="Password" class="col-form-label">Password</label>
                                             <input v-model="userform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': userform.errors.has('password') }">
                                             <has-error :form="userform" field="password"></has-error>
@@ -143,26 +136,26 @@
                                     </div>
 
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group"> -->
                                         <!-- Roles -->
-                                        <label>Select Roles</label>
+                                        <!-- <label>Select Roles</label>
                                         <div v-for="role in Roles" :key="role.id">
                                             <input type="checkbox" v-model="userform.roles" :value="role.name">{{ role.name}}
                                         </div>
                                         <hr>
-                                        <div> <span class="btn btn-info btn-sm ml-2 mb-2">{{ userform.roles }}</span></div>
+                                        <div> <span class="btn btn-info btn-sm ml-2 mb-2">{{ userform.roles }}</span></div> -->
 
-                                    </div>
-                                    <div class="form-group">
+                                    <!-- </div> -->
+                                    <!-- <div class="form-group">
                                         <!-- {{ Permissions }} -->
-                                        <label>Select Permissions</label>
+                                        <!-- <label>Select Permissions</label>
                                         <div v-for="permission in Permissions" :key="permission.id">
                                             <input type="checkbox" v-model="userform.permissions" :value="permission.name"/>{{ permission.name}}
                                         </div>
                                         <hr>
-                                        <div> <span class="btn btn-info btn-sm ml-2 mb-2">{{ userform.permissions }}</span></div>
+                                        <div> <span class="btn btn-info btn-sm ml-2 mb-2">{{ userform.permissions }}</span></div> -->
 
-                                    </div>
+                                    <!-- </div> -->
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -173,8 +166,7 @@
                         </div>
                     </div>
             </div>
-        </div>
-    </div>
+
 </div>
 
 </template>
@@ -193,22 +185,40 @@
                         email:'',
                         password:'',
                         user_type:'',
-                        permissions:[],
-                        roles:[],
+                        gender_id:'',
+                        // permissions:[],
+                        // roles:[],
                 }),
-                selected_permissions: [],
-                selected_roles: [],
+                // user_types:{
+                    // Organisation Director
+                    // Organisation Admin
+                    // Organisation Accounts
+                    // Organisation Employee
+                    // Organisation Afiliate
+                    // Bureau Director
+                    // Bureau Admin
+                    // Bureau Accounts
+                    // Househelp
+                    // Client
+                // }
+                // selected_permissions: [],
+                // selected_roles: [],
             }
         },
         mounted() {
             this.loadUsers();
-            this.loadRoles();
-            this.loadPermissions();
+            this.loadUsertypes();
+            this.loadGenders();
+
         },
         computed:{
             Users(){
                 //  console.log('edit permiion')
                 return this.$store.getters.Users
+            },
+            Genders(){
+                //  console.log('edit permiion')
+                return this.$store.getters.Genders
             },
             Permissions(){
                 return this.$store.getters.Permissions
@@ -216,24 +226,33 @@
             Roles(){
                 return this.$store.getters.Roles
             },
-            selectedRoles () {
-            return this.selected_roles
-            },
-            selectedPermissions () {
-            return this.selected_permissions
+            UserTypes(){
+                return this.$store.getters.UserTypes
             }
+            // selectedRoles () {
+            // return this.selected_roles
+            // },
+            // selectedPermissions () {
+            // return this.selected_permissions
+            // }
         },
         methods:{
+            loadGenders(){
+               return this.$store.dispatch("genders")
+            },
+            loadUsertypes(){
+                return this.$store.dispatch( "usertypes")
+            },
             loadUsers(){
-                return this.$store.dispatch( "users")//get all from users.index
+                return this.$store.dispatch( "users")
             },
             //Permissions
             loadPermissions(){
-                return this.$store.dispatch( "permissions")//get all from roles.index
+                return this.$store.dispatch( "permissions")
             },
             //Roles
             loadRoles(){
-                return this.$store.dispatch( "roles")//get all from roles.index
+                return this.$store.dispatch( "roles")
             },
             newUserModal(){
                 console.log('new user modal')
@@ -244,16 +263,17 @@
              editUserModal(id){
                  this.editmodeUser = true;
                  this.userform.reset()
-                   console.log('edit user', id)
                     this.$Progress.start();
-                      axios.get('/user/edit/'+id)
+                      axios.get('/api/user/edit/'+id)
                         .then((response)=>{
+                            console.log(response.data)
+                            this.userform.fill(response.data.user)
                            $('#UserModal').modal('show')
                            toast({
                             type: 'success',
                             title: 'Fetched the User data successfully'
                             })
-                            this.userform.fill(response.data.user)
+
                                this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -267,9 +287,8 @@
                         })
              },
             addUser() {
-                console.log('add user new')
                 this.$Progress.start();
-                this.userform.post('/user')
+                this.userform.post('/api/user')
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -291,9 +310,8 @@
                     })
             },
             updateUser(id){
-                  console.log('update user')
                   this.$Progress.start();
-                     this.userform.patch('/user/update/'+id)
+                     this.userform.patch('/api/user/update/'+id)
                         .then(()=>{
                             this.$store.dispatch( "users")
                          $('#UserModal').modal('hide')

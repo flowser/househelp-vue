@@ -10,12 +10,15 @@ const state = {
     }
   }
 const actions = {
-    positions(context){
+    positions(context,dispatch){
         axios.get('/api/position/get')
         .then((response)=>{
           console.log(response.data.positions);
           context.commit('positions', response.data.positions);
         })
+        .catch((error) => {
+            dispatch('positions');
+        });
     }
   }
 const mutations = {

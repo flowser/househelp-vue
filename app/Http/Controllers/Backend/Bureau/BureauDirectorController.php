@@ -16,11 +16,10 @@ use App\Models\Bureau\BureauDirector;
 
 class BureauDirectorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
         $bureau = Auth::user()->bureauemployees()->first();
@@ -36,16 +35,20 @@ class BureauDirectorController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function BureauDirectorList()
     {
-        //
-    }
+           if (auth()->check()) {
+               if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $directors = User::whereHas('bureaudirectors')->with('roles','permissions','bureaudirectors')->role('Bureau Director')
+                //    $directors = User::with('roles','permissions','bureaudirectors')->role('Bureau Director')
+                            ->get();
+               }
+           }
+           return response()-> json([
+               'directors'=>$directors,
+           ], 200);
 
+    }
 
     public function store(Request $request, $id)
     {
@@ -194,7 +197,7 @@ class BureauDirectorController extends Controller
             'email'  =>  'required|email|max:255|unique:users,email,'.$id,
             'password'  =>  'sometimes|required',
             'phone'  =>  'phone:AUTO,MOBILE',
-            'landline'  =>  'phone:AUTO,MOBILE',
+            // 'landline'  =>  'phone:AUTO,MOBILE',
             'id_no'  =>  'required|digits_between:7,10',
             'address'  =>  'required|digits_between:1,20',
             // 'gender_id'  =>  'required',

@@ -31,14 +31,14 @@
                     <td >{{index+1}}</td>
                     <td >
                         <div class="row">
-                           <div class="col" style="padding: 3px;">
+                           <div class="col-sm-3" style="padding: 3px;">
                                         <img class="card-img-top" :src="househelpLoadPassPhoto(househelp.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
                                     </div>
-                                    <div class="col" style="padding: 3px;" v-if="househelp.idstatus_id_photo_front !=null">
+                                    <div class="col-sm-3" style="padding: 3px;" v-if="househelp.idstatus_id_photo_front !=null">
                                         <img class="card-img-top" :src="househelpLoadIDFrontPhoto(househelp.idstatus_id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
                                         <img class="card-img-top" :src="househelpLoadIDBackPhoto(househelp.idstatus_id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
                                     </div>
-                                    <div class="col" style="padding: 3px;" v-else>
+                                    <div class="col-sm-3" style="padding: 3px;" v-else>
                                         Waiting Card<br>
                                         <img class="card-img-top" :src="househelpLoadWaitingCard(househelp.idstatus_waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
                                     </div>
@@ -657,26 +657,6 @@
 </script>
 
 <script>
-
-    // $('#mpesabtn').hide();
-            // ('#stripebtn').hide();
-            // ('#paypalbtn').hide();
-            // (':radio[id=paypal]').change(function () {
-            //     ('#paypalbtn').show();
-            //     ('#mpesabtn').hide();
-            //     ('#stripebtn').hide();
-            // });
-            // (':radio[id=mpesa]').change(function () {
-            //     ('#mpesabtn').show();
-            //     ('#paypalbtn').hide();
-            //     ('#stripebtn').hide();
-            // });
-            // (':radio[id=stripe]').change(function () {
-            //     ('#stripebtn').show();
-            //     ('#paypalbtn').hide();
-            //     ('#mpesabtn').hide();
-            // });
-
     export default {
         name:"Househelps",
         data(){

@@ -10,12 +10,15 @@ const state = {
     }
   }
 const actions = {
-    relationships(context){
+    relationships(context,dispatch){
         axios.get('/api/relationship/get')
         .then((response)=>{
           console.log(response.data.relationships);
           context.commit('relationships', response.data.relationships);
         })
+        .catch((error) => {
+            dispatch('relationships');
+        });
     }
   }
 const mutations = {

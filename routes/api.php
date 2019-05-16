@@ -71,17 +71,78 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get/user', [AuthController::class, 'user']);
 
+    //organisation staff
+    // orgdirector
+    Route::get('orgdirector/get', [OrgDirectorController::class, 'index'])->name('orgdirector.index');
+    Route::get('orgdirectors/get', [OrgDirectorController::class, 'organisations'])->name('orgdirector.organisations');
+    Route::get('orgdirector/get/list', [OrgDirectorController::class, 'orgdirectorList'])->name('orgdirector.list-index');
+    Route::patch('orgdirector', [OrgDirectorController::class, 'store'])->name('orgdirector.store');
 
-        // bureau
+    Route::get('orgdirector/show/{orgdirector}', [OrgDirectorController::class, 'show'])->name('orgdirector.show');
+    Route::get('orgdirector/edit/{orgdirector}', [OrgDirectorController::class, 'edit'])->name('orgdirector.edit');
+    Route::patch('orgdirector/updateverify/director/{orgdirector}', [OrgDirectorController::class, 'updateverifyDirectorInfo'])->name('orgdirector.updateverifydirector');
+    Route::patch('orgdirector/update/{orgdirector}', [OrgDirectorController::class, 'update'])->name('orgdirector.update');
+    Route::get('orgdirector/delete/{orgdirector}/', [OrgDirectorController::class, 'destroy'])->name('orgdirector.destroy');
+
+            // orgadmin
+    Route::get('orgadmin/get', [OrgAdminController::class, 'index'])->name('orgadmin.index');
+    Route::get('orgadmins/get', [OrgAdminController::class, 'organisations'])->name('orgadmin.organisations');
+    Route::get('orgadmin/get/list', [OrgAdminController::class, 'orgadminList'])->name('orgadmin.list-index');
+    Route::post('orgadmin/verify/admin/', [OrgAdminController::class, 'verifyAdminInfo'])->name('orgadmin.verifyadmin');
+    Route::patch('orgadmin/{orgadmin}', [OrgAdminController::class, 'store'])->name('orgadmin.store');
+    Route::get('orgadmin/show/{orgadmin}', [OrgAdminController::class, 'show'])->name('orgadmin.show');
+    Route::get('orgadmin/edit/{orgadmin}', [OrgAdminController::class, 'edit'])->name('orgadmin.edit');
+    Route::patch('orgadmin/updateverify/admin/{orgadmin}', [OrgAdminController::class, 'updateverifyAdminInfo'])->name('orgadmin.updateverifyadmin');
+    Route::patch('orgadmin/update/{orgadmin}', [OrgAdminController::class, 'update'])->name('orgadmin.update');
+    Route::get('orgadmin/delete/{orgadmin}/', [OrgAdminController::class, 'destroy'])->name('orgadmin.destroy');
+
+            // orgemployee
+    Route::get('orgemployee/get', [OrgEmployeeController::class, 'index'])->name('orgemployee.index');
+    Route::get('orgemployee/get/list', [OrgEmployeeController::class, 'orgemployeeList'])->name('orgemployee.list-index');
+    Route::post('orgemployee/verify/employee/', [OrgEmployeeController::class, 'verifyEmployeeInfo'])->name('orgemployee.verifyemployee');
+    Route::patch('orgemployee', [OrgEmployeeController::class, 'store'])->name('orgemployee.store');
+
+        //clients
+    Route::get('client/get', [ClientController::class, 'index'])->name('client.index');
+    Route::get('client/get/list', [ClientController::class, 'ClientList'])->name('client.list-index');
+    Route::patch('client', [ClientController::class, 'store'])->name('client.store');
+
+    Route::get('client/show/{client}', [ClientController::class, 'show'])->name('client.show');
+    Route::get('client/edit/{client}', [ClientController::class, 'edit'])->name('client.edit');
+    Route::patch('client/update/{client}', [ClientController::class, 'update'])->name('client.update');
+    Route::get('client/delete/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
+//organisation employee
+    Route::get('orgemployee/show/{orgemployee}', [OrgEmployeeController::class, 'show'])->name('orgemployee.show');
+    Route::get('orgemployee/edit/{orgemployee}', [OrgEmployeeController::class, 'edit'])->name('orgemployee.edit');
+    Route::patch('orgemployee/updateverify/employee/{orgemployee}', [OrgEmployeeController::class, 'updateverifyEmployeeInfo'])->name('orgemployee.updateverifyemployee');
+    Route::patch('orgemployee/update/{orgemployee}', [OrgEmployeeController::class, 'update'])->name('orgemployee.update');
+    Route::get('orgemployee/delete/{orgemployee}/', [OrgEmployeeController::class, 'destroy'])->name('orgemployee.destroy');
+
+    //affiliate
+    Route::get('affiliate/get', [AffiliateController::class, 'index'])->name('affiliate.index');
+    Route::get('affiliate/get/list/', [AffiliateController::class, 'AffiliateList'])->name('affiliate.list-index');
+    Route::patch('affiliate/', [AffiliateController::class, 'store'])->name('affiliate.checkout');
+    Route::get('affiliate/show/{affiliate}', [AffiliateController::class, 'show'])->name('affiliate.show');
+    Route::get('affiliate/edit/{affiliate}', [AffiliateController::class, 'edit'])->name('affiliate.edit');
+    Route::patch('affiliate/update/{affiliate}', [AffiliateController::class, 'update'])->name('affiliate.update');
+    Route::get('affiliate/delete/{affiliate}', [AffiliateController::class, 'destroy'])->name('affiliate.destroy');
+       //users
+    Route::get('user/get', [UserController::class, 'index']);
+    Route::get('usertypes/get', [UserController::class, 'usertypes']);
+    Route::post('user', [UserController::class, 'store']);
+    Route::get('user/show/{user}', [UserController::class, 'show']);
+    Route::get('user/edit/{user}', [UserController::class, 'edit']);
+    Route::patch('user/update/{user}', [UserController::class, 'update']);
+    Route::get('user/delete/{user}/', [UserController::class, 'destroy']);
+
+    // bureau
     Route::get('bureaus/get', [BureauController::class, 'index'])->name('bureau.index');
     Route::get('/bureau/get', [BureauController::class, 'bureauByUserID'])->name('bureau.bureauByUserID');
 
     Route::post('bureau/verify/info/', [BureauController::class, 'verifyBureauInfo'])->name('bureau.verify');
     Route::post('bureau/verify/director/', [BureauController::class, 'verifyDirectorInfo'])->name('bureau.verifydirector');
     Route::post('bureau', [BureauController::class, 'store'])->name('bureau.store');
-    //     /*
-    //      * Specifics
-    //      */
+
     Route::get('bureau/show/{bureau}', [BureauController::class, 'show'])->name('bureau.show');
     Route::get('bureau/edit/{bureau}', [BureauController::class, 'edit'])->name('bureau.edit');
     Route::patch('bureau/updateverify/info/{bureau}', [BureauController::class, 'updateverifyBureauInfo'])->name('bureau.updateverify');
@@ -93,12 +154,10 @@ Route::middleware('auth:api')->group(function () {
     // bureaudirector
     Route::get('bureaudirector/get', [BureauDirectorController::class, 'index'])->name('bureaudirector.index');
     Route::get('bureaudirectors/get', [BureauDirectorController::class, 'bureaus'])->name('bureaudirector.bureaus');
-    Route::get('bureaudirector/get/list', [BureauDirectorController::class, 'bureaudirectorList'])->name('bureaudirector.list-index');
+    Route::get('bureaudirector/get/list', [BureauDirectorController::class, 'BureauDirectorList'])->name('bureaudirector.list-index');
     Route::post('bureaudirector/verify/director/', [BureauDirectorController::class, 'verifyDirectorInfo'])->name('bureaudirector.verifydirector');
     Route::patch('bureaudirector/{bureaudirector}', [BureauDirectorController::class, 'store'])->name('bureaudirector.store');
-    //     /*
-    //      * Specifics
-    //      */
+
     //  Route::get('bureaudirector/view/{bureaudirector}', [BureauDirectorController::class, 'view'])->name('bureaudirector.view');
     Route::get('bureaudirector/show/{bureaudirector}', [BureauDirectorController::class, 'show'])->name('bureaudirector.show');
     Route::get('bureaudirector/edit/{bureaudirector}', [BureauDirectorController::class, 'edit'])->name('bureaudirector.edit');
@@ -109,12 +168,10 @@ Route::middleware('auth:api')->group(function () {
             // bureauadmin
     Route::get('bureauadmin/get', [BureauAdminController::class, 'index'])->name('bureauadmin.index');
     Route::get('bureauadmins/get', [BureauAdminController::class, 'bureaus'])->name('bureauadmin.bureaus');
-    Route::get('bureauadmin/get/list', [BureauAdminController::class, 'bureauadminList'])->name('bureauadmin.list-index');
+    Route::get('bureauadmin/get/list', [BureauAdminController::class, 'BureauAdminList'])->name('bureauadmin.list-index');
     Route::post('bureauadmin/verify/admin/', [BureauAdminController::class, 'verifyAdminInfo'])->name('bureauadmin.verifyadmin');
     Route::patch('bureauadmin/{bureaudirector}', [BureauAdminController::class, 'store'])->name('bureauadmin.store');
-    //     /*
-    //      * Specifics
-    //      */
+
     Route::get('bureauadmin/show/{bureauadmin}', [BureauAdminController::class, 'show'])->name('bureauadmin.show');
     Route::get('bureauadmin/edit/{bureauadmin}', [BureauAdminController::class, 'edit'])->name('bureauadmin.edit');
     Route::patch('bureauadmin/updateverify/admin/{bureauadmin}', [BureauAdminController::class, 'updateverifyAdminInfo'])->name('bureauadmin.updateverifyadmin');
@@ -124,17 +181,54 @@ Route::middleware('auth:api')->group(function () {
     // bureauemployee
     Route::get('bureauemployee/get', [BureauEmployeeController::class, 'index'])->name('bureauemployee.index');
     Route::get('bureauemployees/get', [BureauEmployeeController::class, 'bureaus'])->name('bureauemployee.bureaus');
-    Route::get('bureauemployee/get/list', [BureauEmployeeController::class, 'bureauemployeeList'])->name('bureauemployee.list-index');
+    Route::get('bureauemployee/get/list', [BureauEmployeeController::class, 'BureauEmployeeList'])->name('bureauemployee.list-index');
     Route::post('bureauemployee/verify/employee/', [BureauEmployeeController::class, 'verifyEmployeeInfo'])->name('bureauemployee.verifyemployee');
     Route::patch('bureauemployee/{bureaudirector}', [BureauEmployeeController::class, 'store'])->name('bureauemployee.store');
-    //     /*
-    //      * Specifics
-    //      */
+
     Route::get('bureauemployee/show/{bureauemployee}', [BureauEmployeeController::class, 'show'])->name('bureauemployee.show');
     Route::get('bureauemployee/edit/{bureauemployee}', [BureauEmployeeController::class, 'edit'])->name('bureauemployee.edit');
     Route::patch('bureauemployee/updateverify/employee/{bureauemployee}', [BureauEmployeeController::class, 'updateverifyEmployeeInfo'])->name('bureauemployee.updateverifyemployee');
     Route::patch('bureauemployee/update/{bureauemployee}', [BureauEmployeeController::class, 'update'])->name('bureauemployee.update');
     Route::get('bureauemployee/delete/{bureauemployee}/', [BureauEmployeeController::class, 'destroy'])->name('bureauemployee.destroy');
+
+   //househelp
+    Route::get('househelp/get', [HousehelpController::class, 'index'])->name('househelp.index');
+    Route::get('househelp/get/list', [HousehelpController::class, 'HousehelpsList'])->name('househelp.index');
+    Route::get('agehousehelps/get', [HousehelpController::class, 'age'])->name('agehousehelp.index');
+    Route::get('genderhousehelps/get/{househelp}', [HousehelpController::class, 'gender'])->name('genderhousehelp.index');
+    Route::get('educationhousehelps/get/{househelp}', [HousehelpController::class, 'education'])->name('educationhousehelp.index');
+    Route::get('durationhousehelps/get/{househelp}', [HousehelpController::class, 'duration'])->name('durationhousehelp.index');
+    Route::get('experiencehousehelps/get/{househelp}', [HousehelpController::class, 'experience'])->name('experiencehousehelp.index');
+    Route::get('maritalstatushousehelps/get/{househelp}', [HousehelpController::class, 'maritalstatus'])->name('maritalstatushousehelp.index');
+    Route::get('operationhousehelps/get/{househelp}', [HousehelpController::class, 'operation'])->name('operationhousehelp.index');
+    Route::get('skillhousehelps/get/{househelp}', [HousehelpController::class, 'skill'])->name('skillhousehelp.index');
+    Route::get('religionhousehelps/get/{househelp}', [HousehelpController::class, 'religion'])->name('religionhousehelp.index');
+    Route::get('tribehousehelps/get/{househelp}', [HousehelpController::class, 'tribe'])->name('tribehousehelp.index');
+    Route::post('househelpfilter/get', [HousehelpController::class, 'filter'])->name('househelp.filter');
+    Route::post('househelp/verify/demographics/', [HousehelpController::class, 'verifyDemographics'])->name('househelp.verifydemographics');
+
+
+
+    Route::post('househelp/verify/attributes/', [HousehelpController::class, 'verifyAttributes'])->name('househelp.verifyattributes');
+    Route::post('househelp/verify/kin/', [HousehelpController::class, 'verifyKin'])->name('househelp.verifykin');
+    Route::patch('househelp/{bureau}', [HousehelpController::class, 'store'])->name('househelp.store');    //     /*
+
+    Route::get('househelp/show/{househelp}', [HousehelpController::class, 'show'])->name('househelp.show');
+    Route::get('househelp/edit/{househelp}', [HousehelpController::class, 'edit'])->name('househelp.edit');
+    Route::patch('househelp/verify/updatedemographics/{househelp}', [HousehelpController::class, 'verifyUpdateDemographics'])->name('househelp.Demographics');
+    Route::patch('househelp/verify/updateattributes/{househelp}', [HousehelpController::class, 'verifyUpdateAttributes'])->name('househelp.Attributes');
+    Route::patch('househelp/update/{househelp}', [HousehelpController::class, 'update'])->name('househelp.update');
+    Route::get('househelp/delete/{househelp}/', [HousehelpController::class, 'destroy'])->name('househelp.destroy');
+
+    //  Househelpkin
+    Route::get('househelpkin/get', [HousehelpkinController::class, 'index'])->name('househelpkin.index');
+    Route::patch('househelpkin/{househelpkin}', [HousehelpkinController::class, 'store'])->name('househelpkin.store');
+    Route::get('househelpkin/show/{househelpkin}', [HousehelpkinController::class, 'show'])->name('househelpkin.show');
+    Route::get('househelpkin/edit/{househelpkin}', [HousehelpkinController::class, 'edit'])->name('househelpkin.edit');
+    Route::patch('househelpkin/update/{househelpkin}', [HousehelpkinController::class, 'update'])->name('househelpkin.update');
+    Route::get('househelpkin/delete/{househelpkin}/', [HousehelpkinController::class, 'destroy'])->name('househelpkin.destroy');
+
+
 });
 
   //permissions
@@ -151,18 +245,6 @@ Route::middleware('auth:api')->group(function () {
   Route::get('/delete/{role}', [RoleController::class, 'destroy']);
 
 
-Route::get('user/get', [UserController::class, 'index'])->name('user.index');
-Route::get('user/create', [UserController::class, 'create'])->name('user.create');
-Route::post('user', [UserController::class, 'store'])->name('user.store');
-
-//     /*
-//      * Specific User
-//      */
-
-    Route::get('user/show/{user}', [UserController::class, 'show'])->name('user.show');
-    Route::get('user/edit/{user}', [UserController::class, 'edit'])->name('user.edit');
-    Route::patch('user/update/{user}', [UserController::class, 'update'])->name('user.update');
-    Route::get('user/delete/{user}/', [UserController::class, 'destroy'])->name('user.destroy');
 
 
 
@@ -272,50 +354,6 @@ Route::patch('organisation/updateverify/director/{organisation}', [OrganisationC
 Route::patch('organisation/update/{organisation}', [OrganisationController::class, 'update'])->name('organisation.update');
 Route::get('organisation/delete/{organisation}', [OrganisationController::class, 'destroy'])->name('organisation.destroy');
 
-// orgdirector
-Route::get('orgdirector/get', [OrgDirectorController::class, 'index'])->name('orgdirector.index');
-Route::get('orgdirectors/get', [OrgDirectorController::class, 'organisations'])->name('orgdirector.organisations');
-Route::get('orgdirector/get/list', [OrgDirectorController::class, 'orgdirectorList'])->name('orgdirector.list-index');
-Route::post('orgdirector/verify/director/', [OrgDirectorController::class, 'verifyDirectorInfo'])->name('orgdirector.verifydirector');
-Route::patch('orgdirector/{orgdirector}', [OrgDirectorController::class, 'store'])->name('orgdirector.store');
-//     /*
-//      * Specifics
-//      */
-Route::get('orgdirector/show/{orgdirector}', [OrgDirectorController::class, 'show'])->name('orgdirector.show');
-Route::get('orgdirector/edit/{orgdirector}', [OrgDirectorController::class, 'edit'])->name('orgdirector.edit');
-Route::patch('orgdirector/updateverify/director/{orgdirector}', [OrgDirectorController::class, 'updateverifyDirectorInfo'])->name('orgdirector.updateverifydirector');
-Route::patch('orgdirector/update/{orgdirector}', [OrgDirectorController::class, 'update'])->name('orgdirector.update');
-Route::get('orgdirector/delete/{orgdirector}/', [OrgDirectorController::class, 'destroy'])->name('orgdirector.destroy');
-
-        // orgadmin
-Route::get('orgadmin/get', [OrgAdminController::class, 'index'])->name('orgadmin.index');
-Route::get('orgadmins/get', [OrgAdminController::class, 'organisations'])->name('orgadmin.organisations');
-Route::get('orgadmin/get/list', [OrgAdminController::class, 'orgadminList'])->name('orgadmin.list-index');
-Route::post('orgadmin/verify/admin/', [OrgAdminController::class, 'verifyAdminInfo'])->name('orgadmin.verifyadmin');
-Route::patch('orgadmin/{orgadmin}', [OrgAdminController::class, 'store'])->name('orgadmin.store');
-//     /*
-//      * Specifics
-//      */
-Route::get('orgadmin/show/{orgadmin}', [OrgAdminController::class, 'show'])->name('orgadmin.show');
-Route::get('orgadmin/edit/{orgadmin}', [OrgAdminController::class, 'edit'])->name('orgadmin.edit');
-Route::patch('orgadmin/updateverify/admin/{orgadmin}', [OrgAdminController::class, 'updateverifyAdminInfo'])->name('orgadmin.updateverifyadmin');
-Route::patch('orgadmin/update/{orgadmin}', [OrgAdminController::class, 'update'])->name('orgadmin.update');
-Route::get('orgadmin/delete/{orgadmin}/', [OrgAdminController::class, 'destroy'])->name('orgadmin.destroy');
-
-        // orgemployee
-Route::get('orgemployee/get', [OrgEmployeeController::class, 'index'])->name('orgemployee.index');
-Route::get('orgemployees/get', [OrgEmployeeController::class, 'organisations'])->name('orgemployee.organisations');
-Route::get('orgemployee/get/list', [OrgEmployeeController::class, 'orgemployeeList'])->name('orgemployee.list-index');
-Route::post('orgemployee/verify/employee/', [OrgEmployeeController::class, 'verifyEmployeeInfo'])->name('orgemployee.verifyemployee');
-Route::patch('orgemployee/{orgemployee}', [OrgEmployeeController::class, 'store'])->name('orgemployee.store');
-//     /*
-//      * Specifics
-//      */
-Route::get('orgemployee/show/{orgemployee}', [OrgEmployeeController::class, 'show'])->name('orgemployee.show');
-Route::get('orgemployee/edit/{orgemployee}', [OrgEmployeeController::class, 'edit'])->name('orgemployee.edit');
-Route::patch('orgemployee/updateverify/employee/{orgemployee}', [OrgEmployeeController::class, 'updateverifyEmployeeInfo'])->name('orgemployee.updateverifyemployee');
-Route::patch('orgemployee/update/{orgemployee}', [OrgEmployeeController::class, 'update'])->name('orgemployee.update');
-Route::get('orgemployee/delete/{orgemployee}/', [OrgEmployeeController::class, 'destroy'])->name('orgemployee.destroy');
 
 
 
@@ -387,52 +425,6 @@ Route::get('advert/show/{advert}', [AdvertController::class, 'show'])->name('adv
 Route::get('advert/edit/{advert}', [AdvertController::class, 'edit'])->name('advert.edit');
 Route::patch('advert/update/{advert}', [AdvertController::class, 'update'])->name('advert.update');
 Route::get('advert/delete/{advert}/', [AdvertController::class, 'destroy'])->name('advert.destroy');
-
-
-
-
-
-
-
-//                  // househelp
- Route::get('househelp/get', [HousehelpController::class, 'index'])->name('househelp.index');
- Route::get('agehousehelps/get', [HousehelpController::class, 'age'])->name('agehousehelp.index');
- Route::get('genderhousehelps/get/{househelp}', [HousehelpController::class, 'gender'])->name('genderhousehelp.index');
- Route::get('educationhousehelps/get/{househelp}', [HousehelpController::class, 'education'])->name('educationhousehelp.index');
- Route::get('durationhousehelps/get/{househelp}', [HousehelpController::class, 'duration'])->name('durationhousehelp.index');
- Route::get('experiencehousehelps/get/{househelp}', [HousehelpController::class, 'experience'])->name('experiencehousehelp.index');
- Route::get('maritalstatushousehelps/get/{househelp}', [HousehelpController::class, 'maritalstatus'])->name('maritalstatushousehelp.index');
- Route::get('operationhousehelps/get/{househelp}', [HousehelpController::class, 'operation'])->name('operationhousehelp.index');
- Route::get('skillhousehelps/get/{househelp}', [HousehelpController::class, 'skill'])->name('skillhousehelp.index');
- Route::get('religionhousehelps/get/{househelp}', [HousehelpController::class, 'religion'])->name('religionhousehelp.index');
- Route::get('tribehousehelps/get/{househelp}', [HousehelpController::class, 'tribe'])->name('tribehousehelp.index');
- Route::post('househelpfilter/get', [HousehelpController::class, 'filter'])->name('househelp.filter');
- Route::post('househelp/verify/demographics/', [HousehelpController::class, 'verifyDemographics'])->name('househelp.verifydemographics');
-
-
-
- Route::post('househelp/verify/attributes/', [HousehelpController::class, 'verifyAttributes'])->name('househelp.verifyattributes');
- Route::post('househelp/verify/kin/', [HousehelpController::class, 'verifyKin'])->name('househelp.verifykin');
-
- Route::patch('househelp/{bureau}', [HousehelpController::class, 'store'])->name('househelp.store');
-//     /*
-//      * Specifics
-//      */
- Route::get('househelp/show/{househelp}', [HousehelpController::class, 'show'])->name('househelp.show');
- Route::get('househelp/edit/{househelp}', [HousehelpController::class, 'edit'])->name('househelp.edit');
- Route::patch('househelp/verify/updatedemographics/{househelp}', [HousehelpController::class, 'verifyUpdateDemographics'])->name('househelp.Demographics');
- Route::patch('househelp/verify/updateattributes/{househelp}', [HousehelpController::class, 'verifyUpdateAttributes'])->name('househelp.Attributes');
- Route::patch('househelp/update/{househelp}', [HousehelpController::class, 'update'])->name('househelp.update');
- Route::get('househelp/delete/{househelp}/', [HousehelpController::class, 'destroy'])->name('househelp.destroy');
-
-//  Househelpkin
- Route::get('househelpkin/get', [HousehelpkinController::class, 'index'])->name('househelpkin.index');
- Route::patch('househelpkin/{househelpkin}', [HousehelpkinController::class, 'store'])->name('househelpkin.store');
- Route::get('househelpkin/show/{househelpkin}', [HousehelpkinController::class, 'show'])->name('househelpkin.show');
- Route::get('househelpkin/edit/{househelpkin}', [HousehelpkinController::class, 'edit'])->name('househelpkin.edit');
- Route::patch('househelpkin/update/{househelpkin}', [HousehelpkinController::class, 'update'])->name('househelpkin.update');
- Route::get('househelpkin/delete/{househelpkin}/', [HousehelpkinController::class, 'destroy'])->name('househelpkin.destroy');
-
 
 
 //filters
@@ -570,20 +562,6 @@ Route::patch('healthstatus/update/{healthstatus}', [HealthstatusController::clas
 Route::get('healthstatus/delete/{healthstatus}', [HealthstatusController::class, 'destroy'])->name('healthstatus.destroy');
 
 
-
-
-Route::get('client/get', [ClientController::class, 'index'])->name('client.index');
-Route::get('client/get/list/{client}', [ClientController::class, 'ClientList'])->name('client.list-index');
-Route::post('client', [ClientController::class, 'store'])->name('client.store');
-//     /*
-//      * Specifics
-//      */
-Route::get('client/show/{client}', [ClientController::class, 'show'])->name('client.show');
-Route::get('client/edit/{client}', [ClientController::class, 'edit'])->name('client.edit');
-Route::patch('client/update/{client}', [ClientController::class, 'update'])->name('client.update');
-Route::get('client/delete/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
-
-
 //cart
 Route::get('cart/get', [CartController::class, 'index'])->name('cart.index');
 Route::patch('cart', [CartController::class, 'store'])->name('cart.store');
@@ -609,15 +587,7 @@ Route::get('order/edit/{order}', [OrderController::class, 'edit'])->name('order.
 Route::patch('order/update/{order}', [OrderController::class, 'update'])->name('order.update');
 Route::get('order/delete/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
 
-//affiliate
-Route::get('affiliate/get', [AffiliateController::class, 'index'])->name('affiliate.index');
-Route::get('affiliate/get/list/{affiliate}', [AffiliateController::class, 'AffiliateList'])->name('affiliate.list-index');
-Route::patch('affiliate/checkout/{affiliate}', [AffiliateController::class, 'store'])->name('affiliate.checkout');
 
-Route::get('affiliate/show/{affiliate}', [AffiliateController::class, 'show'])->name('affiliate.show');
-Route::get('affiliate/edit/{affiliate}', [AffiliateController::class, 'edit'])->name('affiliate.edit');
-Route::patch('affiliate/update/{affiliate}', [AffiliateController::class, 'update'])->name('affiliate.update');
-Route::get('affiliate/delete/{affiliate}', [AffiliateController::class, 'destroy'])->name('affiliate.destroy');
 
 //refferal links
 Route::get('referralLink/get', [ReferralLinkController::class, 'index'])->name('referralLink.index');

@@ -15,6 +15,10 @@ use Intervention\Image\Facades\Image;
 
 class BureauAdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
         // $bureau = Auth::user()->bureauadmins()->first();
@@ -25,14 +29,18 @@ class BureauAdminController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function BureauAdminList()
     {
-        //
+           if (auth()->check()) {
+               if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $admins = User::whereHas('bureauadmins')->with('roles','permissions','bureauadmins')->role('Bureau Admin')
+                            ->get();
+               }
+           }
+           return response()-> json([
+               'admins'=>$admins,
+           ], 200);
+
     }
 
     public function store(Request $request, $id)
@@ -43,7 +51,7 @@ class BureauAdminController extends Controller
             'email'  =>  'required|email|max:255|unique:users',
             'password'  =>  'required',
             'phone'  =>  'phone:AUTO,MOBILE',
-            'landline'  =>  'phone:AUTO,MOBILE',
+            // 'landline'  =>  'phone:AUTO,MOBILE',
             'id_no'  =>  'required|digits_between:7,10',
             'address'  =>  'required|digits_between:1,20',
             // 'gender_id'  =>  'required',
@@ -197,7 +205,7 @@ class BureauAdminController extends Controller
             'email'  =>  'required|email|max:255|unique:users,email,'.$id,
             'password'  =>  'sometimes|required',
             'phone'  =>  'phone:AUTO,MOBILE',
-            'landline'  =>  'phone:AUTO,MOBILE',
+            // 'landline'  =>  'phone:AUTO,MOBILE',
             'id_no'  =>  'required|digits_between:7,10',
             'address'  =>  'required|digits_between:1,20',
             // 'gender_id'  =>  'required',

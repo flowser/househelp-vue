@@ -11,36 +11,56 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
-        $users = User::with('roles', 'permissions')->get();
-        return response()-> json([
-            'users'=>$users,
-        ], 200);
+        if (auth()->check()) {
+            if (auth()->user()->hasRole('Superadmin')) {
+                $users = User::with('roles', 'permissions')->get();
+            }
+        }
+            return response()-> json([
+                'users'=>$users,
+            ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function usertypes ()
     {
-        //
+                $id = 'id';
+                $name = 'name';
+
+                 $output1 = [ $id => '1', $name => 'Organisation Director', ];
+                 $output2 = [ $id => '2', $name => 'Organisation Admin', ];
+                 $output3 = [ $id => '3', $name => 'Organisation Accounts', ];
+                 $output4 = [ $id => '4', $name => 'Organisation Employee', ];
+                 $output5 = [ $id => '5', $name => 'Organisation Afiliate', ];
+                 $output6 = [ $id => '6', $name => 'Bureau Director', ];
+                 $output7 = [ $id => '7', $name => 'Bureau Admin', ];
+                 $output8 = [ $id => '8', $name => 'Bureau Accounts', ];
+                 $output9 = [ $id => '9', $name => 'Househelp', ];
+                 $output10= [ $id => '10', $name => 'Client', ];
+
+                $usertypes = [
+                    $output1,
+                    $output2,
+                    $output3,
+                    $output4,
+                    $output5,
+                    $output6,
+                    $output7,
+                    $output8,
+                    $output9,
+                    $output10,
+                ];
+                   return response()-> json([
+                        'usertypes' => $usertypes,
+                    ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $this->validate($request, [
             'first_name' => 'required|max:255',
@@ -70,14 +90,6 @@ class UserController extends Controller
 
     }
 
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $user = User::with('roles', 'permissions')->find($id);

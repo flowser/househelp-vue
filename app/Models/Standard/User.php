@@ -3,16 +3,13 @@
 namespace App\Models\Standard;
 
 use App\Models\Bureau\Bureau;
-use App\Models\Standard\User;
 use App\Models\Bureau\BureauAdmin;
 use Laravel\Passport\HasApiTokens;
-use Spatie\Permission\Models\Role;
 use App\Models\Househelp\Househelp;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Bureau\BureauDirector;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Models\Permission;
+use App\Models\Client\OrganisationClient;
 use App\Models\Organisation\Organisation;
 use App\Models\Standard\Webservices\About;
 use App\Models\Standard\Webservices\Advert;
@@ -213,6 +210,76 @@ class User extends Authenticatable
                       )
                       ->withTimestamps();
       }
+      public function organisationclients()
+      {
+          return $this->belongsToMany(Organisation::class,'organisation_client')
+                      ->withPivot(
+                          'photo',
+                          'active',
+                          'id_no',
+                          'id_photo_front',
+                          'id_photo_back',
+                          'about_me',
+                          'phone',
+                          'landline',
+                          'address',
+                          'country_id',
+                          'county_id',
+                          'constituency_id',
+                          'ward_id',
+                          'gender_id'
+                      )
+                      ->join('genders', 'organisation_client.gender_id', '=', 'genders.id')
+                      ->join('countries', 'organisation_client.country_id', '=', 'countries.id')
+                      ->join('counties', 'organisation_client.county_id', '=', 'counties.id')
+                      ->join('constituencies', 'organisation_client.constituency_id', '=', 'constituencies.id')
+                      ->join('wards', 'organisation_client.ward_id', '=', 'wards.id')
+                      ->select('organisations.*',
+                          'organisation_client.*',
+                              'countries.name as country_name',
+                              'counties.name as county_name',
+                              'constituencies.name as constituency_name',
+                              'wards.name as ward_name',
+                              'genders.name as gender_name'
+                      )
+                      ->withTimestamps();
+      }
+      public function organisationaffiliates()
+      {
+          return $this->belongsToMany(Organisation::class,'organisation_affiliate')
+                      ->withPivot(
+                          'photo',
+                          'active',
+                          'id_no',
+                          'id_photo_front',
+                          'id_photo_back',
+                          'about_me',
+                          'phone',
+                          'address',
+                          'country_id',
+                          'county_id',
+                          'constituency_id',
+                          'ward_id',
+                          'position_id',
+                          'gender_id'
+                      )
+                      ->join('genders', 'organisation_affiliate.gender_id', '=', 'genders.id')
+                      ->join('countries', 'organisation_affiliate.country_id', '=', 'countries.id')
+                      ->join('counties', 'organisation_affiliate.county_id', '=', 'counties.id')
+                      ->join('constituencies', 'organisation_affiliate.constituency_id', '=', 'constituencies.id')
+                      ->join('wards', 'organisation_affiliate.ward_id', '=', 'wards.id')
+                      ->select('organisations.*',
+                          'organisation_affiliate.*',
+                              'countries.name as country_name',
+                              'counties.name as county_name',
+                              'constituencies.name as constituency_name',
+                              'wards.name as ward_name',
+                              'genders.name as gender_name'
+                      )
+                      ->withTimestamps();
+      }
+
+
 
     public function bureaudirectors()
     {
@@ -529,6 +596,30 @@ class User extends Authenticatable
                     );
 
     }
+    public function organisationclient()
+    {
+        return $this->hasOne(OrganisationClient::class)
+        ->join('organisations', 'organisation_client.organisation_id','=', 'organisations.id')
+                    ->join('genders', 'organisation_client.gender_id', '=', 'genders.id')
+                    ->join('positions', 'organisation_client.position_id', '=', 'positions.id')
+                    ->join('countries', 'organisation_client.country_id', '=', 'countries.id')
+                    ->join('counties', 'organisation_client.county_id', '=', 'counties.id')
+                    ->join('constituencies', 'organisation_client.constituency_id', '=', 'constituencies.id')
+                    ->join('wards', 'organisation_client.ward_id', '=', 'wards.id')
+                    ->select(
+                        'organisations.name as organisation_name', 'organisations.logo as organisation_logo',
+                        'organisation_client.*',
+                            'countries.name as country_name',
+                            'counties.name as county_name',
+                            'constituencies.name as constituency_name',
+                            'wards.name as ward_name',
+                            'positions.name as position_name',
+                            'genders.name as gender_name'
+                    );
+
+    }
+
+
     public function bureaudirector()
     {
         return $this-> hasOne(BureauDirector::class)

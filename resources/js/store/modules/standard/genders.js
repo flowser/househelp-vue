@@ -10,12 +10,15 @@ const state = {
     }
   }
 const actions = {
-    genders(context){
+    genders(context,dispatch){
         axios.get('/api/gender/get')
         .then((response)=>{
           console.log(response.data.genders);
           context.commit('genders', response.data.genders);
         })
+        .catch((error) => {
+            dispatch('genders');
+        });
     }
   }
 const mutations = {

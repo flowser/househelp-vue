@@ -29,16 +29,16 @@
                 <tbody>
                   <tr v-for="(director, index) in Directors" :key="director.id">
                     <td >{{index+1}}</td>
-                    <td >
-                        <div class="row" v-for="organisation in director.organisationdirectors" :key="organisation.id">
-                            <div class="col" style="padding: 3px;">
+                    <td style="width: 500px;">
+                        <div class="row" style="width:100%" v-for="organisation in director.organisationdirectors" :key="organisation.id">
+                            <div class="col-sm-3" style="padding: 3px;">
                                  <img class="card-img-top" :src="directorLoadPassPhoto(organisation.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col" style="padding: 3px;">
+                            <div class="col-sm-3" style="padding: 3px;">
                                 <img class="card-img-top" :src="directorLoadIDFrontPhoto(organisation.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
                                 <img class="card-img-top" :src="directorLoadIDBackPhoto(organisation.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                            <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
                                 <div>{{director.full_name}},</div>
                                 <div v-for="position in director.positions" :key="position.id">
                                     {{position.name}},
@@ -118,7 +118,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form role="form" @submit.prevent="editmodeDirector ? updateDirector(directorform.id) : addDirector(directorform.organisation_id)" >
+                    <form role="form" @submit.prevent="editmodeDirector ? updateDirector(directorform.id) : addDirector()" >
                         <div class="modal-body">
                             <h5 class="modal-title" v-show="editmodeDirector" id="DirectorModalLabel">Update Director</h5>
                             <h5 class="modal-title" v-show="!editmodeDirector" id="DirectorModalLabel">Add New Director</h5>
@@ -182,10 +182,19 @@
                                             <has-error style="color: #e83e8c" :form="directorform" field="id_no"></has-error>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="address" class=" col-form-label">Addresdddds</label>
+                                            <label for="address" class=" col-form-label">Address</label>
                                             <input v-model="directorform.address" type="text" name="address" placeholder="Address"
                                                 class="form-control" :class="{ 'is-invalid': directorform.errors.has('address') }" >
                                             <has-error style="color: #e83e8c" :form="directorform" field="country_id"></has-error>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="gender_id">Select Gender</label>
+                                            <select class="form-control" v-model="directorform.gender_id"
+                                                    :class="{ 'is-invalid':directorform.errors.has('gender_id') }">
+                                                    <option disabled value="">Select gender</option>
+                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
+                                            </select>
+                                                <has-error style="color: #e83e8c" :form="directorform" field="gender_id"></has-error>
                                         </div>
                                     </div>
                                     <div class=" row">
@@ -271,7 +280,7 @@
 
 <script>
     export default {
-        name:"List",
+        name:"Organisation-Directors",
         data(){
             return{
                 newDirector: false,
@@ -282,12 +291,11 @@
                         last_name:'',
                         email:'',
                         password:'',
-                        director_type:'',
-                        permissions:[],
-                        roles:[],
+                        user_type:'',
                         user_id:'',
                         organisation_id:'',
                         position_id:'',
+                        gender_id:'',
                         photo:'',
                         active:'',
                         id_no:'',
@@ -316,11 +324,10 @@
         mounted() {
             this.loadCountries();
             this.loadCounties();
-            this.loadConstituencies();///linked to methods and actions store
-            this.loadWards();///linked to methods and actions store
+            this.loadConstituencies();
+            this.loadWards();
+            this.loadGenders();
             this.loadDirectors();
-            this.loadRoles();
-            this.loadPermissions();
         },
         computed:{
             Countries(){
@@ -335,66 +342,15 @@
             Wards(){
                return this.$store.getters.ConstituencyWards
             },
+            Genders(){
+               return this.$store.getters.Genders
+            },
             Directors(){
-                //  console.log('edit permiion')
                 return this.$store.getters.Directors
             },
-            Permissions(){
-                return this.$store.getters.Permissions
-            },
-            Roles(){
-                return this.$store.getters.Roles
-            },
-            selectedRoles () {
-            return this.selected_roles
-            },
-            selectedPermissions () {
-            return this.selected_permissions
-            }
+
         },
         methods:{
-            //Director info verification
-            validateDirector() {
-                this.$Progress.start()
-                return this.directorform.post('/orgdirector/verify/director')
-                    .then((response)=>{
-                        return true;
-                        toast({
-                            type: 'success',
-                            title: 'Director Info Verifed successfully'
-                        })
-                        this.$Progress.finish()
-                    })
-                    .catch(()=>{
-                        this.$Progress.fail()
-                        toast({
-                            type: 'error',
-                            title: 'The Director Info failed Verification.'
-                        })
-                    })
-            },
-             //Director info verification
-            validateDirectorUpdate() {
-                 let id = this.directorform.id;
-                console.log('mix me down',id);
-                this.$Progress.start()
-                return this.directorform.patch('/orgdirector/updateverify/director/'+id)
-                    .then((response)=>{
-                        return true;
-                        toast({
-                            type: 'success',
-                            title: 'Director Update Info Verifed successfully'
-                        })
-                        this.$Progress.finish()
-                    })
-                    .catch(()=>{
-                        this.$Progress.fail()
-                        toast({
-                            type: 'error',
-                            title: 'The Director update Info failed Verification.'
-                        })
-                    })
-            },
             //director
             InputPhone({ number, isValid, country }) {
             this.directorform.phone = number;
@@ -427,16 +383,11 @@
             loadWards(){
                 return this.$store.dispatch( "constituencywards")//get all from towns.index
             },
+            loadGenders(){
+               return this.$store.dispatch("genders")
+            },
             loadDirectors(){
                 return this.$store.dispatch( "directors")//get all from directors.index
-            },
-            //Permissions
-            loadPermissions(){
-                return this.$store.dispatch( "permissions")//get all from roles.index
-            },
-            //Roles
-            loadRoles(){
-                return this.$store.dispatch( "roles")//get all from roles.index
             },
             newDirectorModal(){
                  this.editmodeDirector= false;
@@ -469,8 +420,8 @@
                         reader.readAsDataURL(file);
                 }
             },
-            updateDirectorPassPhoto(directorform_organisationdirector_photo){
-                // console.log(directorform_organisationdirector_photo)
+            updateDirectorPassPhoto(organisationdirector_photo){
+                console.log(organisationdirector_photo, 'edit')
                 let img = this.directorform.photo;
                       if(img ==null){
                           return "/assets/organisation/img/website/empty.png";
@@ -479,8 +430,8 @@
                           if(img.length>100){
                             return this.directorform.photo;
                         }else{
-                            if(directorform_organisationdirector_photo){
-                                return "assets/organisation/img/directors/passports/"+directorform_organisationdirector_photo;
+                            if(organisationdirector_photo){
+                                return "/assets/organisation/img/directors/passports/"+organisationdirector_photo;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -522,7 +473,7 @@
                             return this.directorform.id_photo_front;
                         }else{
                             if(directorform_id_photo_front){
-                                return "assets/organisation/img/directors/IDs/front/"+directorform_id_photo_front;
+                                return "/assets/organisation/img/directors/IDs/front/"+directorform_id_photo_front;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -563,7 +514,7 @@
                             return this.directorform.id_photo_back;
                         }else{
                             if(directorform_id_photo_back){
-                                return "assets/organisation/img/directors/IDs/back/"+directorform_id_photo_back;
+                                return "/assets/organisation/img/directors/IDs/back/"+directorform_id_photo_back;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -576,17 +527,19 @@
                  this.editmodeDirector = true;
                  this.directorform.reset()
                     this.$Progress.start();
-                      axios.get('/orgdirector/edit/'+id)
+                      axios.get('/api/orgdirector/edit/'+id)
                         .then((response)=>{
                            $('#DirectorModal').modal('show')
                            toast({
                             type: 'success',
                             title: 'Fetched the Director data successfully'
                             })
+                            console.log(response.data)
                             this.directorform.fill(response.data.director)
                             this.directorform.user_id = response.data.director.organisationdirectors[0].pivot.user_id
                             this.directorform.organisation_id = response.data.director.organisationdirectors[0].pivot.organisation_id
                             this.directorform.position_id = response.data.director.organisationdirectors[0].pivot.position_id
+                            this.directorform.gender_id = response.data.director.organisationdirectors[0].pivot.gender_id
                             this.directorform.photo = response.data.director.organisationdirectors[0].pivot.photo
                             this.directorform.id_no = response.data.director.organisationdirectors[0].pivot.id_no
                             this.directorform.id_photo_front = response.data.director.organisationdirectors[0].pivot.id_photo_front
@@ -595,17 +548,16 @@
                             this.directorform.landline = response.data.director.organisationdirectors[0].pivot.landline
                             this.directorform.address = response.data.director.organisationdirectors[0].pivot.address
 
-                           //get country id
-                            this.directorform.country_id = response.data.director.countries[0].id
+                            this.directorform.country_id = response.data.director.organisationdirectors[0].pivot.country_id
                             //get county id using the country id
-                            this.directorform.county_id = response.data.director.counties[0].id
-                            this.$store.dispatch('countrycounties', response.data.director.countries[0].id);
+                            this.directorform.county_id = response.data.director.organisationdirectors[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.director.organisationdirectors[0].pivot.country_id);
                             //get contituency using county id
-                            this.directorform.constituency_id = response.data.director.constituencies[0].id
-                            this.$store.dispatch('countyconstituencies', response.data.director.counties[0].id);
-                            //get ward usng constituency id
-                            this.directorform.ward_id = response.data.director.wards[0].id
-                            this.$store.dispatch('constituencywards', response.data.director.constituencies[0].id);
+                            this.directorform.constituency_id = response.data.director.organisationdirectors[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.director.organisationdirectors[0].pivot.county_id);
+                            // //get ward usng constituency id
+                            this.directorform.ward_id = response.data.director.organisationdirectors[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.director.organisationdirectors[0].pivot.constituency_id);
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -618,10 +570,10 @@
                             })
                         })
             },
-            addDirector(directorform_organisation_id) {
-                console.log(directorform_organisation_id)
+            addDirector() {
+                this.directorform.user_type = "Organisation Director";
                 this.$Progress.start();
-                this.directorform.post('/orgdirector')
+                this.directorform.patch('/api/orgdirector')
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -633,9 +585,10 @@
                             $('#DirectorModal').modal('hide')
                               this.$Progress.finish()
                     })
-                    .catch(()=>{
+                    .catch((response)=>{
                         this.$Progress.fail()
                         //errors
+                        console.log(response,'response')
                             $('#DirectorModal').modal('show');
                             toast({
                                 type: 'error',
@@ -646,7 +599,7 @@
             updateDirector(id){
                   console.log('update director')
                   this.$Progress.start();
-                     this.directorform.patch('/orgdirector/update/'+id)
+                     this.directorform.patch('/api/orgdirector/update/'+id)
                         .then(()=>{
                             this.$store.dispatch( "directors")
                          $('#DirectorModal').modal('hide')

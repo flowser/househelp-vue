@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientsTable extends Migration
+class CreateOrganisationClientTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('organisation_client', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('organisation_id');
             $table->unsignedInteger('gender_id')->nullable();
             $table->unsignedInteger('education_id')->nullable();
             $table->unsignedInteger('organisation_affiliate_id')->nullable();
@@ -47,6 +48,7 @@ class CreateClientsTable extends Migration
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
             $table->foreign('education_id')->references('id')->on('education')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade');
             $table->foreign('organisation_affiliate_id')->references('id')->on('organisation_affiliate')->onDelete('cascade');
         });
     }
@@ -58,6 +60,6 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('organisation_client');
     }
 }

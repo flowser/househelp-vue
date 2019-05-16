@@ -61,7 +61,11 @@ import VueRouter from 'vue-router';
         import ClientsCredentials  from './pages/backend/users/organisation/Clients.vue';
         import UsersCredentials  from './pages/backend/users/organisation/Users.vue';
         import HousehelpsCredentials  from './pages/backend/users/organisation/Househelps.vue';
+        import OrgBureauDirectorsCredentials  from './pages/backend/users/organisation/BureauDirectors.vue';
+        import OrgBureauAdminsCredentials  from './pages/backend/users/organisation/BureauAdmins.vue';
+        import OrgBureauEmployeesCredentials  from './pages/backend/users/organisation/BureauEmployees.vue';
 
+    //bureau
         import BureauDirectorsCredentials  from './pages/backend/users/bureau/Directors.vue';
         import BureauAdminsCredentials  from './pages/backend/users/bureau/Admins.vue';
         import BureauEmployeesCredentials  from './pages/backend/users/bureau/Employees.vue';
@@ -276,9 +280,38 @@ let routes = [
                               }
 
                           },
+                          //organiationBureau Directors
+                          {
+                            path: '/B/Bdirectors/credentials',
+                            name: 'bureau.directors.credentials',
+                            component:OrgBureauDirectorsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
+                       //2.2.1.8
+                       //organiationBureauAdmins
+                          {
+                            path: '/B/Badmins/credentials',
+                            name: 'bureau.admins.credentials',
+                            component:OrgBureauAdminsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
+                       //2.2.1.9
+                       //organiationBureauEmployees
+                          {
+                            path: '/B/Bemployees/credentials',
+                            name: 'bureau.employees.credentials',
+                            component:OrgBureauEmployeesCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
                        //2.2.1.16 Househelps
                           {
-                            path: '/B/househelps/credentials',
+                            path: '/B/Bhousehelps/credentials',
                             name: 'househelps.credentials',
                             component:HousehelpsCredentials,
                             meta:{
@@ -305,7 +338,6 @@ let routes = [
                             meta:{
                                   requiresAuth:true,
                               }
-
                           },
                        //2.2.1.8 BureauAdmins
                           {
@@ -315,7 +347,6 @@ let routes = [
                             meta:{
                                   requiresAuth:true,
                               }
-
                           },
                        //2.2.1.9 BureauEmployees
                           {
@@ -325,23 +356,21 @@ let routes = [
                             meta:{
                                   requiresAuth:true,
                               }
-
-                          },
-                       //2.2.1.10 BureauClients
-                          {
-                            path: '/B/bureau/clients',
-                            name: 'bureau.clients',
-                            component:BureauClients,
-                            meta:{
-                                  requiresAuth:true,
-                              }
-
                           },
                        //2.2.1.10 BureauHousehelps
                           {
                             path: '/B/bureau/househelps/credentials',
                             name: 'bureau.househelps.credentials',
                             component:BureauHousehelpsCredentials,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
+                          //2.2.1.10 BureauClients
+                          {
+                            path: '/B/bureau/clients',
+                            name: 'bureau.clients',
+                            component:BureauClients,
                             meta:{
                                   requiresAuth:true,
                               }
