@@ -21,12 +21,18 @@ const actions = {
         context.commit('client', response.data.client);
       });
     },
-    clients(context){//permission.index route laravel
-      axios.get('/api/client/get/list')
-      .then((response)=>{
-        // console.log(response.data)
-        context.commit('clients', response.data.clients);
-      });
+    clients({ dispatch, commit }, url){//permission.index route laravel
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('clients', response.data.clients.data)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+        });
     },
     ClientById(context, payload){
         axios.get('/api/client/show/'+payload)

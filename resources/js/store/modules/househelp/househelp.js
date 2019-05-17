@@ -41,13 +41,24 @@ const actions = {
         context.commit('househelps', response.data.househelps);
       });
     },
-    househelpslist(context){//permission.index route laravel
-        axios.get('/api/househelp/get/list')
-        .then((response)=>{
-          console.log(response.data)
-          context.commit('househelpslist', response.data.househelps);
+    househelpslist({ dispatch, commit }, url){
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                console.log(response.data.househelps.data)
+                commit('househelpslist', response.data.househelps.data);
+                // dispatch('Urls',  response.data.househelps);
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
         });
       },
+    //   Urls(context, payload){
+    //     console.log(payload,'payrol')
+    //   },
     HousehelpById(context, payload){
         // console.log(payload)
         axios.get('/api/househelp/show/'+payload)

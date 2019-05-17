@@ -99,6 +99,25 @@
                   </tr>
                 </tbody>
               </table>
+              <div v-if="Directors.length" >
+                  <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
+                          <span class="float-left" style="margin-bottom:-0.5em" >
+                              <div style="margin-bottom:0.25em">
+                                  Between <span style="color:#9a009a;"> {{pagination.from}} </span>
+                                  & <span style="color:#9a009a;"> {{pagination.to}} </span>
+                                  out of <span style="color:#9a009a;"> {{pagination.total}} </span> Directors
+                              </div>
+                              <button class="btn btn-info" v-on:click="fetchPaginatedDirectors(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                          </span>
+                          <span class="float-right" style="margin-bottom:-0.5em" >
+                              <div style="margin-bottom:0.25em">
+                                  Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
+                                  of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                              </div>
+                              <button class="btn btn-info" v-on:click="fetchPaginatedDirectors(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                          </span>
+                  </div>
+              </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -319,6 +338,9 @@
                         isValid: false,
                         country: undefined,
                 },
+                url:'/api/orgdirector/get',
+                pagination:[],
+
             }
         },
         mounted() {
@@ -387,7 +409,39 @@
                return this.$store.dispatch("genders")
             },
             loadDirectors(){
-                return this.$store.dispatch( "directors")//get all from directors.index
+                this.$Progress.start();
+                return this.$store.dispatch( "directors", this.url)
+                 .then((response)=>{
+                     this.makingPagination(response.data.directors),
+                    toast({
+                     type: 'success',
+                     title: 'Fetched the Director data successfully'
+                    })
+                })
+                .catch(()=>{
+                    this.$Progress.fail();
+                    toast({
+                    type: 'error',
+                    title: 'There was something Wrong'
+                    })
+                })
+            },
+            makingPagination(data){
+                let pagination = {
+                    current_page : data.current_page,
+                    last_page: data.last_page,
+                    from: data.from,
+                    to: data.to,
+                    total: data.total,
+                    next_page_url: data.next_page_url,
+                    prev_page_url: data.prev_page_url,
+                }
+                this.pagination = pagination;
+                console.log( this.pagination, 'pagination')
+            },
+            fetchPaginatedDirectors(url){
+                this.url = url;
+                this.loadDirectors();
             },
             newDirectorModal(){
                  this.editmodeDirector= false;

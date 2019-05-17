@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         if (auth()->check()) {
             if (auth()->user()->hasRole('Superadmin')) {
-                $users = User::with('roles', 'permissions')->get();
+                $users = User::with('roles', 'permissions')->paginate(7);
             }
         }
             return response()-> json([

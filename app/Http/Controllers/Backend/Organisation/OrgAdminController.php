@@ -32,7 +32,7 @@ class OrgAdminController extends Controller
                                         }
                                     )
                                     ->with('roles','permissions','organisationadmins')
-                                    ->get();
+                                    ->paginate(7);
 
             }
         }

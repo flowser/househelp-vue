@@ -38,12 +38,12 @@ class HousehelpController extends Controller
 
     public function HousehelpsList()
     {
-           if (auth()->check()) {
-               if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+        //    if (auth()->check()) {
+            //    if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
                    $househelps = User::whereHas('bureauhousehelps')->with('roles','permissions','bureauhousehelps')->role('Househelp')
-                            ->get();
-               }
-           }
+                            ->paginate(20);
+            //    }
+        //    }
            return response()-> json([
                'househelps'=>$househelps,
            ], 200);

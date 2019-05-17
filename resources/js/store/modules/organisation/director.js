@@ -14,12 +14,18 @@ const getters = {
       }
   };
 const actions = {
-    directors(context){//permission.index route laravel
-      axios.get('/api/orgdirector/get')
-      .then((response)=>{
-        console.log(response.data)
-        context.commit('directors', response.data.directors);
-      });
+    directors({ dispatch, commit }, url){//permission.index route laravel
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('directors', response.data.directors.data)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+        });
     },
     DirectorById(context, payload){
         axios.get('/api/orgdirector/show/'+payload)

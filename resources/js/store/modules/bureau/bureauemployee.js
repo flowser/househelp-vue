@@ -22,15 +22,23 @@ const actions = {
       axios.get('/api/bureauemployee/get')
       .then((response)=>{
         console.log(response.data)
-        context.commit('bureauemployees', response.data.bureauemployees);
+        context.commit('bureauemployees', response.data.employees);
       });
     },
-    bureauemployeeslist(context){//permission.index route laravel
-        axios.get('/api/bureauemployee/get/list')
-        .then((response)=>{
-          console.log(response.data)
-          context.commit('employeeslist', response.data.employees);
+    bureauemployeeslist({ dispatch, commit }, url){//permission.index route laravel
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('employeeslist', response.data.employees.data)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
         });
+
+
       },
     BureauEmployeeById(context, payload){
         axios.get('/api/bureauemployee/show/'+payload)

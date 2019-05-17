@@ -46,7 +46,7 @@ public function index()
                                         }
                                     )
                                     ->with('roles','permissions','organisationaffiliates')
-                                    ->get();
+                                    ->paginate(7);
 
             }
         }

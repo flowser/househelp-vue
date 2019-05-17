@@ -30,13 +30,25 @@
                   <tr v-for="(househelp, index) in Househelps" :key="househelp.id">
                     <td >{{index+1}}</td>
                     <td style="width: 500px;">
-                        <div class="row" style="width:100%" v-for="bureau in househelp.househelps" :key="bureau.id">
+                        <div class="row" style="width:100%" v-for="bureau in househelp.bureauhousehelps" :key="bureau.id">
                             <div class="col-sm-3" style="padding: 3px;">
                                  <img class="card-img-top" :src="househelpLoadPassPhoto(bureau.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
                             <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="househelpLoadIDFrontPhoto(bureau.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="househelpLoadIDBackPhoto(bureau.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
+                                <!-- idstatus_id_number: null -->
+                                <!-- idstatus_id_photo_back: null -->
+                                <!-- idstatus_id_photo_front: null -->
+                                <!-- idstatus_reason: "lost but applied" -->
+                                <!-- idstatus_ref_number: "3556208185" -->
+                                <!-- idstatus_status: "no" -->
+                                <!-- idstatus_waiting_card_photo: "0177250569e5952679c41c39208d1320.jpg" -->
+                                <div v-if="bureau.idstatus_id_photo_front">
+                                    <img class="card-img-top" :src="househelpLoadIDFrontPhoto(bureau.idstatus_id_photo_front)" style="width:100%" alt="Card image cap"><br>
+                                    <img class="card-img-top" :src="househelpLoadIDBackPhoto(bureau.idstatus_id_photo_back)" style="width:100%" alt="Card image cap">
+                                </div>
+                                <div v-if="bureau.idstatus_waiting_card_photo">
+                                     <img class="card-img-top" :src="househelpLoadWaitingCardPhoto(bureau.idstatus_waiting_card_photo)" style="width:100%" alt="Card image cap">
+                                </div>
                             </div>
                             <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
                                 <div>{{househelp.full_name}},</div>
@@ -99,6 +111,26 @@
                   </tr>
                 </tbody>
               </table>
+
+              <div v-if="Househelps.length" >
+                  <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
+                        <span class="float-left" style="margin-bottom:-0.5em" >
+                            <div style="margin-bottom:0.25em">
+                                 Between <span style="color:#9a009a;"> {{pagination.from}} </span>
+                                 & <span style="color:#9a009a;"> {{pagination.to}} </span>
+                                out of <span style="color:#9a009a;"> {{pagination.total}} </span> Househelps
+                            </div>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                        </span>
+                        <span class="float-right" style="margin-bottom:-0.5em" >
+                            <div style="margin-bottom:0.25em">
+                                 Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
+                                 of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                            </div>
+                             <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                        </span>
+                  </div>
+              </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -283,6 +315,7 @@
         name:"Organisation-Househelps",
         data(){
             return{
+
                 newHousehelp: false,
                 editmodeHousehelp: false,
                 househelpform: new Form({
@@ -319,6 +352,8 @@
                         isValid: false,
                         country: undefined,
                 },
+                url:'/api/househelp/get/list',
+                pagination:[],
             }
         },
         mounted() {
@@ -351,6 +386,41 @@
 
         },
         methods:{
+             loadHousehelps(){
+                this.$Progress.start();
+                return this.$store.dispatch( "househelpslist", this.url)
+                 .then((response)=>{
+                     this.makingPagination(response.data.househelps),
+                    toast({
+                     type: 'success',
+                     title: 'Fetched the Househelp data successfully'
+                    })
+                })
+                .catch(()=>{
+                    this.$Progress.fail();
+                    toast({
+                    type: 'error',
+                    title: 'There was something Wrong'
+                    })
+                })
+            },
+            makingPagination(data){
+                let pagination = {
+                    current_page : data.current_page,
+                    last_page: data.last_page,
+                    from: data.from,
+                    to: data.to,
+                    total: data.total,
+                    next_page_url: data.next_page_url,
+                    prev_page_url: data.prev_page_url,
+                }
+                this.pagination = pagination;
+                console.log( this.pagination, 'pagination')
+            },
+            fetchPaginatedHousehelps(url){
+                this.url = url;
+                this.loadHousehelps();
+            },
             //househelp
             InputPhone({ number, isValid, country }) {
             this.househelpform.phone = number;
@@ -385,9 +455,6 @@
             },
             loadGenders(){
                return this.$store.dispatch("genders")
-            },
-            loadHousehelps(){
-                return this.$store.dispatch( "househelpslist")//get all from househelps.index
             },
             newHousehelpModal(){
                  this.editmodeHousehelp= false;
@@ -522,6 +589,49 @@
                       }
 
             },
+            househelpLoadWaitingCardPhoto(househelpform_waitingcard_photo){
+                if(househelpform_waitingcard_photo){
+                    return "/assets/bureau/img/househelps/waitingcards/"+househelpform_waitingcard_photo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpChangeWaitingCardPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpform.id_photo_back =event.target.result
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            updateHousehelpWaitingCardPhoto(househelpform_id_photo_back){
+                let img = this.househelpform.id_photo_back;
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                      }else{
+                          if(img.length>100){
+                            return this.househelpform.id_photo_back;
+                        }else{
+                            if(househelpform_id_photo_back){
+                                return "/assets/bureau/img/househelps/IDs/back/"+househelpform_id_photo_back;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+
+            },
+
+
 
             editHousehelpModal(id){
                  this.editmodeHousehelp = true;

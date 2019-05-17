@@ -41,7 +41,7 @@ class BureauDirectorController extends Controller
                if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
                    $directors = User::whereHas('bureaudirectors')->with('roles','permissions','bureaudirectors')->role('Bureau Director')
                 //    $directors = User::with('roles','permissions','bureaudirectors')->role('Bureau Director')
-                            ->get();
+                     ->paginate(7);
                }
            }
            return response()-> json([

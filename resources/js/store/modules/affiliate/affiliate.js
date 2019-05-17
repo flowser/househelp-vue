@@ -21,12 +21,18 @@ const actions = {
         context.commit('affiliate', response.data.affiliate);
       });
     },
-    affiliates(context){//permission.index route laravel
-      axios.get('/api/affiliate/get/list')
-      .then((response)=>{
-        // console.log(response.data)
-        context.commit('affiliates', response.data.affiliates);
-      });
+    affiliates({ dispatch, commit }, url){//permission.index route laravel
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('affiliates', response.data.affiliates.data)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+        });
     },
     AffiliateById(context, payload){
         axios.get('/api/affiliate/show/'+payload)

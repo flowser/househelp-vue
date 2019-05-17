@@ -25,13 +25,19 @@ const actions = {
         context.commit('bureauadmins', response.data.bureauadmins);
       });
     },
-    bureauadminslist(context){//permission.index route laravel
-        axios.get('/api/bureauadmin/get/list')
-        .then((response)=>{
-          console.log(response.data)
-          context.commit('adminslist', response.data.admins);
+    bureauadminslist({ dispatch, commit }, url){//permission.index route laravel
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('adminslist', response.data.admins.data)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
         });
-      },
+    },
     BureauAdminById(context, payload){
         axios.get('/api/bureauadmin/show/'+payload)
               .then((response)=>{

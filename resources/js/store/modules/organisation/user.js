@@ -15,12 +15,18 @@ const getters = {
     }
   }
 const actions = {
-    users(context){//permission.index route laravel
-      axios.get('/api/user/get')
-      .then((response)=>{
-        // console.log(response.data.users)
-        context.commit('users', response.data.users)
-      })
+    userslist({ dispatch, commit }, url){//permission.index route laravel
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('users', response.data.users.data)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+        });
     },
     usertypes(context){//permission.index route laravel
       axios.get('/api/usertypes/get')

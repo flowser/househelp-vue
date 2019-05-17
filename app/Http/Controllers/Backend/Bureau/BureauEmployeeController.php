@@ -34,12 +34,12 @@ class BureauEmployeeController extends Controller
     {
            if (auth()->check()) {
                if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
-                   $directors = User::whereHas('bureauemployees')->with('roles','permissions','bureauemployees')->role('Bureau Employee')
-                            ->get();
+                   $employees = User::whereHas('bureauemployees')->with('roles','permissions','bureauemployees')->role('Bureau Employee')
+                   ->paginate(7);
                }
            }
            return response()-> json([
-               'directors'=>$directors,
+               'employees'=>$employees,
            ], 200);
 
     }

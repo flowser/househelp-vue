@@ -32,7 +32,7 @@ class OrgDirectorController extends Controller
                                         }
                                     )
                                     ->with('roles','permissions','organisationdirectors')
-                                    ->get();
+                                    ->paginate(7);
 
             }
         }

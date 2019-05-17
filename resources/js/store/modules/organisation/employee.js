@@ -14,12 +14,18 @@ const getters = {
     }
   };
 const actions = {
-    employees(context){//permission.index route laravel
-      axios.get('/api/orgemployee/get')
-      .then((response)=>{
-        console.log(response.data)
-        context.commit('employees', response.data.employees);
-      });
+    employees({ dispatch, commit }, url){//permission.index route laravel
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('employees', response.data.employees.data)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+        });
     },
     EmployeeById(context, payload){
         axios.get('/api/orgemployee/show/'+payload)
