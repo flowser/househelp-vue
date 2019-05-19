@@ -21,12 +21,33 @@ class BureauAdminController extends Controller
     }
     public function index()
     {
-        // $bureau = Auth::user()->bureauadmins()->first();
-        $admins = User::with('roles','permissions','bureauadmins', 'positions', 'countries', 'counties', 'constituencies', 'wards')
-                            ->get();
-        return response()-> json([
-            'admins'=>$admins,
-        ], 200);
+        if (auth()->check()) {
+            if (auth()->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
+                if (auth()->user()->hasAnyRole(['Bureau Director'])) {
+                    $bureau = auth('api')->user()->bureaudirectors()->first();
+                    $admins = User::whereHas('bureauadmins', function($query) use($bureau)
+                                {
+                                  $query ->where('bureau_id', $bureau->bureau_id);
+                                }
+                            )
+                            ->with('roles','permissions','bureauadmins')
+                            ->paginate(7);
+                }else if (auth()->user()->hasAnyRole(['Bureau Admin'])) {
+                    $bureau = auth('api')->user()->bureauadmins()->first();
+
+                    $admins = User::whereHas('bureauadmins', function($query) use($bureau)
+                                {
+                                  $query ->where('bureau_id', $bureau->bureau_id);
+                                }
+                            )
+                            ->with('roles','permissions','bureauadmins')
+                            ->paginate(7);
+                }
+                return response()-> json([
+                    'admins'=>$admins,
+                ], 200);
+            }
+        }
     }
 
     public function BureauAdminList()

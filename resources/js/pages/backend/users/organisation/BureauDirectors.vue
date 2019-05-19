@@ -312,7 +312,7 @@
                         password:'',
                         user_type:'',
                         user_id:'',
-                        organisation_id:'',
+                        bureau_id:'',
                         position_id:'',
                         gender_id:'',
                         photo:'',
@@ -624,7 +624,7 @@
                         })
             },
             addBureaudirector() {
-                this.bureaudirectorform.user_type = "Organisation Bureaudirector";
+                this.bureaudirectorform.user_type = "Bureaudirector";
                 this.$Progress.start();
                 this.bureaudirectorform.patch('/api/bureaudirector')
                     .then((response)=>{

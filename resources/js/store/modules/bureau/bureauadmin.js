@@ -18,12 +18,19 @@ const getters = {
     }
   };
 const actions = {
-    bureauadmins(context){//permission.index route laravel
-      axios.get('/api/bureauadmin/get')
-      .then((response)=>{
-        console.log(response.data)
-        context.commit('bureauadmins', response.data.bureauadmins);
-      });
+    bureauadmins({ dispatch, commit }, url){
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                console.log(response.data, 'bureau')
+                commit('bureauadmins', response.data.admins.data);
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+        });
     },
     bureauadminslist({ dispatch, commit }, url){//permission.index route laravel
         return new Promise((resolve, reject) =>{

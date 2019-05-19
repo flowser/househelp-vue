@@ -18,12 +18,18 @@ const getters = {
     }
   };
 const actions = {
-    bureauemployees(context){//permission.index route laravel
-      axios.get('/api/bureauemployee/get')
-      .then((response)=>{
-        console.log(response.data)
-        context.commit('bureauemployees', response.data.employees);
-      });
+    bureauemployees({ dispatch, commit }, url){
+        return new Promise((resolve, reject) =>{
+            axios.get(url)
+            .then((response)=>{
+                commit('bureauemployees', response.data.employees.data);
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+        });
     },
     bureauemployeeslist({ dispatch, commit }, url){//permission.index route laravel
         return new Promise((resolve, reject) =>{
@@ -49,7 +55,7 @@ const actions = {
     }
   }
 const mutations = {
-    employees(state, data){
+    bureauemployees(state, data){
       return state.bureauemployees = data;
     },
     employeeslist(state, data){

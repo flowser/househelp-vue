@@ -191,43 +191,6 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('bureauemployee/update/{bureauemployee}', [BureauEmployeeController::class, 'update'])->name('bureauemployee.update');
     Route::get('bureauemployee/delete/{bureauemployee}/', [BureauEmployeeController::class, 'destroy'])->name('bureauemployee.destroy');
 
-   //househelp
-    Route::get('househelp/get', [HousehelpController::class, 'index'])->name('househelp.index');
-    Route::get('househelp/get/list', [HousehelpController::class, 'HousehelpsList'])->name('househelp.index');
-    Route::get('agehousehelps/get', [HousehelpController::class, 'age'])->name('agehousehelp.index');
-    Route::get('genderhousehelps/get/{househelp}', [HousehelpController::class, 'gender'])->name('genderhousehelp.index');
-    Route::get('educationhousehelps/get/{househelp}', [HousehelpController::class, 'education'])->name('educationhousehelp.index');
-    Route::get('durationhousehelps/get/{househelp}', [HousehelpController::class, 'duration'])->name('durationhousehelp.index');
-    Route::get('experiencehousehelps/get/{househelp}', [HousehelpController::class, 'experience'])->name('experiencehousehelp.index');
-    Route::get('maritalstatushousehelps/get/{househelp}', [HousehelpController::class, 'maritalstatus'])->name('maritalstatushousehelp.index');
-    Route::get('operationhousehelps/get/{househelp}', [HousehelpController::class, 'operation'])->name('operationhousehelp.index');
-    Route::get('skillhousehelps/get/{househelp}', [HousehelpController::class, 'skill'])->name('skillhousehelp.index');
-    Route::get('religionhousehelps/get/{househelp}', [HousehelpController::class, 'religion'])->name('religionhousehelp.index');
-    Route::get('tribehousehelps/get/{househelp}', [HousehelpController::class, 'tribe'])->name('tribehousehelp.index');
-    Route::post('househelpfilter/get', [HousehelpController::class, 'filter'])->name('househelp.filter');
-    Route::post('househelp/verify/demographics/', [HousehelpController::class, 'verifyDemographics'])->name('househelp.verifydemographics');
-
-
-
-    Route::post('househelp/verify/attributes/', [HousehelpController::class, 'verifyAttributes'])->name('househelp.verifyattributes');
-    Route::post('househelp/verify/kin/', [HousehelpController::class, 'verifyKin'])->name('househelp.verifykin');
-    Route::patch('househelp/{bureau}', [HousehelpController::class, 'store'])->name('househelp.store');    //     /*
-
-    Route::get('househelp/show/{househelp}', [HousehelpController::class, 'show'])->name('househelp.show');
-    Route::get('househelp/edit/{househelp}', [HousehelpController::class, 'edit'])->name('househelp.edit');
-    Route::patch('househelp/verify/updatedemographics/{househelp}', [HousehelpController::class, 'verifyUpdateDemographics'])->name('househelp.Demographics');
-    Route::patch('househelp/verify/updateattributes/{househelp}', [HousehelpController::class, 'verifyUpdateAttributes'])->name('househelp.Attributes');
-    Route::patch('househelp/update/{househelp}', [HousehelpController::class, 'update'])->name('househelp.update');
-    Route::get('househelp/delete/{househelp}/', [HousehelpController::class, 'destroy'])->name('househelp.destroy');
-
-    //  Househelpkin
-    Route::get('househelpkin/get', [HousehelpkinController::class, 'index'])->name('househelpkin.index');
-    Route::patch('househelpkin/{househelpkin}', [HousehelpkinController::class, 'store'])->name('househelpkin.store');
-    Route::get('househelpkin/show/{househelpkin}', [HousehelpkinController::class, 'show'])->name('househelpkin.show');
-    Route::get('househelpkin/edit/{househelpkin}', [HousehelpkinController::class, 'edit'])->name('househelpkin.edit');
-    Route::patch('househelpkin/update/{househelpkin}', [HousehelpkinController::class, 'update'])->name('househelpkin.update');
-    Route::get('househelpkin/delete/{househelpkin}/', [HousehelpkinController::class, 'destroy'])->name('househelpkin.destroy');
-
 
 });
 
@@ -560,6 +523,44 @@ Route::get('healthstatus/show/{healthstatus}', [HealthstatusController::class, '
 Route::get('healthstatus/edit/{healthstatus}', [HealthstatusController::class, 'edit'])->name('healthstatus.edit');
 Route::patch('healthstatus/update/{healthstatus}', [HealthstatusController::class, 'update'])->name('healthstatus.update');
 Route::get('healthstatus/delete/{healthstatus}', [HealthstatusController::class, 'destroy'])->name('healthstatus.destroy');
+
+   //househelp
+   Route::get('househelp/get', [HousehelpController::class, 'index'])->name('househelp.index');
+   Route::get('househelp/bureau/get', [HousehelpController::class, 'bureau'])->name('househelp.bureau');
+   Route::get('househelp/get/list', [HousehelpController::class, 'HousehelpsList'])->name('househelp.index');
+   Route::get('agehousehelps/get', [HousehelpController::class, 'age'])->name('agehousehelp.index');
+   Route::get('genderhousehelps/get/{househelp}', [HousehelpController::class, 'gender'])->name('genderhousehelp.index');
+   Route::get('educationhousehelps/get/{househelp}', [HousehelpController::class, 'education'])->name('educationhousehelp.index');
+   Route::get('durationhousehelps/get/{househelp}', [HousehelpController::class, 'duration'])->name('durationhousehelp.index');
+   Route::get('experiencehousehelps/get/{househelp}', [HousehelpController::class, 'experience'])->name('experiencehousehelp.index');
+   Route::get('maritalstatushousehelps/get/{househelp}', [HousehelpController::class, 'maritalstatus'])->name('maritalstatushousehelp.index');
+   Route::get('operationhousehelps/get/{househelp}', [HousehelpController::class, 'operation'])->name('operationhousehelp.index');
+   Route::get('skillhousehelps/get/{househelp}', [HousehelpController::class, 'skill'])->name('skillhousehelp.index');
+   Route::get('religionhousehelps/get/{househelp}', [HousehelpController::class, 'religion'])->name('religionhousehelp.index');
+   Route::get('tribehousehelps/get/{househelp}', [HousehelpController::class, 'tribe'])->name('tribehousehelp.index');
+   Route::post('househelpfilter/get', [HousehelpController::class, 'filter'])->name('househelp.filter');
+   Route::post('househelp/verify/demographics/', [HousehelpController::class, 'verifyDemographics'])->name('househelp.verifydemographics');
+
+
+
+   Route::post('househelp/verify/attributes/', [HousehelpController::class, 'verifyAttributes'])->name('househelp.verifyattributes');
+   Route::post('househelp/verify/kin/', [HousehelpController::class, 'verifyKin'])->name('househelp.verifykin');
+   Route::patch('househelp/{bureau}', [HousehelpController::class, 'store'])->name('househelp.store');    //     /*
+
+   Route::get('househelp/show/{househelp}', [HousehelpController::class, 'show'])->name('househelp.show');
+   Route::get('househelp/edit/{househelp}', [HousehelpController::class, 'edit'])->name('househelp.edit');
+   Route::patch('househelp/verify/updatedemographics/{househelp}', [HousehelpController::class, 'verifyUpdateDemographics'])->name('househelp.Demographics');
+   Route::patch('househelp/verify/updateattributes/{househelp}', [HousehelpController::class, 'verifyUpdateAttributes'])->name('househelp.Attributes');
+   Route::patch('househelp/update/{househelp}', [HousehelpController::class, 'update'])->name('househelp.update');
+   Route::get('househelp/delete/{househelp}/', [HousehelpController::class, 'destroy'])->name('househelp.destroy');
+
+   //  Househelpkin
+   Route::get('househelpkin/get', [HousehelpkinController::class, 'index'])->name('househelpkin.index');
+   Route::patch('househelpkin/{househelpkin}', [HousehelpkinController::class, 'store'])->name('househelpkin.store');
+   Route::get('househelpkin/show/{househelpkin}', [HousehelpkinController::class, 'show'])->name('househelpkin.show');
+   Route::get('househelpkin/edit/{househelpkin}', [HousehelpkinController::class, 'edit'])->name('househelpkin.edit');
+   Route::patch('househelpkin/update/{househelpkin}', [HousehelpkinController::class, 'update'])->name('househelpkin.update');
+   Route::get('househelpkin/delete/{househelpkin}/', [HousehelpkinController::class, 'destroy'])->name('househelpkin.destroy');
 
 
 //cart

@@ -19,15 +19,35 @@ class BureauEmployeeController extends Controller
     {
         $this->middleware('auth:api');
     }
-
     public function index()
     {
-        // $bureau = Auth::user()->bureauemployees()->first();
-        $employees = User::with('roles','permissions','bureauemployees', 'positions', 'countries', 'counties', 'constituencies', 'wards')
-                            ->get();
-        return response()-> json([
-            'employees'=>$employees,
-        ], 200);
+        if (auth()->check()) {
+            if (auth()->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
+                if (auth()->user()->hasAnyRole(['Bureau Director'])) {
+                    $bureau = auth('api')->user()->bureaudirectors()->first();
+                    $employees = User::whereHas('bureauemployees', function($query) use($bureau)
+                                {
+                                  $query ->where('bureau_id', $bureau->bureau_id);
+                                }
+                            )
+                            ->with('roles','permissions','bureauemployees')
+                            ->paginate(7);
+                }else if (auth()->user()->hasAnyRole(['Bureau Admin'])) {
+                    $bureau = auth('api')->user()->bureauadmins()->first();
+
+                    $employees = User::whereHas('bureauemployees', function($query) use($bureau)
+                                {
+                                  $query ->where('bureau_id', $bureau->bureau_id);
+                                }
+                            )
+                            ->with('roles','permissions','bureauemployees')
+                            ->paginate(7);
+                }
+                return response()-> json([
+                    'employees'=>$employees,
+                ], 200);
+            }
+        }
     }
 
     public function BureauEmployeeList()

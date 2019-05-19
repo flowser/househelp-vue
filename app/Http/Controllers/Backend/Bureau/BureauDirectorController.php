@@ -22,17 +22,33 @@ class BureauDirectorController extends Controller
     }
     public function index()
     {
-        $bureau = Auth::user()->bureauemployees()->first();
-        $directors = User::whereHas('bureaudirectors', function($query) use($bureau)
+        if (auth()->check()) {
+            if (auth()->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
+                if (auth()->user()->hasAnyRole(['Bureau Director'])) {
+                    $bureau = auth('api')->user()->bureaudirectors()->first();
+                    $directors = User::whereHas('bureaudirectors', function($query) use($bureau)
                                 {
-                                  $query ->where('bureau_id', $bureau->id);
+                                  $query ->where('bureau_id', $bureau->bureau_id);
                                 }
                             )
-                            ->with('roles','permissions','bureaudirectors', 'positions', 'countries', 'counties', 'constituencies', 'wards')
-                            ->get();
-        return response()-> json([
-            'directors'=>$directors,
-        ], 200);
+                            ->with('roles','permissions','bureaudirectors')
+                            ->paginate(7);
+                }else if (auth()->user()->hasAnyRole(['Bureau Admin'])) {
+                    $bureau = auth('api')->user()->bureauadmins()->first();
+
+                    $directors = User::whereHas('bureaudirectors', function($query) use($bureau)
+                                {
+                                  $query ->where('bureau_id', $bureau->bureau_id);
+                                }
+                            )
+                            ->with('roles','permissions','bureaudirectors')
+                            ->paginate(7);
+                }
+                return response()-> json([
+                    'directors'=>$directors,
+                ], 200);
+            }
+        }
     }
 
     public function BureauDirectorList()

@@ -5,6 +5,9 @@
             <!-- {{Ages}} -->
             <aside class="widget widget_categories" style="padding-left: 5px; padding-top: 1px; padding-right: 5px;margin-bottom: 5px;">
                 <div class="col-md-12 col-sm-6 col-xs-6" style="padding-right: 5px;padding-left: 5px;">
+                    <el-button type="danger" v-on:click="getallHousehelps()" plain>Reset (Vew All) </el-button>
+                </div>
+                <div class="col-md-12 col-sm-6 col-xs-6" style="padding-right: 5px;padding-left: 5px;">
                     <label>Age </label><br>
                     <!-- {{Ages}}<br> -->
                     <el-select
@@ -197,7 +200,7 @@
                         </el-option>
                     </el-select>
                 </div>
-                <div class="col-md-12 col-sm-6 col-xs-6" style="padding-right: 5px;padding-left: 5px;">
+                <!-- <div class="col-md-12 col-sm-6 col-xs-6" style="padding-right: 5px;padding-left: 5px;">
                     <label>ID Status </label><br>
                     <el-select
                         v-model="filterform.idstatus"
@@ -228,7 +231,7 @@
                         :value="healthstatus.name"> {{healthstatus.name}} ({{healthstatus.househelps}})
                         </el-option>
                     </el-select>
-                </div>
+                </div> -->
 
                 <hr class="col-md-12 col-xs-12 col-sm-12" style="padding-right: 0px;padding-left: 0px;">
             </aside>
@@ -258,6 +261,8 @@ export default {
                     englishstatus_id:'',
                     idstatus:'',
                     healthstatus:'',
+                    filter:true,
+                    url:'/api/househelpfilter/get',
                 }),
             }
         },
@@ -276,6 +281,7 @@ export default {
             this.loadIDstatuses();
             this.loadHealthstatuses();
             this.loadAges();
+
         },
         computed:{
             Ages(){
@@ -322,7 +328,7 @@ export default {
             },
             Househelps(){
                 return this.$store.getters.Househelps
-            }
+            },
         },
         methods:{
             loadAges(){
@@ -579,37 +585,22 @@ export default {
                                 })
                     });
             },
-            allHousehelps(){
-                return this.$store.dispatch("househelps")
+            getallHousehelps(){
+                this.filterform.filter = false;
+                this.filterform.url = '/api/househelp/get';
+                this.$store.dispatch("filterstatus", this.filterform.filter)
+                this.$store.dispatch("househelps", this.filterform)
+                this.filterform.reset();
             },
             remoteMethod(query) {
                 this.$Progress.start()
-                this.$store.dispatch("HousehelpsByFilter", this.filterform)
-                .then((response)=>{
-                     toast({
-                        type: 'success',
-                        title: 'Househelp Filtration search has been successful'
-                        })
-                        //   this.filterform.reset()
-                          this.$Progress.finish()
-                })
-                .catch(()=>{
-                    this.$Progress.fail()
-                    toast({
-                        type: 'error',
-                        title: 'Househelp Filtration search was not successful, change your Filters.'
-                    })
-                })
-                // var vm = this
-                // if (query !== '') {
-                //     axios.get('/api/search?search=' + query).then(function (query) {
-                //         vm.options4 = query.data.map(item => {
-                //             return {value: item.id, label: item.name};
-                //         })
-                //     })
-                // } else {
-                //     vm.options4 = [];
-                // }
+                this.filterform.filter = true;
+                this.filterdata();
+                this.$store.dispatch("filterstatus", this.filterform.filter)
+                this.$store.dispatch("househelps")
+            },
+            filterdata(){
+                this.$store.dispatch("filterform", this.filterform)
             },
         }
 }

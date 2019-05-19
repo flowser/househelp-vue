@@ -38,7 +38,25 @@
 							</div>
 						</div>
 					</div><!--features_items-->
-
+                    <div v-if="Househelps.length" style="margin-left: 4px; margin-right: 4px;">
+                        <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
+                                <span class="pull-left" style="margin-bottom:-0.5em" >
+                                    <div style="margin-bottom:0.25em">
+                                        Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                        & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                        out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Househelps
+                                    </div>
+                                    <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
+                                </span>
+                                <span class="pull-right" style="margin-bottom:-0.5em" >
+                                    <div style="margin-bottom:0.25em">
+                                        Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                        of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
+                                    </div>
+                                    <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
+                                </span>
+                        </div>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -61,15 +79,21 @@ import RecommendedHousehelps from "./includes/frontend/Recommended-Items";
         },
         data(){
             return{
+                filter:false,
                 imageUrl:'',
                 searchform: new Form({
                         id:'',
                 }),
+                 filterform:new Form({
+                    filter:false,
+                    url:'/api/househelp/get',
+                }),
+                pagination:[],
            }
         },
         mounted() {
-            this.loadHousehelps();
             this.loadCartItems();
+            this.loadHousehelps();
         },
         computed:{
             Househelps(){
@@ -87,13 +111,63 @@ import RecommendedHousehelps from "./includes/frontend/Recommended-Items";
             Count(){
                 return this.$store.getters.Count
             },
+            Pagination(){
+                return this.$store.getters.Pagination
+            }
         },
         methods:{
             loadCartItems(){
                 return this.$store.dispatch("cartItems")
             },
             loadHousehelps(){
-                return this.$store.dispatch("househelps")
+                let filter = this.$store.getters.Filter;
+                if(filter == true){
+                    this.filterform.filter = true;
+                    this.$store.dispatch( "househelps", this.filterform,)
+                    .then((response)=>{
+                        this.filterform.reset();
+                        toast({
+                        type: 'success',
+                        title: 'Fetched the Househelp data with filters successfully'
+                        })
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong'
+                        })
+                    })
+                }else if(filter == false){
+                    this.filterform.filter = false;
+                    this.$store.dispatch("filterstatus", this.filterform.filter)
+                    this.$store.dispatch("househelps", this.filterform)
+                    .then((response)=>{
+                        this.filterform.reset();
+                        toast({
+                        type: 'success',
+                        title: 'Fetched the Househelp data successfully'
+                        })
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong'
+                        })
+                    })
+                }
+            },
+            fetchPaginatedHousehelps(url){
+                let filterform = this.$store.getters.FilterForm
+                let filter = this.$store.getters.Filter;
+                if(filter == true){
+                    filterform.url = url;
+                    this.loadHousehelps();
+                }else if (filter == false){
+                    this.filterform.url = url;
+                    this.loadHousehelps();
+                }
             },
             househelpLoadPassPhoto(househelp_photo){
                 if(househelp_photo){
@@ -127,7 +201,6 @@ import RecommendedHousehelps from "./includes/frontend/Recommended-Items";
                 })
             },
             Remove(cartItem_id){
-                // console.log(cartItem_id)
                 axios.get('/api/cart/remove/'+cartItem_id)
                 .then((response)=>{
                      toast({
@@ -147,7 +220,6 @@ import RecommendedHousehelps from "./includes/frontend/Recommended-Items";
                 })
             },
             Clear(CartItems){
-                // console.log(CartItems)
                 axios.get('/api/cart/clear/'+CartItems)
                  .then((response)=>{
                      toast({
@@ -167,7 +239,6 @@ import RecommendedHousehelps from "./includes/frontend/Recommended-Items";
                 })
             },
             openCheckoutModal(CartItems){
-                // console.log(CartItems)
                 this.loadhousehelps()
                 this.loadCartItems()
                 this.transactionform.reset()

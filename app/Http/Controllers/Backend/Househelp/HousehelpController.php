@@ -20,30 +20,61 @@ class HousehelpController extends Controller
     {
         $this->middleware('auth:api');
     }
+
     public function index()
     {
-          $househelps = Househelp::
+            $househelps = Househelp::
                 with('country', 'county', 'constituency', 'ward',
                 'gender', 'education', 'experience', 'tribe', 'skill','duration',
                 'operation', 'englishstatus','maritalstatus', 'religion', 'kid',
                 'idstatus','healthstatus')//single has
-                                       ->get();
+                                       ->paginate(24);
                    return response()-> json([
                         'househelps' => $househelps,
                     ], 200);
+    }
 
+    public function bureau()
+    {
+        if (auth()->check()) {
+            if (auth()->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
+                if (auth()->user()->hasAnyRole(['Bureau Director'])) {
+                    $bureaudirector = auth('api')->user()->bureaudirectors()->first();
+                    // return $bureaudirector;
+                    $househelps = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
+                                {
+                                  $query ->where('bureau_id', $bureaudirector->bureau_id);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+                }
+                else if (auth()->user()->hasAnyRole(['Bureau Admin'])) {
+                    $bureaudirector = auth('api')->user()->bureauadmins()->first();
 
-
+                    $househelps = User::whereHas('bureauhousehelps', function($query) use( $bureaudirector)
+                                {
+                                  $query ->where('bureau_id',  $bureaudirector->bureau_id);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+                }
+                return response()-> json([
+                    'househelps'=>$househelps,
+                ], 200);
+            }
+        }
     }
 
     public function HousehelpsList()
     {
-        //    if (auth()->check()) {
-            //    if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+           if (auth()->check()) {
+               if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
                    $househelps = User::whereHas('bureauhousehelps')->with('roles','permissions','bureauhousehelps')->role('Househelp')
                             ->paginate(20);
-            //    }
-        //    }
+               }
+           }
            return response()-> json([
                'househelps'=>$househelps,
            ], 200);
@@ -303,7 +334,7 @@ class HousehelpController extends Controller
         $househelps = Househelp::
                 with('country', 'county', 'constituency', 'ward','gender', 'education', 'experience', 'tribe', 'skill','duration',
                      'operation', 'englishstatus','maritalstatus', 'religion', 'kid')
-                                ->filter($request)->get();
+                                ->filter($request) ->paginate(24);
             return response()-> json([
                 'househelps' => $househelps,
         ], 200);
