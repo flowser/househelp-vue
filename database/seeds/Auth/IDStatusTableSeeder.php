@@ -2,6 +2,7 @@
 
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use App\Models\Househelp\Househelp;
 use App\Models\Househelp\Standard\Idstatus;
 
 class IDStatusTableSeeder extends Seeder
@@ -18,41 +19,86 @@ class IDStatusTableSeeder extends Seeder
         $backIDPath = public_path()."/assets/bureau/img/househelps/IDs/back";
         $waitingCardPath = public_path()."/assets/bureau/img/househelps/waitingcards";
 
-        for ($i = 0; $i < 480; $i++) {
-            Idstatus::create([
-                'status'            => 'yes',
-                'reason'            => null,
-                'id_number'         => $faker->unique()->numberBetween($min = 22222222, $max = 33333333),
-                'ref_number'        => null,
-                'id_photo_front'    => $faker->unique()->image($frontIDPath, 400,300, 'people', false),
-                'id_photo_back'     => $faker->unique()->image($backIDPath, 400,300, 'people', false),
-                'waiting_card_photo'=> null,
-                'bureau_househelp_id'=> $faker->numberBetween($min = 1, $max = 480),
-            ]);
+        foreach (range(1,60) as $index){
+                $HousehelpID = Househelp::where('id', '>=', 1)->where('id', '<=', 60)->orderBy('id', 'asc')->first()->id;
+
+                $HousehelpIDS = Idstatus::orderBy('id', 'asc')->pluck('bureau_househelp_id')->toArray();
+
+                $uniqueHousehelpID = Househelp::where('id', '>=', 1)
+                                   ->where('id', '<=', 60)->whereNotIn('id',  $HousehelpIDS)->first()->id;
+                if($HousehelpIDS){
+                        Idstatus::create([
+                            'status'            => 'yes',
+                            'reason'            => null,
+                            'id_number'         => $faker->unique()->numberBetween($min = 22222222, $max = 33333333),
+                            'ref_number'        => null,
+                            'id_photo_front'    => $faker->unique()->image($frontIDPath, 400,300, 'people', false),
+                            'id_photo_back'     => $faker->unique()->image($backIDPath, 400,300, 'people', false),
+                            'waiting_card_photo'=> null,
+                            'bureau_househelp_id'=> $uniqueHousehelpID,
+                        ]);
+                }else{
+                    Idstatus::create([
+                        'status'            => 'yes',
+                        'reason'            => null,
+                        'id_number'         => $faker->unique()->numberBetween($min = 22222222, $max = 33333333),
+                        'ref_number'        => null,
+                        'waiting_card_photo'=> $faker->unique()->image($waitingCardPath, 400,300, 'people', false),
+                        'bureau_househelp_id'=> $HousehelpID,
+                    ]);
+                }
         }
-        for ($i = 0; $i < 10; $i++) {
-            Idstatus::create([
-                'status'            => 'no',
-                'reason'            => 'lost but applied',
-                'id_number'         => null,
-                'ref_number'        => $faker->unique()->numberBetween($min = 3333333333, $max = 4444444444),
-                'id_photo_front'    => null,
-                'id_photo_back'     => null,
-                'waiting_card_photo'=> $faker->unique()->image($waitingCardPath, 400,300, 'people', false),
-                'bureau_househelp_id'=> $faker->numberBetween($min = 481, $max = 490),
-            ]);
+
+        foreach (range(1,25) as $index){
+                $HousehelpID = Househelp::where('id', '>=', 61)->where('id', '<=', 85)->orderBy('id', 'asc')->first()->id;
+                $HousehelpIDS = Idstatus::orderBy('id', 'asc')->pluck('bureau_househelp_id')->toArray();
+                $uniqueHousehelpID = Househelp::where('id', '>=', 61)
+                                ->where('id', '<=', 85)->whereNotIn('id',  $HousehelpIDS)->first()->id;
+                if($HousehelpIDS){
+                    Idstatus::create([
+                        'status'            => 'no',
+                        'reason'            => 'lost but applied',
+                        'id_number'         => $faker->unique()->numberBetween($min = 22222222, $max = 33333333),
+                        'ref_number'        => null,
+                        'waiting_card_photo'=> $faker->unique()->image($waitingCardPath, 400,300, 'people', false),
+                        'bureau_househelp_id'=> $uniqueHousehelpID,
+                    ]);
+                }else{
+                    Idstatus::create([
+                        'status'            => 'no',
+                        'reason'            => 'lost but applied',
+                        'id_number'         => $faker->unique()->numberBetween($min = 22222222, $max = 33333333),
+                        'ref_number'        => null,
+                        'waiting_card_photo'=> $faker->unique()->image($waitingCardPath, 400,300, 'people', false),
+                        'bureau_househelp_id'=> $HousehelpID,
+                    ]);
+                }
+
         }
-        for ($i = 0; $i < 10; $i++) {
-            Idstatus::create([
-                'status'            => 'no',
-                'reason'            => 'applied',
-                'id_number'         => null,
-                'ref_number'        => $faker->unique()->numberBetween($min = 4444444444, $max = 5555555555),
-                'id_photo_front'    => null,
-                'id_photo_back'     => null,
-                'waiting_card_photo'=> $faker->unique()->image($waitingCardPath, 400,300, 'people', false),
-                'bureau_househelp_id'=> $faker->numberBetween($min = 491, $max = 500),
-            ]);
+        foreach (range(1,15) as $index){
+            $HousehelpID = Househelp::where('id', '>=', 86)->where('id', '<=', 100)->orderBy('id', 'asc')->first()->id;
+            $HousehelpIDS = Idstatus::orderBy('id', 'asc')->pluck('bureau_househelp_id')->toArray();
+            $uniqueHousehelpID = Househelp::where('id', '>=', 86)
+                            ->where('id', '<=', 100)->whereNotIn('id',  $HousehelpIDS)->first()->id;
+            if($HousehelpIDS){
+                            Idstatus::create([
+                                'status'            => 'no',
+                                'reason'            => 'applied',
+                                'id_number'         => $faker->unique()->numberBetween($min = 22222222, $max = 33333333),
+                                'ref_number'        => null,
+                                'waiting_card_photo'=> $faker->unique()->image($waitingCardPath, 400,300, 'people', false),
+                                'bureau_househelp_id'=> $uniqueHousehelpID,
+                            ]);
+                    }else{
+                        Idstatus::create([
+                            'status'            => 'no',
+                            'reason'            => 'applied',
+                            'id_number'         => $faker->unique()->numberBetween($min = 22222222, $max = 33333333),
+                            'ref_number'        => null,
+                            'waiting_card_photo'=> $faker->unique()->image($waitingCardPath, 400,300, 'people', false),
+                            'bureau_househelp_id'=> $HousehelpID,
+                        ]);
+                    }
         }
     }
 }

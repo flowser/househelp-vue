@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Standard\Country;
 use App\Models\Standard\Constituency;
 use App\Models\Organisation\OrganisationAdmin;
+use App\Models\Organisation\OrganisationEmployee;
 
 class OrganisationAdminTableSeeder extends Seeder
 {
@@ -50,9 +51,9 @@ class OrganisationAdminTableSeeder extends Seeder
         ]);
 
         // Superadmin admin n accounts 1,2-3
-        for ($i = 0; $i < 2; $i++) {
+
             OrganisationAdmin::create([
-                'user_id'        => $faker->unique()->numberBetween($min = 2, $max = 3),
+                'user_id'        => '3',
                 'organisation_id'=>          '1',
                 'position_id'    =>          '3',
                 'gender_id'      => $faker-> numberBetween($min =1, $max = 2),
@@ -62,7 +63,16 @@ class OrganisationAdminTableSeeder extends Seeder
                 'constituency_id'=> $constituency->id,
                 'ward_id'        => $ward->id,
             ]);
-        }
-
+            OrganisationEmployee::create([
+                'user_id'        => '4',
+                'organisation_id'=>          '1',
+                'position_id'    =>          '3',
+                'gender_id'      => $faker-> numberBetween($min =1, $max = 2),
+                'active'         => true,
+                'country_id'     => $country->id,
+                'county_id'      => $county->id,
+                'constituency_id'=> $constituency->id,
+                'ward_id'        => $ward->id,
+            ]);
     }
 }

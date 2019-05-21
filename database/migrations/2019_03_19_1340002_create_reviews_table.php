@@ -16,7 +16,7 @@ class CreateReviewsTable extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('househelp_id');
-            $table->unsignedInteger('client_id');
+            $table->unsignedInteger('organisation_client_id');
             $table->text('review')->nullable();
             $table->string('what_to_improve')->nullable();
             $table->string('work_efficiency_rating')->nullable();
@@ -30,7 +30,7 @@ class CreateReviewsTable extends Migration
             $table->timestamps();
 
             $table->foreign('househelp_id')->references('id')->on('bureau_househelp')->onDelete('cascade');
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('organisation_client_id')->references('id')->on('organisation_client')->onDelete('cascade');
         });
     }
 

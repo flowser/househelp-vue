@@ -33,15 +33,29 @@ class UserTableSeeder extends Seeder
                 'confirmed'         => true,
         ]);//2
         if($user1){
-            $user1->assignRole('Superadmin','Affiliate');
+            $user1->assignRole('Superadmin');
             $user1->givePermissionTo('View Backend');
         }
 
         $faker = Faker\Factory::create();
 
         // admin n accounts 2-3
-        for ($i = 0; $i < 2; $i++) {
+
             $user2 = User::create([
+                'first_name'        => $faker ->firstNameMale,
+                'last_name'         => $faker ->lastName,
+                'email'             => $faker ->unique()->safeEmail,
+                'password'          => Hash::make('flx4life'),
+                'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                'user_type'        => 'Organisation Director',
+                'confirmed'         => true,
+            ]);
+            if($user2){
+                $user2->assignRole('Director');
+                $user2 ->givePermissionTo('View Backend', 'View All');
+            }
+
+            $user3 = User::create([
                 'first_name'        => $faker ->firstNameMale,
                 'last_name'         => $faker ->lastName,
                 'email'             => $faker ->unique()->safeEmail,
@@ -50,31 +64,29 @@ class UserTableSeeder extends Seeder
                 'user_type'        => 'Organisation Admin',
                 'confirmed'         => true,
             ]);
-            if($user2){
-                $user2->assignRole('Admin');
-                $user2 ->givePermissionTo('View Backend', 'View All');
+            if($user3){
+                $user3->assignRole('Admin');
+                $user3 ->givePermissionTo('View Backend', 'View All');
             }
-          }
 
-        // directors id 3-6
-        for ($i = 0; $i < 3; $i++) {
-            $user3 = User::create([
-                    'first_name'        => $faker ->firstNameMale,
-                    'last_name'         => $faker ->lastName,
-                    'email'             => $faker ->unique()->safeEmail,
-                    'password'          => Hash::make('flx4life'),
-                    'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                    'user_type'        => 'Organisation Director',
-                    'confirmed'         => true,
-                ]);
-                if($user3){
-                    $user3->assignRole('Director');
-                    $user3 ->givePermissionTo('View Backend', 'View All');
-                }
-          }
-        // bureau directors id 7-26
-        for ($i = 0; $i < 20; $i++) {
-            $user4= User::create([
+            $user4 = User::create([
+                'first_name'        => $faker ->firstNameMale,
+                'last_name'         => $faker ->lastName,
+                'email'             => $faker ->unique()->safeEmail,
+                'password'          => Hash::make('flx4life'),
+                'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                'user_type'        => 'Organisation Employee',
+                'confirmed'         => true,
+            ]);
+            if($user4){
+                $user4->assignRole('Employee');
+                $user4 ->givePermissionTo('View Backend', 'View All');
+            }
+
+
+        // burea directors id 5-14 (10 diectors)
+        for ($i = 0; $i < 10; $i++) {
+            $user5= User::create([
                 'first_name'        => $faker ->firstNameMale,
                 'last_name'         => $faker ->lastName,
                 'email'             => $faker ->unique()->safeEmail,
@@ -83,14 +95,14 @@ class UserTableSeeder extends Seeder
                 'user_type'        => 'Bureau Director',
                 'confirmed'         => true,
             ]);
-            if($user4){
-                $user4->assignRole('Bureau Director');
-                $user4 ->givePermissionTo('View Backend', 'View All');
+            if($user5){
+                $user5->assignRole('Bureau Director');
+                $user5 ->givePermissionTo('View Backend', 'View All');
             }
           }
-        // bureau admin id 27-36
+        // bureau admin id 15-24 10
         for ($i = 0; $i < 10; $i++) {
-            $user5 = User::create([
+            $user6 = User::create([
                 'first_name'        => $faker ->firstNameMale,
                 'last_name'         => $faker ->lastName,
                 'email'             => $faker ->unique()->safeEmail,
@@ -99,14 +111,29 @@ class UserTableSeeder extends Seeder
                 'user_type'        => 'Bureau Admin',
                 'confirmed'         => true,
             ]);
-            if($user5){
-                $user5->assignRole('Bureau Admin');
-                $user5 ->givePermissionTo('View Backend', 'View All');
+            if($user6){
+                $user6->assignRole('Bureau Admin');
+                $user6 ->givePermissionTo('View Backend', 'View All');
             }
           }
-        // househelps id 37-536
-        for ($i = 0; $i < 500; $i++) {
-            $user6 = User::create([
+        // id 25-34 10 employee
+        for ($i = 0; $i < 10; $i++) {
+            $user7 = User::create([
+                'first_name'        => $faker ->firstNameMale,
+                'last_name'         => $faker ->lastName,
+                'email'             => $faker ->unique()->safeEmail,
+                'password'          => Hash::make('flx4life'),
+                'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                'user_type'        => 'Bureau Employee',
+                'confirmed'         => true,
+            ]);
+            if($user7){
+                $user7->assignRole('Bureau Employee');
+            }
+          }
+        // househelps id 35-134 100 employee
+        for ($i = 0; $i < 100; $i++) {
+            $user8 = User::create([
                 'first_name'        => $faker ->firstNameMale,
                 'last_name'         => $faker ->lastName,
                 'email'             => $faker ->unique()->safeEmail,
@@ -115,13 +142,13 @@ class UserTableSeeder extends Seeder
                 'user_type'        => 'Househelp',
                 'confirmed'         => true,
             ]);
-            if($user6){
-                $user6->assignRole('Househelp');
+            if($user8){
+                $user8->assignRole('Househelp');
             }
           }
-        // househelpskin id 537-1036
-        for ($i = 0; $i < 500; $i++) {
-            $user7 = User::create([
+        // househelpskin id 135-234
+        for ($i = 0; $i < 100; $i++) {
+            $user9 = User::create([
                 'first_name'        => $faker ->firstNameMale,
                 'last_name'         => $faker ->lastName,
                 'email'             => $faker ->unique()->safeEmail,
@@ -130,13 +157,13 @@ class UserTableSeeder extends Seeder
                 'user_type'        => 'HousehelpKins',
                 'confirmed'         => true,
             ]);
-            if($user7){
-                $user7->assignRole('Househelp Kin');
+            if($user9){
+                $user9->assignRole('Househelp Kin');
             }
           }
-        // // clients id 1037 - 1536
-        // for ($i = 0; $i < 500; $i++) {
-        //     $user8 = User::create([
+        // // client id 225-234
+        // for ($i = 0; $i < 5; $i++) {
+        //     $user10 = User::create([
         //         'first_name'        => $faker ->firstNameMale,
         //         'last_name'         => $faker ->lastName,
         //         'email'             => $faker ->unique()->safeEmail,
@@ -145,10 +172,11 @@ class UserTableSeeder extends Seeder
         //         'user_type'        => 'Client',
         //         'confirmed'         => true,
         //     ]);
-        //     if($user8){
-
+        //     if($user10){
+        //         $user10->assignRole('Client');
         //     }
         //   }
+
         $this->enableForeignKeys();
     }
 }

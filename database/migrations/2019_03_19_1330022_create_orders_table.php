@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('client_id')->unsigned();
+            $table->integer('organisation_client_id')->unsigned();
             $table->float('total',8, 2)->nullable();
             $table->string('payment_method')->nullable();
             $table->string('transaction_code')->nullable();
@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('organisation_client_id')->references('id')->on('organisation_client')->onDelete('cascade');
         });
     }
 

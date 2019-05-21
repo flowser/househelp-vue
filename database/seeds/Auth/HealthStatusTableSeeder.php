@@ -2,6 +2,7 @@
 
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use App\Models\Househelp\Househelp;
 use App\Models\Househelp\Standard\Healthstatus;
 
 class HealthStatusTableSeeder extends Seeder
@@ -14,38 +15,88 @@ class HealthStatusTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        for($i = 0; $i < 480; $i++) {
-            Healthstatus::create([
-                'bureau_househelp_id'=>$faker->unique()->numberBetween($min = 1, $max = 480),
-                'status'            =>'Healthy',
-                'HIV_status'        =>'Negative',
-                'other_chronics'    => null,
-                'chronic_details'   => null,
-                'allergy'           => null,
-                'specify'           => null,
-            ]);
+        foreach (range(1,60) as $index){
+            $HousehelpID = Househelp::where('id', '>=', 1)->where('id', '<=', 60)->orderBy('id', 'asc')->first()->id;
+
+            $HousehelpIDS = Healthstatus::orderBy('id', 'asc')->pluck('bureau_househelp_id')->toArray();
+
+            $uniqueHousehelpID = Househelp::where('id', '>=', 1)
+                               ->where('id', '<=', 60)->whereNotIn('id',  $HousehelpIDS)->first()->id;
+            if($HousehelpIDS){
+                Healthstatus::create([
+                    'bureau_househelp_id'=>$uniqueHousehelpID,
+                    'status'            =>'Healthy',
+                    'HIV_status'        =>'Negative',
+                    'other_chronics'    => null,
+                    'chronic_details'   => null,
+                    'allergy'           => null,
+                    'specify'           => null,
+                ]);
+            }else{
+                Healthstatus::create([
+                    'bureau_househelp_id'=>$HousehelpID,
+                    'status'            =>'Healthy',
+                    'HIV_status'        =>'Negative',
+                    'other_chronics'    => null,
+                    'chronic_details'   => null,
+                    'allergy'           => null,
+                    'specify'           => null,
+                ]);
+            }
         }
-        for ($i = 0; $i < 10; $i++) {
-            Healthstatus::create([
-                'bureau_househelp_id'=> $faker->unique()->numberBetween($min = 481, $max = 490),
-                'status'            =>'HASMINOR',
-                'HIV_status'        => 'Negative',
-                'other_chronics'    => null,
-                'chronic_details'   => null,
-                'allergy'           => 'nuts',
-                'specify'           => null,
-            ]);
+        foreach (range(1,25) as $index){
+            $HousehelpID = Househelp::where('id', '>=', 61)->where('id', '<=', 85)->orderBy('id', 'asc')->first()->id;
+            $HousehelpIDS = Healthstatus::orderBy('id', 'asc')->pluck('bureau_househelp_id')->toArray();
+            $uniqueHousehelpID = Househelp::where('id', '>=', 61)
+                            ->where('id', '<=', 85)->whereNotIn('id',  $HousehelpIDS)->first()->id;
+            if($HousehelpIDS){
+                Healthstatus::create([
+                    'bureau_househelp_id'=> $uniqueHousehelpID,
+                    'status'            =>'HASMINOR',
+                    'HIV_status'        => 'Negative',
+                    'other_chronics'    => null,
+                    'chronic_details'   => null,
+                    'allergy'           => 'nuts',
+                    'specify'           => null,
+                ]);
+            }else{
+                Healthstatus::create([
+                    'bureau_househelp_id'=> $HousehelpID,
+                    'status'            =>'HASMINOR',
+                    'HIV_status'        => 'Negative',
+                    'other_chronics'    => null,
+                    'chronic_details'   => null,
+                    'allergy'           => 'nuts',
+                    'specify'           => null,
+                ]);
+            }
         }
-        for ($i = 0; $i < 10; $i++) {
-            Healthstatus::create([
-                'bureau_househelp_id'=> $faker->unique()->numberBetween($min = 491, $max = 500),
-                'status'            => 'HASCHRONIC',
-                'HIV_status'        => 'Negative',
-                'other_chronics'    => 'none',
-                'chronic_details'   => 'Asthmatic',
-                'allergy'           =>  null,
-                'specify'           =>  null,
-            ]);
+        foreach (range(1,15) as $index){
+            $HousehelpID = Househelp::where('id', '>=', 86)->where('id', '<=', 100)->orderBy('id', 'asc')->first()->id;
+            $HousehelpIDS = Healthstatus::orderBy('id', 'asc')->pluck('bureau_househelp_id')->toArray();
+            $uniqueHousehelpID = Househelp::where('id', '>=', 86)
+                            ->where('id', '<=', 100)->whereNotIn('id',  $HousehelpIDS)->first()->id;
+            if($HousehelpIDS){
+                Healthstatus::create([
+                    'bureau_househelp_id'=> $uniqueHousehelpID,
+                    'status'            => 'HASCHRONIC',
+                    'HIV_status'        => 'Negative',
+                    'other_chronics'    => 'none',
+                    'chronic_details'   => 'Asthmatic',
+                    'allergy'           =>  null,
+                    'specify'           =>  null,
+                ]);
+            }else{
+                Healthstatus::create([
+                    'bureau_househelp_id'=> $HousehelpID,
+                    'status'            => 'HASCHRONIC',
+                    'HIV_status'        => 'Negative',
+                    'other_chronics'    => 'none',
+                    'chronic_details'   => 'Asthmatic',
+                    'allergy'           =>  null,
+                    'specify'           =>  null,
+                ]);
+            }
         }
     }
 }

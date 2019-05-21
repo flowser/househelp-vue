@@ -39,22 +39,20 @@ class OrganisationDirectorTableSeeder extends Seeder
         }
 
         // Superadmin admin n accounts 1,2-3
-        for ($i = 0; $i < 3; $i++) {
             OrganisationDirector::create([
-                'user_id'        => $faker->unique()->numberBetween($min = 4, $max = 6),
+                'user_id'        => '2',
                 'organisation_id'=>          '1',
                 'position_id'    =>          '1',
                 'gender_id'      => $faker-> numberBetween($min =1, $max = 2),
-                'id_no'          => $faker->unique()->numberBetween($min =444444444, $max = 555555555),
+                'id_no'          => $faker->unique(true)->numberBetween($min =444444444, $max = 555555555),
                 'active'         => true,
-                'phone'          => $faker->unique()->e164PhoneNumber,
-                'landline'       => $faker->unique()->tollFreePhoneNumber,
+                'phone'          => $faker->unique(true)->e164PhoneNumber,
+                'landline'       => $faker->unique(true)->tollFreePhoneNumber,
                 'address'        => $faker->postcode,
                 'country_id'     => $country->id,
                 'county_id'      => $county->id,
                 'constituency_id'=> $constituency->id,
                 'ward_id'        => $ward->id,
             ]);
-        }
     }
 }
