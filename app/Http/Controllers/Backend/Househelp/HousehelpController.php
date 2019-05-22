@@ -16,10 +16,10 @@ use App\Models\Househelp\Standard\Healthstatus;
 
 class HousehelpController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
 
     public function index()
     {
@@ -36,9 +36,9 @@ class HousehelpController extends Controller
 
     public function bureau()
     {
-        if (auth()->check()) {
-            if (auth()->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
-                if (auth()->user()->hasAnyRole(['Bureau Director'])) {
+        if (auth('api')->check()) {
+            if (auth('api')->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
+                if (auth('api')->user()->hasAnyRole(['Bureau Director'])) {
                     $bureaudirector = auth('api')->user()->bureaudirectors()->first();
                     // return $bureaudirector;
                     $househelps = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
@@ -49,7 +49,7 @@ class HousehelpController extends Controller
                             ->with('roles','permissions','bureauhousehelps')
                             ->paginate(7);
                 }
-                else if (auth()->user()->hasAnyRole(['Bureau Admin'])) {
+                else if (auth('api')->user()->hasAnyRole(['Bureau Admin'])) {
                     $bureaudirector = auth('api')->user()->bureauadmins()->first();
 
                     $househelps = User::whereHas('bureauhousehelps', function($query) use( $bureaudirector)
@@ -69,8 +69,8 @@ class HousehelpController extends Controller
 
     public function HousehelpsList()
     {
-           if (auth()->check()) {
-               if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+           if (auth('api')->check()) {
+               if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
                    $househelps = User::whereHas('bureauhousehelps')->with('roles','permissions','bureauhousehelps')->role('Househelp')
                             ->paginate(20);
                }
@@ -780,15 +780,21 @@ class HousehelpController extends Controller
      */
     public function edit($id)
     {
+        $househelp = User::
+                        with('roles','permissions','bureauhousehelps')
+                        ->find($id);
+                return response()-> json([
+                    'househelp'=>$househelp,
+                ], 200);
 
-        $househelp = Househelp:: with('country', 'county', 'constituency', 'ward',
-                                    'gender', 'education', 'experience', 'tribe', 'skill','duration',
-                                    'operation', 'englishstatus','maritalstatus','religion','kid',
-                                    'idstatus', 'healthstatus', 'househelpkins', 'user')
-                            ->find($id);
-        return response()-> json([
-            'househelp'=>$househelp,
-        ], 200);
+        // $househelp = Househelp:: with('country', 'county', 'constituency', 'ward',
+        //                             'gender', 'education', 'experience', 'tribe', 'skill','duration',
+        //                             'operation', 'englishstatus','maritalstatus','religion','kid',
+        //                             'idstatus', 'healthstatus', 'househelpkins', 'user')
+        //                     ->find($id);
+        // return response()-> json([
+        //     'househelp'=>$househelp,
+        // ], 200);
 
     }
 

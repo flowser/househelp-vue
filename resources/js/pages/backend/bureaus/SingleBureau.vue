@@ -682,7 +682,7 @@
                                     <span class="float-right">
                                         <h5 class="widget-user-desc" style="margin-bottom:0">{{Director.email}}</h5>
                                         <p style="margin-bottom:0.25em">
-                                            <small class="text-muted">Last updated On: {director.updated_at | dateformat}}</small>
+                                            <small class="text-muted">Last updated On: {{director.updated_at | dateformat}}</small>
                                         </p>
                                     </span>
                                 </div>
@@ -1676,7 +1676,7 @@
             //Bureau
             validateBureau() {
                 this.$Progress.start()
-                return this.bureauform.post('/bureau/verify/info')
+                return this.bureauform.post('/api/bureau/verify/info')
                     .then((response)=>{
                         return true;
                         toast({
@@ -1699,7 +1699,7 @@
                 let id = this.bureauform.id;
                 console.log('first',id);
                 this.$Progress.start()
-                return this.bureauform.patch('/bureau/updateverify/info/'+id)
+                return this.bureauform.patch('/api/bureau/updateverify/info/'+id)
                     .then((response)=>{
                         return true;
                         toast({
@@ -1779,7 +1779,7 @@
                  this.bureauform.reset()
                    console.log('edit bureauanisaton', id)
                     this.$Progress.start();
-                      axios.get('/bureau/edit/'+id)
+                      axios.get('/api/bureau/edit/'+id)
                         .then((response)=>{
                            $('#BureauModal').modal('show')
                            toast({
@@ -1816,7 +1816,7 @@
             updateBureau(id){
                   console.log('update bureauanisaton')
                   this.$Progress.start();
-                     this.bureauform.patch('/bureau/update/'+id)
+                     this.bureauform.patch('/api/bureau/update/'+id)
                         .then(()=>{
                             this.$store.dispatch('BureauById', this.$route.params.id);
                          $('#BureauModal').modal('hide')
@@ -2012,7 +2012,7 @@
                  this.editmodeDirector = true;
                  this.directorform.reset()
                     this.$Progress.start();
-                      axios.get('/bureaudirector/edit/'+id)
+                      axios.get('/api/bureaudirector/edit/'+id)
                         .then((response)=>{
                            $('#DirectorModal').modal('show')
                            toast({
@@ -2059,7 +2059,7 @@
                 // let bureau = this.$store.getters.Bureau[0];
                 console.log(Bureau_id)
                 this.$Progress.start();
-                this.directorform.patch('/bureaudirector/'+Bureau_id)
+                this.directorform.patch('/api/bureaudirector/'+Bureau_id)
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -2085,7 +2085,7 @@
                   console.log(id)
                   console.log(+this.$route.params.id)
                   this.$Progress.start();
-                     this.directorform.patch('/bureaudirector/update/'+id)
+                     this.directorform.patch('/api/bureaudirector/update/'+id)
                         .then(()=>{
                         this.$store.dispatch('BureauById', this.$route.params.id);
                          $('#DirectorModal').modal('hide')
@@ -2117,7 +2117,7 @@
                     if (result.value) {
                     //  console.log('delete director', id)
                         this.$Progress.start();
-                        this.directorform.get('/bureaudirector/delete/'+id)
+                        this.directorform.get('/api/bureaudirector/delete/'+id)
                             .then(()=>{
                             toast({
                             type: 'success',
@@ -2314,7 +2314,7 @@
                  this.editmodeAdmin = true;
                  this.adminform.reset()
                     this.$Progress.start();
-                      axios.get('/bureauadmin/edit/'+id)
+                      axios.get('/api/bureauadmin/edit/'+id)
                         .then((response)=>{
                            $('#AdminModal').modal('show')
                            toast({
@@ -2360,7 +2360,7 @@
             addAdmin(Bureau_id) {
                 console.log(Bureau_id)
                 this.$Progress.start();
-                this.adminform.patch('/bureauadmin/'+Bureau_id)
+                this.adminform.patch('/api/bureauadmin/'+Bureau_id)
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -2385,7 +2385,7 @@
             updateAdmin(id){
                   console.log(id)
                   this.$Progress.start();
-                     this.adminform.patch('/bureauadmin/update/'+id)
+                     this.adminform.patch('/api/bureauadmin/update/'+id)
                         .then(()=>{
                         this.$store.dispatch('BureauById', this.$route.params.id);
                          $('#AdminModal').modal('hide')
@@ -2417,7 +2417,7 @@
                     if (result.value) {
                     //  console.log('delete admin', id)
                         this.$Progress.start();
-                        this.adminform.get('/bureauadmin/delete/'+id)
+                        this.adminform.get('/api/bureauadmin/delete/'+id)
                             .then(()=>{
                             toast({
                             type: 'success',
@@ -2615,7 +2615,7 @@
                  this.editmodeEmployee = true;
                  this.employeeform.reset()
                     this.$Progress.start();
-                      axios.get('/bureauemployee/edit/'+id)
+                      axios.get('/api/bureauemployee/edit/'+id)
                         .then((response)=>{
                            $('#EmployeeModal').modal('show')
                            toast({
@@ -2661,7 +2661,7 @@
             addEmployee(Bureau_id) {
                 console.log(Bureau_id)
                 this.$Progress.start();
-                this.employeeform.patch('/bureauemployee/'+Bureau_id)
+                this.employeeform.patch('/api/bureauemployee/'+Bureau_id)
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -2687,7 +2687,7 @@
                   console.log(id)
                   console.log(+this.$route.params.id)
                   this.$Progress.start();
-                     this.employeeform.patch('/bureauemployee/update/'+id)
+                     this.employeeform.patch('/api/bureauemployee/update/'+id)
                         .then(()=>{
                         this.$store.dispatch('BureauById', this.$route.params.id);
                          $('#EmployeeModal').modal('hide')
@@ -2719,7 +2719,7 @@
                     if (result.value) {
                     //  console.log('delete employee', id)
                         this.$Progress.start();
-                        this.employeeform.get('/bureauemployee/delete/'+id)
+                        this.employeeform.get('/api/bureauemployee/delete/'+id)
                             .then(()=>{
                             toast({
                             type: 'success',

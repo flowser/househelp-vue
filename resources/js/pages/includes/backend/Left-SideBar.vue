@@ -120,6 +120,14 @@
                 </li>
 
                 <!-- {{--  organisation View  --}} -->
+                 <li  v-if="$hasrole(['Superadmin', 'Director', 'Admin'])" class="nav-item has-treeview">
+                    <router-link :to="`/B/bureaus`" class="nav-link">
+                        <i class="nav-icon purple fas fa-users"></i>
+                        <p >
+                                Bureaus
+                        </p>
+                    </router-link>
+                </li>
                 <li  v-if="$hasrole('Superadmin')" class="nav-item has-treeview">
                     <router-link :to="`/B/househelps`" class="nav-link">
                         <i class="nav-icon purple fas fa-users"></i>

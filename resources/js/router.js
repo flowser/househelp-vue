@@ -65,6 +65,11 @@ import VueRouter from 'vue-router';
         import OrgBureauAdminsCredentials  from './pages/backend/users/organisation/BureauAdmins.vue';
         import OrgBureauEmployeesCredentials  from './pages/backend/users/organisation/BureauEmployees.vue';
 
+        //all
+        import Bureaus  from './pages/backend/bureaus/Bureaus.vue';
+        import Bureausingle  from './pages/backend/bureaus/SingleBureau.vue';
+
+
     //bureau
         import BureauDirectorsCredentials  from './pages/backend/users/bureau/Directors.vue';
         import BureauAdminsCredentials  from './pages/backend/users/bureau/Admins.vue';
@@ -227,6 +232,22 @@ let routes = [
                             path:'/B/mail',
                             name: 'mail',
                             component: Mailbox,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
+                          {
+                            path:'/B/bureaus',
+                            name: 'Bureaus',
+                            component: Bureaus,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
+                          {
+                            path:'/B/bureaus/:id',
+                            name: 'Bureaus.:id',
+                            component: Bureausingle,
                             meta:{
                                   requiresAuth:true,
                               }

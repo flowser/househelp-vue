@@ -646,28 +646,28 @@
                             })
                             console.log(response.data.househelp)
                             this.househelpform.fill(response.data.househelp)
-                            this.househelpform.user_id = response.data.househelp.househelps[0].pivot.user_id
-                            this.househelpform.organisation_id = response.data.househelp.househelps[0].pivot.organisation_id
-                            this.househelpform.position_id = response.data.househelp.househelps[0].pivot.position_id
-                            this.househelpform.gender_id = response.data.househelp.househelps[0].pivot.gender_id
-                            this.househelpform.photo = response.data.househelp.househelps[0].pivot.photo
-                            this.househelpform.id_no = response.data.househelp.househelps[0].pivot.id_no
-                            this.househelpform.id_photo_front = response.data.househelp.househelps[0].pivot.id_photo_front
-                            this.househelpform.id_photo_back = response.data.househelp.househelps[0].pivot.id_photo_back
-                            this.househelpform.phone = response.data.househelp.househelps[0].pivot.phone
-                            this.househelpform.landline = response.data.househelp.househelps[0].pivot.landline
-                            this.househelpform.address = response.data.househelp.househelps[0].pivot.address
+                            this.househelpform.user_id = response.data.househelp.bureauhousehelps[0].pivot.user_id
+                            this.househelpform.organisation_id = response.data.househelp.bureauhousehelps[0].pivot.organisation_id
+                            this.househelpform.position_id = response.data.househelp.bureauhousehelps[0].pivot.position_id
+                            this.househelpform.gender_id = response.data.househelp.bureauhousehelps[0].pivot.gender_id
+                            this.househelpform.photo = response.data.househelp.bureauhousehelps[0].pivot.photo
+                            this.househelpform.id_no = response.data.househelp.bureauhousehelps[0].pivot.id_no
+                            this.househelpform.id_photo_front = response.data.househelp.bureauhousehelps[0].pivot.id_photo_front
+                            this.househelpform.id_photo_back = response.data.househelp.bureauhousehelps[0].pivot.id_photo_back
+                            this.househelpform.phone = response.data.househelp.bureauhousehelps[0].pivot.phone
+                            this.househelpform.landline = response.data.househelp.bureauhousehelps[0].pivot.landline
+                            this.househelpform.address = response.data.househelp.bureauhousehelps[0].pivot.address
 
-                            this.househelpform.country_id = response.data.househelp.househelps[0].pivot.country_id
+                            this.househelpform.country_id = response.data.househelp.bureauhousehelps[0].pivot.country_id
                             //get county id using the country id
-                            this.househelpform.county_id = response.data.househelp.househelps[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.househelp.househelps[0].pivot.country_id);
+                            this.househelpform.county_id = response.data.househelp.bureauhousehelps[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.househelp.bureauhousehelps[0].pivot.country_id);
                             //get contituency using county id
-                            this.househelpform.constituency_id = response.data.househelp.househelps[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.househelp.househelps[0].pivot.county_id);
+                            this.househelpform.constituency_id = response.data.househelp.bureauhousehelps[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.househelp.bureauhousehelps[0].pivot.county_id);
                             // //get ward usng constituency id
-                            this.househelpform.ward_id = response.data.househelp.househelps[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.househelp.househelps[0].pivot.constituency_id);
+                            this.househelpform.ward_id = response.data.househelp.bureauhousehelps[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.househelp.bureauhousehelps[0].pivot.constituency_id);
                             this.$Progress.finish();
                         })
                         .catch(()=>{
