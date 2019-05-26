@@ -72,6 +72,7 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
+                console.log(response.data, 'fata')
                 commit('househelpslist', response.data.househelps.data);
                 resolve(response)
             })

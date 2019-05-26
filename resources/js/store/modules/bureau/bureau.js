@@ -26,14 +26,12 @@ const actions = {
     BureauById(context, payload){
         axios.get('/api/bureau/show/'+payload)
               .then((response)=>{
-                  console.log(response.data);
                   context.commit('bureau', response.data.bureau);
               });
     },
     bureauByUserID(context){
         axios.get('/api/bureau/get')
               .then((response)=>{
-                  console.log(response.data, 'bueauby userid');
                   context.commit('bureau', response.data.bureau);
               });
     },

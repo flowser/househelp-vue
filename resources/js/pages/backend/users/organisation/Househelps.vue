@@ -12,6 +12,7 @@
                     <button class="btn btn-success"  @click.prevent="newHousehelpModal()">Add New Househelp
                          <i class="fas fa-plus fw"></i>
                      </button>
+
               </div>
             </div>
             <!-- /.card-header -->
@@ -35,13 +36,6 @@
                                  <img class="card-img-top" :src="househelpLoadPassPhoto(bureau.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
                             <div class="col-sm-3" style="padding: 3px;">
-                                <!-- idstatus_id_number: null -->
-                                <!-- idstatus_id_photo_back: null -->
-                                <!-- idstatus_id_photo_front: null -->
-                                <!-- idstatus_reason: "lost but applied" -->
-                                <!-- idstatus_ref_number: "3556208185" -->
-                                <!-- idstatus_status: "no" -->
-                                <!-- idstatus_waiting_card_photo: "0177250569e5952679c41c39208d1320.jpg" -->
                                 <div v-if="bureau.idstatus_id_photo_front">
                                     <img class="card-img-top" :src="househelpLoadIDFrontPhoto(bureau.idstatus_id_photo_front)" style="width:100%" alt="Card image cap"><br>
                                     <img class="card-img-top" :src="househelpLoadIDBackPhoto(bureau.idstatus_id_photo_back)" style="width:100%" alt="Card image cap">
