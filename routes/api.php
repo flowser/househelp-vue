@@ -71,6 +71,16 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get/user', [AuthController::class, 'user']);
 
+       //users
+       Route::get('user/get', [UserController::class, 'index']);
+       Route::get('usertypes/get', [UserController::class, 'usertypes']);
+       Route::post('user', [UserController::class, 'store']);
+       Route::get('user/show/{user}', [UserController::class, 'show']);
+       Route::get('user/edit/{user}', [UserController::class, 'edit']);
+       Route::patch('user/update/{user}', [UserController::class, 'update']);
+       Route::get('user/delete/{user}/', [UserController::class, 'destroy']);
+
+
     //organisation staff
     // orgdirector
     Route::get('orgdirector/get', [OrgDirectorController::class, 'index'])->name('orgdirector.index');
@@ -126,14 +136,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('affiliate/edit/{affiliate}', [AffiliateController::class, 'edit'])->name('affiliate.edit');
     Route::patch('affiliate/update/{affiliate}', [AffiliateController::class, 'update'])->name('affiliate.update');
     Route::get('affiliate/delete/{affiliate}', [AffiliateController::class, 'destroy'])->name('affiliate.destroy');
-       //users
-    Route::get('user/get', [UserController::class, 'index']);
-    Route::get('usertypes/get', [UserController::class, 'usertypes']);
-    Route::post('user', [UserController::class, 'store']);
-    Route::get('user/show/{user}', [UserController::class, 'show']);
-    Route::get('user/edit/{user}', [UserController::class, 'edit']);
-    Route::patch('user/update/{user}', [UserController::class, 'update']);
-    Route::get('user/delete/{user}/', [UserController::class, 'destroy']);
+
 
     // bureau
     Route::get('bureaus/get', [BureauController::class, 'index'])->name('bureau.index');
@@ -525,9 +528,14 @@ Route::patch('healthstatus/update/{healthstatus}', [HealthstatusController::clas
 Route::get('healthstatus/delete/{healthstatus}', [HealthstatusController::class, 'destroy'])->name('healthstatus.destroy');
 
    //househelp
-   Route::get('househelp/get', [HousehelpController::class, 'index'])->name('househelp.index');
+   Route::get('househelp/get', [HousehelpController::class, 'index'])->name('househelp.index');//front
    Route::get('househelp/bureau/get', [HousehelpController::class, 'bureau'])->name('househelp.bureau');
-   Route::get('househelp/get/list', [HousehelpController::class, 'HousehelpsList'])->name('househelp.index');
+   Route::get('househelp/get/list', [HousehelpController::class, 'HousehelpsList'])->name('househelp.index');//login details edit by supperadmin
+
+   Route::get('househelp/get/unemployed', [HousehelpController::class, 'unemployed'])->name('househelp.unemployed'); //view househelps
+   Route::get('househelp/get/employed', [HousehelpController::class, 'employed'])->name('househelp.unemployed');
+   Route::get('househelp/get/pending', [HousehelpController::class, 'pending'])->name('househelp.pending');
+
    Route::get('agehousehelps/get', [HousehelpController::class, 'age'])->name('agehousehelp.index');
    Route::get('genderhousehelps/get/{househelp}', [HousehelpController::class, 'gender'])->name('genderhousehelp.index');
    Route::get('educationhousehelps/get/{househelp}', [HousehelpController::class, 'education'])->name('educationhousehelp.index');

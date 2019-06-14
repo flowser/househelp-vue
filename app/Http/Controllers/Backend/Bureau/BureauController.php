@@ -33,8 +33,6 @@ class BureauController extends Controller
         return response()-> json([
             'bureaus' => $bureaus,
         ], 200);
-
-
     }
 
     //get own bureau according to login details

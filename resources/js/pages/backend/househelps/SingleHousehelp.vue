@@ -22,7 +22,7 @@
                         <span class="float-right">
                             <h5 class="widget-user-desc" style="margin-bottom:0" v-if="Househelp.user">{{Househelp.user.email}}</h5>
                             <p style="margin-bottom:0.25em">
-                                <small class="text-muted">Last updated On: {Househelp.updated_at | dateformat}}</small>
+                                <small class="text-muted">Last updated On: {{Househelp.updated_at | dateformat}}</small>
                             </p>
                         </span>
                     </div>
@@ -122,7 +122,7 @@
                                                 </div>
                                             </span>
                                             <span class="float-right">
-                                                <a href=""  @click.prevent="editHousehelpModal(Househelp.id)">
+                                                <a href=""  @click.prevent="editHousehelpModal(Househelp.user_id)">
                                                     <i class="fa fa-edit blue"></i>
                                                 </a>
                                             </span>
@@ -330,7 +330,7 @@
                                                 <label for="IDstatus" class="col-form-label"> Has ID card</label>
                                             </div>
                                             <div>
-                                                <input type="radio" v-model="IDstatus" value="HASIDbutlost">
+                                                <input type="radio" v-model="IDstatus" value="HASIDbutlost" checked>
                                                 <label for="IDstatus" class="col-form-label"> Has ID (lost, waiting card)</label>
                                             </div>
                                             <div>
@@ -728,9 +728,9 @@
     export default {
         data(){
             return{
-                 imageUrl:'',
-                IDstatus:"HasID",    //id status check
-                Healthstatus: "HEALTHY",
+                imageUrl:'',
+                IDstatus:'',    //id status check
+                Healthstatus: '',
                 househelpform: new Form({
                         id:'',
                         first_name:'',
@@ -846,7 +846,6 @@
             this.loadTribes(); //from methods
             this.loadGenders(); //from methods
             this.loadRelationships(); //from methods
-            this.loadBureau(); //from methods
             this.singlehousehelp()
 
         },
@@ -863,9 +862,6 @@
             },
             Wards(){
                return this.$store.getters.ConstituencyWards
-            },
-            Bureau(){
-               return this.$store.getters.Bureau
             },
             Househelp(){
                 console.log(this.$store.getters.Househelp)
@@ -911,15 +907,13 @@
         methods:{
             singlehousehelp(){
                this.imageUrl = "/assets/bureau/img/background/background-1.jpg";
-
-                console.log(this.$route.params.id, 'jjjjj')
-                this.$store.dispatch('HousehelpById', this.$route.params.id);
+               this.$store.dispatch('HousehelpById', this.$route.params.id);
             },
              //Househelp Update Demographic
             validateupdateHousehelpDemograhic() {
                 let id = this.househelpform.id;
                 this.$Progress.start()
-                return this.househelpform.patch('/househelp/verify/updatedemographics/' +id)
+                return this.househelpform.patch('/api/househelp/verify/updatedemographics/' +id)
                     .then((response)=>{
                         return true;
                         toast({
@@ -940,7 +934,7 @@
             validateupdateHousehelpAttributes() {
                 let id = this.househelpform.id;
                 this.$Progress.start()
-                return this.househelpform.patch('/househelp/verify/updateattributes/' +id)
+                return this.househelpform.patch('/api/househelp/verify/updateattributes/' +id)
                     .then((response)=>{
                         return true;
                         toast({
@@ -995,9 +989,6 @@
             constituencyWards(constituency_id){
                 console.log(constituency_id);
                 this.$store.dispatch('constituencywards', constituency_id); //send to store to the action with id
-            },
-            loadBureau(){
-                return this.$store.dispatch("bureauByUserID")
             },
             loadGenders(){
                return this.$store.dispatch("genders")
@@ -1138,8 +1129,8 @@
                         reader.readAsDataURL(file);
                 }
             },
-            updateHousehelpPassPhoto(househelpform_photo){
-                // console.log(househelpform_bureauhousehelp_photo)
+            updateHousehelpPassPhoto(househelp_photo){
+                console.log(househelp_photo, 'edit')
                 let img = this.househelpform.photo;
                       if(img ==null){
                           return "/assets/bureau/img/website/empty.png";
@@ -1148,13 +1139,14 @@
                           if(img.length>100){
                             return this.househelpform.photo;
                         }else{
-                            if(househelpform_photo){
-                                return "assets/bureau/img/househelps/passports/"+househelpform_photo;
+                            if(househelp_photo){
+                                return "/assets/bureau/img/househelps/passports/"+househelp_photo;
                             }else{
                                 return "/assets/bureau/img/website/empty.png";
                             }
                         }
                       }
+
             },
             updateHousehelpIDFrontPhoto(househelpform_id_photo_front){
                 let img = this.househelpform.id_photo_front;
@@ -1209,106 +1201,141 @@
             },
 
             editHousehelpModal(id){
-                console.log(id)
                  this.househelpform.reset()
                     this.$Progress.start();
-                      axios.get('/househelp/edit/'+id)
+                      axios.get('/api/househelp/edit/'+id)
                         .then((response)=>{
-                           $('#HousehelpModal').modal('show')
                            toast({
                             type: 'success',
                             title: 'Fetched the Househelp data successfully'
                             })
-                            console.log(response.data)
-                            this.househelpform.fill(response.data.househelp)
-                            this.househelpform.id = response.data.househelp.id
-                            this.househelpform.first_name = response.data.househelp.user.first_name
-                            this.househelpform.last_name = response.data.househelp.user.last_name
-                            this.househelpform.email = response.data.househelp.user.email
-                            this.househelpform.user_id = response.data.househelp.user_id
-                            this.househelpform.password = response.data.househelp.user.password
+                            console.log(response.data.user, 'jjjjkukyk')
+                            this.househelpform.fill(response.data.user)
 
-                            this.househelpform.photo = response.data.househelp.photo
-                            this.househelpform.bureau_id = response.data.househelp.bureau_id
+                            this.househelpform.id = response.data.user.id;
+                            this.househelpform.first_name = response.data.user.first_name;
+                            this.househelpform.last_name = response.data.user.last_name;
+                            this.househelpform.email = response.data.user.email;
+                            this.househelpform.password = response.data.user.password;
+                            //
+                            this.househelpform.user_id = response.data.user.bureauhousehelps[0].pivot.user_id;
+                            this.househelpform.bureau_id = response.data.user.bureauhousehelps[0].pivot.bureau_id;
+                            this.househelpform.photo = response.data.user.bureauhousehelps[0].pivot.photo;
+                            //
+                            this.househelpform.about_me = response.data.user.bureauhousehelps[0].pivot.about_me;
+                            this.househelpform.phone = response.data.user.bureauhousehelps[0].pivot.phone;
+                            this.househelpform.address = response.data.user.bureauhousehelps[0].pivot.address;
+                            this.househelpform.country_id = response.data.user.bureauhousehelps[0].pivot.country_id;
 
-
-                            this.househelpform.about_me = response.data.househelp.about_me
-                            this.househelpform.phone = response.data.househelp.phone
-                            this.househelpform.address = response.data.househelp.address
-
-                            //    //get country id
-                            this.househelpform.country_id = response.data.househelp.country.id
-                            console.log(response.data.househelp.country.id)
                             //get county id using the country id
-                             this.househelpform.county_id = response.data.househelp.county.id
-                             console.log(response.data.househelp.county.id)
-                            this.$store.dispatch('countrycounties', response.data.househelp.country.id);
+                            this.househelpform.county_id = response.data.user.bureauhousehelps[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.user.bureauhousehelps[0].pivot.country_id);
                             //get contituency using county id
-                            this.househelpform.constituency_id = response.data.househelp.constituency.id
-                            console.log(response.data.househelp.constituency.id)
-                            this.$store.dispatch('countyconstituencies', response.data.househelp.county.id);
+                            this.househelpform.constituency_id = response.data.user.bureauhousehelps[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.user.bureauhousehelps[0].pivot.county_id);
                             // //get ward usng constituency id
-                           this.househelpform.ward_id = response.data.househelp.ward.id
-                           console.log( response.data.househelp.constituency.id)
-                            this.$store.dispatch('constituencywards', response.data.househelp.constituency.id);
+                            this.househelpform.ward_id = response.data.user.bureauhousehelps[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.user.bureauhousehelps[0].pivot.constituency_id);
 
-                            this.househelpform.age = response.data.househelp.age
-                            this.househelpform.gender_id = response.data.househelp.gender.id
-                            this.househelpform.education_id = response.data.househelp.education.id
-                            this.househelpform.experience_id = response.data.househelp.experience.id
-                            this.househelpform.maritalstatus_id = response.data.househelp.maritalstatus.id
-                            this.househelpform.tribe_id = response.data.househelp.tribe.id
-                            this.househelpform.skill_id = response.data.househelp.skill.id
-                            this.househelpform.operation_id = response.data.househelp.operation.id
-                            this.househelpform.duration_id = response.data.househelp.duration.id
-                            this.househelpform.englishstatus_id = response.data.househelp.englishstatus.id
-                            this.househelpform.religion_id = response.data.househelp.religion.id
-                            this.househelpform.kid_id = response.data.househelp.kid.id
+                            //extra
+                            this.househelpform.birth_date = response.data.user.bureauhousehelps[0].pivot.birth_date;
+                            this.househelpform.age = response.data.user.bureauhousehelps[0].pivot.age;
+                            this.househelpform.gender_id = response.data.user.bureauhousehelps[0].pivot.gender_id;
+                            this.househelpform.education_id = response.data.user.bureauhousehelps[0].pivot.education_id;
+                            this.househelpform.experience_id = response.data.user.bureauhousehelps[0].pivot.experience_id;
+                            this.househelpform.maritalstatus_id = response.data.user.bureauhousehelps[0].pivot.maritalstatus_id;
+                            this.househelpform.tribe_id = response.data.user.bureauhousehelps[0].pivot.tribe_id;
+                            this.househelpform.skill_id = response.data.user.bureauhousehelps[0].pivot.skill_id;
+                            this.househelpform.operation_id = response.data.user.bureauhousehelps[0].pivot.operation_id;
+                            this.househelpform.duration_id = response.data.user.bureauhousehelps[0].pivot.duration_id;
+                            this.househelpform.englishstatus_id = response.data.user.bureauhousehelps[0].pivot.englishstatus_id;
+                            this.househelpform.religion_id = response.data.user.bureauhousehelps[0].pivot.religion_id;
+                            this.househelpform.kid_id = response.data.user.bureauhousehelps[0].pivot.kid_id;
                             //id status
-                            this.househelpform.idstatus_id = response.data.househelp.idstatus.id
-                            this.househelpform.bureau_househelp_id = response.data.househelp.idstatus.bureau_househelp_id
-                            this.househelpform.id_number = response.data.househelp.idstatus.id_number
-                            this.househelpform.ref_number = response.data.househelp.idstatus.ref_number
-                            this.househelpform.id_photo_front = response.data.househelp.idstatus.id_photo_front
-                            this.househelpform.id_photo_back = response.data.househelp.idstatus.id_photo_back
-                            this.househelpform.waiting_card_photo = response.data.househelp.idstatus.waiting_card_photo
-                            this.househelpform.reason = response.data.househelp.idstatus.reason
-                            this.househelpform.status = response.data.househelp.idstatus.status
+                            this.househelpform.IDstatus = response.data.user.bureauhousehelps[0].pivot.IDstatus;
+                            this.househelpform.idstatus_id = response.data.user.bureauhousehelps[0].pivot.idstatus_id;//id of idstatus row
+                            this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0].pivot.bureau_househelp_id;
+                            this.househelpform.id_status = response.data.user.bureauhousehelps[0].pivot.id_status;
+                            this.househelpform.id_number = response.data.user.bureauhousehelps[0].pivot.id_number;
+                            this.househelpform.ref_number = response.data.user.bureauhousehelps[0].pivot.ref_number;
+                            this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].pivot.id_photo_front;
+                            this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].pivot.id_photo_back;
+                            this.househelpform.waiting_card_photo = response.data.user.bureauhousehelps[0].pivot.waiting_card_photo;
 
-                            if(response.data.househelp.idstatus.reason == 'Has ID Card'){
-                                this.IDstatus = 'HasID'
-                            }
-                            if(response.data.househelp.idstatus.reason == 'Has ID Card but lost, however applied for replacement'){
-                                this.IDstatus = 'HASIDbutlost'
-                            }
-                            if(response.data.househelp.idstatus.reason == 'Dont Have ID Card but applied for new Card'){
-                                this.IDstatus = 'NOIDbutapplied'
-                            }
-                            if(response.data.househelp.idstatus.reason == 'Dont Have ID Card and Has not applied for new Card'){
-                                this.IDstatus = 'NOID'
-                            }
+                            if(this.househelpform.id_number != null && this.househelpform.ref_number == null){
+                                 this.IDstatus = "HasID";
 
-                            // this.househelpform.health_status = response.data.househelp
-                            this.househelpform.HIV_status = response.data.househelp.healthstatus.HIV_status
-                            this.househelpform.allergy = response.data.househelp.healthstatus.allergy
-                            this.househelpform.health_status_id = response.data.househelp.healthstatus.id
-                            this.househelpform.bureau_househelp_id = response.data.househelp.healthstatus.bureau_househelp_id
-                            this.househelpform.chronic_details = response.data.househelp.healthstatus.chronic_details
-                            this.househelpform.other_chronics = response.data.househelp.healthstatus.other_chronics
-                            this.househelpform.specify = response.data.househelp.healthstatus.specify
-                            this.househelpform.status = response.data.househelp.healthstatus.status
+                            }else if(this.househelpform.id_number != null && this.househelpform.ref_number != null){                               this.IDstatus = "HASIDbutlost";
+                                    this.IDstatus = "HASIDbutlost";
 
-                            if(response.data.househelp.healthstatus.allergy == 'Healthy'){
-                                this.Healthstatus = 'HEALTHY'
-                            }
-                            if(response.data.househelp.healthstatus.allergy == 'Has Minor Health Issues'){
-                                this.Healthstatus = 'HASMINOR'
-                            }
-                            if(response.data.househelp.healthstatus.other_chronics == 'Has Other Chronic Issues'){
-                                console.log(response.data.househelp.healthstatus.allergy)
-                                this.Healthstatus = 'HASCHRONIC'
-                            }
+                            }else if(this.househelpform.id_number == null && this.househelpform.ref_number != null){
+                                this.IDstatus = "NOIDbutapplied";
 
+                            }else if(this.househelpform.id_number == null && this.househelpform.ref_number == null){
+                                this.IDstatus = "NOID";
+                            }
+                            console.log(this.IDstatus, 'status')
+                            this.househelpform.reason = response.data.user.bureauhousehelps[0].pivot.reason;
+                            this.househelpform.status = response.data.user.bureauhousehelps[0].pivot.status;
+                            //health status
+                            this.househelpform.HealthStatus = response.data.user.bureauhousehelps[0].pivot.HealthStatus;
+                            this.househelpform.health_status_id = response.data.user.bureauhousehelps[0].pivot.health_status_id;
+                            this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0].pivot.bureau_househelp_id;
+                            this.househelpform.health_status = response.data.user.bureauhousehelps[0].pivot.health_status;
+                            this.househelpform.HIV_status = response.data.user.bureauhousehelps[0].pivot.HIV_status;
+                            this.househelpform.allergy = response.data.user.bureauhousehelps[0].pivot.allergy;
+                            this.househelpform.chronic_details = response.data.user.bureauhousehelps[0].pivot.chronic_details;
+                            this.househelpform.other_chronics = response.data.user.bureauhousehelps[0].pivot.other_chronics;
+                            this.househelpform.specify = response.data.user.bureauhousehelps[0].pivot.specify;
+                            this.househelpform.status = response.data.user.bureauhousehelps[0].pivot.status;
+
+
+
+                        //     //id status
+                        //     this.househelpform.idstatus_id = response.data.househelp.idstatus.id
+                        //     this.househelpform.bureau_househelp_id = response.data.househelp.idstatus.bureau_househelp_id
+                        //     this.househelpform.id_number = response.data.househelp.idstatus.id_number
+                        //     this.househelpform.ref_number = response.data.househelp.idstatus.ref_number
+                        //     this.househelpform.id_photo_front = response.data.househelp.idstatus.id_photo_front
+                        //     this.househelpform.id_photo_back = response.data.househelp.idstatus.id_photo_back
+                        //     this.househelpform.waiting_card_photo = response.data.househelp.idstatus.waiting_card_photo
+                        //     this.househelpform.reason = response.data.househelp.idstatus.reason
+                        //     this.househelpform.status = response.data.househelp.idstatus.status
+
+                        //     if(response.data.househelp.idstatus.reason == 'Has ID Card'){
+                        //         this.IDstatus = 'HasID'
+                        //     }
+                        //     if(response.data.househelp.idstatus.reason == 'Has ID Card but lost, however applied for replacement'){
+                        //         this.IDstatus = 'HASIDbutlost'
+                        //     }
+                        //     if(response.data.househelp.idstatus.reason == 'Dont Have ID Card but applied for new Card'){
+                        //         this.IDstatus = 'NOIDbutapplied'
+                        //     }
+                        //     if(response.data.househelp.idstatus.reason == 'Dont Have ID Card and Has not applied for new Card'){
+                        //         this.IDstatus = 'NOID'
+                        //     }
+
+                        //     // this.househelpform.health_status = response.data.househelp
+                        //     this.househelpform.HIV_status = response.data.househelp.healthstatus.HIV_status
+                        //     this.househelpform.allergy = response.data.househelp.healthstatus.allergy
+                        //     this.househelpform.health_status_id = response.data.househelp.healthstatus.id
+                        //     this.househelpform.bureau_househelp_id = response.data.househelp.healthstatus.bureau_househelp_id
+                        //     this.househelpform.chronic_details = response.data.househelp.healthstatus.chronic_details
+                        //     this.househelpform.other_chronics = response.data.househelp.healthstatus.other_chronics
+                        //     this.househelpform.specify = response.data.househelp.healthstatus.specify
+                        //     this.househelpform.status = response.data.househelp.healthstatus.status
+
+                        //     if(response.data.househelp.healthstatus.allergy == 'Healthy'){
+                        //         this.Healthstatus = 'HEALTHY'
+                        //     }
+                        //     if(response.data.househelp.healthstatus.allergy == 'Has Minor Health Issues'){
+                        //         this.Healthstatus = 'HASMINOR'
+                        //     }
+                        //     if(response.data.househelp.healthstatus.other_chronics == 'Has Other Chronic Issues'){
+                        //         console.log(response.data.househelp.healthstatus.allergy)
+                        //         this.Healthstatus = 'HASCHRONIC'
+                        //     }
+                            $('#HousehelpModal').modal('show')
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -1325,7 +1352,7 @@
                   console.log(id)
                   console.log(+this.$route.params.id)
                   this.$Progress.start();
-                     this.househelpform.patch('/househelp/update/'+id)
+                     this.househelpform.patch('/api/househelp/update/'+id)
                         .then(()=>{
                         this.$store.dispatch('HousehelpById', this.$route.params.id);
                         this.$refs.wizard.reset()
@@ -1500,7 +1527,7 @@
                 console.log(id)
                  this.househelpkinform.reset()
                     this.$Progress.start();
-                      axios.get('/househelpkin/edit/'+id)
+                      axios.get('/api/househelpkin/edit/'+id)
                         .then((response)=>{
                            $('#HousehelpKinModal').modal('show')
                            toast({
@@ -1560,7 +1587,7 @@
                console.log(id)
                   console.log(+this.$route.params.id)
                   this.$Progress.start();
-                     this.househelpkinform.patch('/househelpkin/update/'+id)
+                     this.househelpkinform.patch('/api/househelpkin/update/'+id)
                         .then(()=>{
                         this.$store.dispatch('HousehelpById', this.$route.params.id);
                          $('#HousehelpKinModal').modal('hide')

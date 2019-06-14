@@ -8,7 +8,23 @@
         <div class="col-md">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Welcome to All Househelps</h3>
+                <div v-if="Unemployed ==true && Employed ==false && Pending ==false">
+                    <el-button type="success">Unemployed ({{unemployed.length}}) </el-button>
+                    <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{employed.length}})</el-button>
+                    <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{pending.length}})</el-button>
+                </div>
+                <div v-else-if="Unemployed ==false && Employed ==true && Pending ==false">
+                    <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{unemployed.length}})</el-button>
+                     <el-button type="success">Employed ({{employed.length}}) </el-button>
+                    <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{pending.length}})</el-button>
+                </div>
+                <div v-else-if="Unemployed ==false && Employed ==false && Pending ==true">
+                    <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{unemployed.length}})</el-button>
+                    <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{employed.length}})</el-button>
+                    <el-button type="success">Pending Employement ({{pending.length}})</el-button>
+                </div>
+              <h3 class="card-title">Welcome to All {{Status}}</h3>
+
               <!-- <div class="card-tools">
                     <button class="btn btn-success"  @click.prevent="newHousehelpKinModal()">Add New Househelp and Their Next of Kins                         <i class="fas fa-plus fw"></i>
                      </button>
@@ -25,80 +41,78 @@
                     <th style="padding-left: 14px">Actions</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr v-for="(househelp, index) in Househelps" :key="househelp.id">
+                <tbody v-for="(user, index) in Users" :key="user.id">
+                  <tr v-for="househelp in user.bureauhousehelps" :key="househelp.id">
                     <td >{{index+1}}</td>
-                    <td >
-                         <div class="row" style="width:100%" v-for="bureauhousehelp in househelp.bureauhousehelps" :key="bureauhousehelp.id">
-                           <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="househelpLoadPassPhoto(bureauhousehelp.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                    <td style="width: 540px;">
+                         <div class="row" style="width:100%" >
+                                     <div class="col-sm-3" style="padding: 3px;">
+                                        <img class="card-img-top" :src="househelpLoadPassPhoto(househelp.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
                                     </div>
-                                    <div class="col" style="padding: 3px;" v-if="bureauhousehelp.idstatus_id_photo_front !=null">
-                                        <img class="card-img-top" :src="househelpLoadIDFrontPhoto(bureauhousehelp.idstatus_id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="househelpLoadIDBackPhoto(bureauhousehelp.idstatus_id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    <div class="col-sm-3" style="padding: 3px;" v-if="househelp.idstatus_id_photo_front !=null">
+                                        <img class="card-img-top" :src="househelpLoadIDFrontPhoto(househelp.idstatus_id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        <img class="card-img-top" :src="househelpLoadIDBackPhoto(househelp.idstatus_id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
                                     </div>
-                                    <div class="col" style="padding: 3px;" v-else>
+                                    <div class="col-sm-3" style="padding: 3px;" v-else>
                                         Waiting Card<br>
-                                        <img class="card-img-top" :src="househelpLoadWaitingCard(bureauhousehelp.idstatus_waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        <img class="card-img-top" :src="househelpLoadWaitingCard(househelp.idstatus_waiting_card_photo)" style="width:100%;height:82%" alt="Card image cap"><br>
                                     </div>
-                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                        <div>{{househelp.full_name}},</div>
+                                    <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div> <span style="color:#9a009a;">{{user.full_name}}</span>,
+                                               Bureau: <span style="color:#9a009a;">{{househelp.name}},</span>
+                                       </div>
                                         <div>
-                                            Househelp,
-                                            <!-- {{househelp.position_name}}, -->
-                                            <!-- <span style="color:#9a009a;">
-                                                {{Bureau.name}},
-                                            </span> -->
+                                             <span v-if="househelp.idstatus_id_photo_front !=null" >
+                                                 ID: <span style="color:#9a009a;">{{househelp.idstatus_id_number}}</span>
+                                             </span>
+                                             <span v-else> Ref NO.: <span style="color:#9a009a;">{{househelp.idstatus_ref_number}}</span></span>,
+                                            Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span>
                                         </div>
                                         <div>
-                                             ID: ,<span style="color:#9a009a;">{{bureauhousehelp.idstatus_id_number}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{bureauhousehelp.pivot.phone}},</span>
+                                            Mail: <span style="color:#9a009a;">{{user.email}},</span>
                                         </div>
-                                        <div>
-                                            Mail: <span style="color:#9a009a;">{{househelp.email}},</span>
-                                        </div>
-                                            <div>P. O. Box , <span style="color:#9a009a;">{{bureauhousehelp.pivot.address}}</span>,
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{househelp.pivot.address}}</span>,
                                             </div>
                                         <div>
-                                            <span style="color:#9a009a;">{{bureauhousehelp.ward_name}}</span> ward,
-                                            <span style="color:#9a009a;">{{bureauhousehelp.constituency_name}}</span> constituency,
+                                            <span style="color:#9a009a;">{{househelp.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{househelp.constituency_name}}</span> constituency,
                                         </div>
                                         <div >
-                                            <span style="color:#9a009a;">{{bureauhousehelp.county_name}}</span> county,
-                                            <span style="color:#9a009a;">{{bureauhousehelp.country_name}},</span>
+                                            <span style="color:#9a009a;">{{househelp.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{househelp.country_name}},</span>
                                         </div>
                                     </div>
                         </div>
                     </td>
                     <td>
-                        <div class="row" v-for="bureauhousehelp in househelp.bureauhousehelps" :key="bureauhousehelp.id">
+                        <div class="row">
                            <div class="col" style="padding: 3px;">
                                <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                    <div>Gender: <span style="color:#9a009a;">{{bureauhousehelp.gender_name}}</span>,
-                                         Age: <span style="color:#9a009a;">{{bureauhousehelp.age}} Years</span>,
+                                    <div>Gender: <span style="color:#9a009a;">{{househelp.gender_name}}</span>,
+                                         Age: <span style="color:#9a009a;">{{househelp.age}} Years</span>,
                                     </div>
                                     <div>
-                                        Marital Status: <span style="color:#9a009a;">{{bureauhousehelp.maritalstatus_name}}</span>,
+                                        Marital Status: <span style="color:#9a009a;">{{househelp.maritalstatus_name}}</span>,
                                     </div>
                                     <div>
-                                        English Ability: <span style="color:#9a009a;">{{bureauhousehelp.englishstatus_name}}</span>,
+                                        English Ability: <span style="color:#9a009a;">{{househelp.englishstatus_name}}</span>,
                                     </div>
                                     <div>
-                                        Education Level: <span style="color:#9a009a;">{{bureauhousehelp.education_name}}</span>,
+                                        Education Level: <span style="color:#9a009a;">{{househelp.education_name}}</span>,
                                     </div>
                                     <div>
-                                        Experience Level: <span style="color:#9a009a;">{{bureauhousehelp.experience_name}}</span>,
+                                        Experience Level: <span style="color:#9a009a;">{{househelp.experience_name}}</span>,
                                     </div>
                                     <div>
-                                         Duration: <span style="color:#9a009a;">{{bureauhousehelp.duration_name}}</span>,
+                                         Duration: <span style="color:#9a009a;">{{househelp.duration_name}}</span>,
                                     </div>
                                     <div>
                                         Employemnt Status:
                                          <span style="color:#9a009a;">
-                                            <div v-if="bureauhousehelp.employementstatus == true">
-                                                <a type="button" class="btn btn-success btn-md"> Employed</a>
+                                            <div v-if="househelp.employmentstatus == true">
+                                                <a type="button" class="btn btn-warning btn-md"> Employed</a>
                                             </div>
-                                            <div v-else-if="bureauhousehelp.employementstatus == false">
+                                            <div v-else-if="househelp.employmentstatus == false">
                                                 <a type="button" class="btn btn-success btn-md"> Unemployed</a>
                                             </div>
                                         </span>
@@ -111,43 +125,38 @@
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em"> Updated at:
-                                    <span style="color:#9a009a;">{{househelp.created_at | dateformat}} </span>
+                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
                                 </div>
                             </span>
                         </div>
                         <br>
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left">
-                                <router-link  :to="`/househelp/${househelp.id}`">
-                                        <i class="fa fa-eye "></i>
+                                <router-link  :to="`/B/househelp/${user.id}`">
+                                        <i class="fa fa-eye "> View Details</i>
                                 </router-link>
-                            </span>
-                            <span class="float-right">
-                                <a href=""  @click.prevent="deleteHousehelp(househelp.user_id)">
-                                    <i class="fa fa-trash red"></i>
-                                </a>
                             </span>
                         </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <div v-if="Househelps.length" >
+              <div v-if="Users.length" >
                   <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                         <span class="float-left" style="margin-bottom:-0.5em" >
                             <div style="margin-bottom:0.25em">
-                                 Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                 & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                out of <span style="color:#9a009a;"> {{pagination.total}} </span> Househelps
+                                 Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                 & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Househelps
                             </div>
-                            <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
                         </span>
                         <span class="float-right" style="margin-bottom:-0.5em" >
                             <div style="margin-bottom:0.25em">
-                                 Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                 of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                                 Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                 of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
                             </div>
-                             <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                             <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
                         </span>
                   </div>
               </div>
@@ -170,49 +179,127 @@
         name:"Househelps",
         data(){
             return{
-                url:'/api/househelp/get/list',
-                pagination:[],
+                Unemployed:'',
+                Employed:'',
+                Pending:'',
+                Status:'',
+                employmentstatus:false,
+                hirestatus:false,
+                url:'/api/househelp/get/unemployed',
             }
         },
         mounted() {
-            this.loadHousehelps(); //from methods
+            this.getUnemployedHousehelps(); //from methods
         },
         computed:{
-            Househelps(){
+            Users(){
                return this.$store.getters.HousehelpsList
             },
+            unemployed(){
+               return this.$store.getters.unemployedhousehelps
+            },
+            employed(){
+               return this.$store.getters.employedhousehelps
+            },
+            pending(){
+               return this.$store.getters.pendinghousehelps
+            },
+            Pagination(){
+                return this.$store.getters.Pagination
+            }
         },
         methods:{
             loadHousehelps(){
                this.$Progress.start();
-                return this.$store.dispatch( "househelpslist", this.url)
-                 .then((response)=>{
-                     this.makingPagination(response.data.househelps),
-                    toast({
-                     type: 'success',
-                     title: 'Fetched the Househelp data successfully'
+                let employmentstatus = this.employmentstatus;
+                let hirestatus = this.hirestatus;
+               if(employmentstatus==false && hirestatus==false){
+                //    console.log(employmentstatus,"false", hirestatus, "false geting unemployed")
+                   return this.$store.dispatch( "househelpslist", this.url)
+                    .then((response)=>{
+                        toast({
+                        type: 'success',
+                        title: 'Fetched the Househelp data successfully'
+                        })
                     })
-                })
-                .catch(()=>{
-                    this.$Progress.fail();
-                    toast({
-                    type: 'error',
-                    title: 'There was something Wrong'
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong'
+                        })
                     })
-                })
+
+               }else if(employmentstatus==true && hirestatus==false){
+                //    console.log(employmentstatus,"true", hirestatus, "false geting employed")
+                   return this.$store.dispatch( "househelpslist", this.url)
+                    .then((response)=>{
+                        toast({
+                        type: 'success',
+                        title: 'Fetched the Househelp data successfully'
+                        })
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong'
+                        })
+                    })
+
+               }else if(employmentstatus==false && hirestatus==true){
+                //    console.log(employmentstatus,"false", hirestatus, "true geting pending employment")
+                   return this.$store.dispatch( "househelpslist", this.url)
+                    .then((response)=>{
+                        toast({
+                        type: 'success',
+                        title: 'Fetched the Househelp data successfully'
+                        })
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong'
+                        })
+                    })
+               }
             },
-            makingPagination(data){
-                let pagination = {
-                    current_page : data.current_page,
-                    last_page: data.last_page,
-                    from: data.from,
-                    to: data.to,
-                    total: data.total,
-                    next_page_url: data.next_page_url,
-                    prev_page_url: data.prev_page_url,
-                }
-                this.pagination = pagination;
-                console.log( this.pagination, 'pagination')
+            getUnemployedHousehelps(){
+                this.Unemployed = true;
+                this.Employed = false;
+                this.Pending = false;
+                this.employmentstatus = false;
+                this.hirestatus = false;//not pending
+                this.url = '/api/househelp/get/unemployed';
+                this.$store.dispatch("unemployedhousehelps")
+                this.$store.dispatch("employedhousehelps")
+                this.$store.dispatch("pendinghousehelps")
+                this.loadHousehelps();
+            },
+            getEmployedHousehelps(){
+                this.Unemployed = false;
+                this.Employed = true;
+                this.Pending = false;
+                this.employmentstatus = true;
+                this.hirestatus = false;//not pending
+                this.url = '/api/househelp/get/employed';
+                this.$store.dispatch("unemployedhousehelps")
+                this.$store.dispatch("employedhousehelps")
+                this.$store.dispatch("pendinghousehelps")
+                this.loadHousehelps();
+            },
+            getPendingEmployementHousehelps(){
+                this.Unemployed = false;
+                this.Employed = false;
+                this.Pending = true;
+                this.employmentstatus = false;
+                this.hirestatus = true;// pending
+                this.url = '/api/househelp/get/pending';
+                this.$store.dispatch("unemployedhousehelps")
+                this.$store.dispatch("employedhousehelps")
+                this.$store.dispatch("pendinghousehelps")
+                this.loadHousehelps();
             },
             fetchPaginatedHousehelps(url){
                 this.url = url;
@@ -247,7 +334,6 @@
                 }
             },
         },
-
     }
 </script>
 

@@ -21,19 +21,20 @@ class HousehelpController extends Controller
     //     $this->middleware('auth:api');
     // }
 
-    public function index()
+    public function index() //front
     {
             $househelps = Househelp::
                 with('country', 'county', 'constituency', 'ward',
                 'gender', 'education', 'experience', 'tribe', 'skill','duration',
                 'operation', 'englishstatus','maritalstatus', 'religion', 'kid',
                 'idstatus','healthstatus')//single has
-                                       ->paginate(24);
+                                       ->paginate(18);
                    return response()-> json([
                         'househelps' => $househelps,
                     ], 200);
     }
 
+    // logiin detals househelps backend
     public function bureau()
     {
         if (auth('api')->check()) {
@@ -66,19 +67,70 @@ class HousehelpController extends Controller
             }
         }
     }
-
+    //organisation view login details
     public function HousehelpsList()
     {
            if (auth('api')->check()) {
                if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
-                   $househelps = User::whereHas('bureauhousehelps')->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                   $users = User::whereHas('bureauhousehelps')->with('roles','permissions','bureauhousehelps')->role('Househelp')
                             ->paginate(20);
                }
            }
            return response()-> json([
-               'househelps'=>$househelps,
+               'users'=>$users,
            ], 200);
-
+    }
+    // houselps emloyed
+    public function unemployed()
+    {
+           if (auth('api')->check()) {
+               if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $users = User::whereHas('bureauhousehelps', function($query)
+                                        {
+                                        $query ->where('employmentstatus', false)
+                                               ->where('hiredstatus', false);
+                                        }
+                                    )->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                            ->paginate(20);
+               }
+           }
+           return response()-> json([
+               'users'=>$users,
+           ], 200);
+    }
+    public function employed()
+    {
+           if (auth('api')->check()) {
+               if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $users = User::whereHas('bureauhousehelps', function($query)
+                                        {
+                                        $query ->where('employmentstatus', true)
+                                               ->where('hiredstatus', false);
+                                        }
+                                    )->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                            ->paginate(20);
+               }
+           }
+           return response()-> json([
+               'users'=>$users,
+           ], 200);
+    }
+    public function pending()
+    {
+           if (auth('api')->check()) {
+               if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $users = User::whereHas('bureauhousehelps', function($query)
+                                        {
+                                        $query ->where('employmentstatus', false)
+                                               ->where('hiredstatus', true);
+                                        }
+                                    )->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                            ->paginate(20);
+               }
+           }
+           return response()-> json([
+               'users'=>$users,
+           ], 200);
     }
 
     public function age()
@@ -780,21 +832,11 @@ class HousehelpController extends Controller
      */
     public function edit($id)
     {
-        $househelp = User::
-                        with('roles','permissions','bureauhousehelps')
+        $user = User::with('roles','permissions','bureauhousehelps')
                         ->find($id);
                 return response()-> json([
-                    'househelp'=>$househelp,
+                    'user'=>$user,
                 ], 200);
-
-        // $househelp = Househelp:: with('country', 'county', 'constituency', 'ward',
-        //                             'gender', 'education', 'experience', 'tribe', 'skill','duration',
-        //                             'operation', 'englishstatus','maritalstatus','religion','kid',
-        //                             'idstatus', 'healthstatus', 'househelpkins', 'user')
-        //                     ->find($id);
-        // return response()-> json([
-        //     'househelp'=>$househelp,
-        // ], 200);
 
     }
 

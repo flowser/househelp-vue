@@ -123,16 +123,17 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+
         $this->validate($request,[
             'first_name'=>'required|string|max:191',
             'last_name'=>'required|string|max:191',
-            'email'=>'required|string|email|max:191|unique:users,email,'.$user->id,
+            'email'=>'required|string|email|max:191|unique:users,email,'.$id,
             'password'=>'sometimes|required|min:6',
             'user_type' => 'sometimes|required|min:3',
-            'permissions'=>'sometimes|required',
-            'roles'=>'sometimes|required',
+            // 'permissions'=>'sometimes|required',
+            // 'roles'=>'sometimes|required',
         ]);
+        $user = User::find($id);
         $user->first_name = $request->first_name;
             $user->last_name  = $request->last_name;
             $user->email      = $request->email;
@@ -141,9 +142,6 @@ class UserController extends Controller
             $user->confirmation_code = md5(uniqid(mt_rand(), true));
             $user->user_type      = $request->user_type;
             $user->password   = Hash::make($request->password);
-
-            // $user->assignRole($request ['roles']);
-            // $user->syncPermissions($request ['permissions']);
             $user->save();
         return ['message', 'update the user info'];
     }

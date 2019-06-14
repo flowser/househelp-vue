@@ -4,6 +4,9 @@
 const state = {
     househelps:{},
     househelpslist:[],
+    unemployedhousehelps:[],
+    employedhousehelps:[],
+    pendinghousehelps:[],
     househelp:[],
     filter:[],
     filterform:[],
@@ -15,6 +18,15 @@ const getters = {
         },
         HousehelpsList(state){
             return state.househelpslist;
+        },
+        unemployedhousehelps(){
+            return state.unemployedhousehelps;
+        },
+        employedhousehelps(){
+            return state.employedhousehelps;
+        },
+        pendinghousehelps(){
+            return state.pendinghousehelps;
         },
         Househelp(state){
         return state.househelp;
@@ -72,8 +84,8 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                console.log(response.data, 'fata')
-                commit('househelpslist', response.data.househelps.data);
+                commit('househelpslist', response.data.users.data);
+                commit('pagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -82,11 +94,31 @@ const actions = {
             });
         });
     },
+    unemployedhousehelps({dispatch,commit}, url){
+        axios.get('/api/househelp/get/unemployed')
+              .then((response)=>{
+                  commit('unemployedhousehelps', response.data.users.data);
+              });
+    },
+    employedhousehelps({dispatch,commit}, url){
+        axios.get('/api/househelp/get/employed')
+              .then((response)=>{
+                  commit('employedhousehelps', response.data.users.data);
+              });
+    },
+    pendinghousehelps({dispatch,commit}, url){
+        axios.get('/api/househelp/get/pending')
+              .then((response)=>{
+                  commit('pendinghousehelps', response.data.users.data);
+              });
+    },
     househelpsbureaulist({ dispatch, commit }, url){
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                commit('househelpslist', response.data.househelps.data);
+                commit('househelpslist', response.data.users.data);
+                commit('pagination', response.data.users)
+
                 resolve(response)
             })
             .catch(error => {
@@ -101,6 +133,7 @@ const actions = {
     HousehelpById(context, payload){
         axios.get('/api/househelp/show/'+payload)
               .then((response)=>{
+                  console.log(response.data)
                   context.commit('househelp', response.data.househelp);
               });
     }
@@ -111,6 +144,15 @@ const mutations = {
     },
     househelpslist(state, data){
         return state.househelpslist = data;
+    },
+    unemployedhousehelps(state, data){
+        return state.unemployedhousehelps = data;
+    },
+    employedhousehelps(state, data){
+        return state.employedhousehelps = data;
+    },
+    pendinghousehelps(state, data){
+        return state.pendinghousehelps = data;
     },
     househelp(state, data){
       return state.househelp = data;

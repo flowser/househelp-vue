@@ -7,6 +7,9 @@
                 <div class="col-md-12 col-sm-6 col-xs-6" style="padding-right: 5px;padding-left: 5px;">
                     <el-button type="danger" v-on:click="getallHousehelps()" plain>Reset (Vew All) </el-button>
                 </div>
+                <!-- <div class="col-md-12 col-sm-6 col-xs-6" style="padding-right: 5px;padding-left: 5px;">
+                    <el-button type="danger" v-on:click="getallHTML()" plain>HTML </el-button>
+                </div> -->
                 <div class="col-md-12 col-sm-6 col-xs-6" style="padding-right: 5px;padding-left: 5px;">
                     <label>Age </label><br>
                     <!-- {{Ages}}<br> -->
@@ -591,6 +594,12 @@ export default {
                 this.$store.dispatch("filterstatus", this.filterform.filter)
                 this.$store.dispatch("househelps", this.filterform)
                 this.filterform.reset();
+            },
+           getallHTML(){
+                axios.get('http://google.com/')
+                .then((response)=>{
+                                    console.log(response.data, 'response')
+                });
             },
             remoteMethod(query) {
                 this.$Progress.start()

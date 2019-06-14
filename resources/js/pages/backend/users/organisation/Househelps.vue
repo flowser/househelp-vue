@@ -26,61 +26,40 @@
                     <th>Permissions</th>
                     <th style="padding-left: 14px">Actions</th>
                   </tr>
+
                 </thead>
                 <tbody>
-                  <tr v-for="(househelp, index) in Househelps" :key="househelp.id">
-                    <td >{{index+1}}</td>
-                    <td style="width: 500px;">
-                        <div class="row" style="width:100%" v-for="bureau in househelp.bureauhousehelps" :key="bureau.id">
+                  <tr v-for="(user, index) in Users" :key="user.id">
+                    <td style="width:1px">{{index+1}}</td>
+                    <td style="width: 540px;">
+                        <div class="row" style="width:100%" v-for="househelp in user.bureauhousehelps" :key="househelp.id">
                             <div class="col-sm-3" style="padding: 3px;">
-                                 <img class="card-img-top" :src="househelpLoadPassPhoto(bureau.pivot.photo)" style="width:100%" alt="Card image cap">
+                                 <img class="card-img-top" :src="househelpLoadPassPhoto(househelp.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col-sm-3" style="padding: 3px;">
-                                <div v-if="bureau.idstatus_id_photo_front">
-                                    <img class="card-img-top" :src="househelpLoadIDFrontPhoto(bureau.idstatus_id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                    <img class="card-img-top" :src="househelpLoadIDBackPhoto(bureau.idstatus_id_photo_back)" style="width:100%" alt="Card image cap">
-                                </div>
-                                <div v-if="bureau.idstatus_waiting_card_photo">
-                                     <img class="card-img-top" :src="househelpLoadWaitingCardPhoto(bureau.idstatus_waiting_card_photo)" style="width:100%" alt="Card image cap">
-                                </div>
-                            </div>
-                            <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
-                                <div>{{househelp.full_name}},</div>
-                                <div v-for="position in househelp.positions" :key="position.id">
-                                    {{position.name}},
-                                    <span style="color:#9a009a;">
-                                        {{bureau.name}},
-                                    </span>
-                                </div>
-                                <div> ID: ,<span style="color:#9a009a;">{{bureau.pivot.id_no}}</span>,
-                                    Phone: <span style="color:#9a009a;">{{bureau.pivot.phone}},</span>
-                                </div>
+                            <div class="col-sm-9" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                                <div> <span style="color:#9a009a;">{{user.full_name}}</span>,
+                                      Bureau: <span style="color:#9a009a;">{{househelp.name}},</span></div>
+                                <div> Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span></div>
+                                <div> Mail: <span style="color:#9a009a;">{{user.email}},</span></div>
+                                <div>P. O. Box , <span style="color:#9a009a;">{{househelp.pivot.address}}</span>,</div>
                                 <div>
-                                     Mail: <span style="color:#9a009a;">{{househelp.email}},</span>
+                                    <span style="color:#9a009a;">{{househelp.ward_name}}</span> ward,
+                                    <span style="color:#9a009a;">{{househelp.constituency_name}}</span> constituency,
                                 </div>
-                                    <div>P. O. Box , <span style="color:#9a009a;">{{bureau.pivot.address}}</span>,
-                                    </div>
-                                <div v-for="ward in househelp.wards" :key="ward.id">
-                                    <span style="color:#9a009a;">{{ward.name}}</span> ward,
-                                    <span v-for="constituency in househelp.constituencies" :key="constituency.id" style="color:#9a009a;">
-                                        {{constituency.name}}</span> constituency,
-                                </div>
-                                <div v-for="county in househelp.counties" :key="county.id" >
-                                    <span style="color:#9a009a;">{{county.name}}</span> county,
-                                    <span v-for="country in househelp.countries" :key="country.id" style="color:#9a009a;">
-                                        {{country.name}},
-                                    </span>
+                                <div >
+                                    <span style="color:#9a009a;">{{househelp.county_name}}</span> county,
+                                    <span style="color:#9a009a;">{{househelp.country_name}},</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="role in househelp.roles" :key="role.id" class="pl-2">
+                        <span v-for="role in user.roles" :key="role.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 " >{{role.name}} </div>
                         </span>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="permission in househelp.permissions" :key="permission.id" class="pl-2">
+                        <span v-for="permission in user.permissions" :key="permission.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 ">{{permission.name}} </div>
                         </span>
                     </td>
@@ -88,15 +67,15 @@
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em"> Updated at:
-                                    <span style="color:#9a009a;">{{househelp.created_at | dateformat}} </span>
+                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
                                 </div>
                             </span>
                             <span class="float-right">
-                                <a href=""  @click.prevent="editHousehelpModal(househelp.id)">
+                                <a href=""  @click.prevent="editHousehelpModal(user.id)">
                                     <i class="fa fa-edit blue"></i>
                                 </a>
                                 /
-                                <a href=""  @click.prevent="deleteHousehelp(househelp.id)">
+                                <a href=""  @click.prevent="deleteHousehelp(user.id)">
                                     <i class="fa fa-trash red"></i>
                                 </a>
                             </span>
@@ -106,22 +85,22 @@
                 </tbody>
               </table>
 
-              <div v-if="Househelps.length" >
+              <div v-if="Users.length" >
                   <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                         <span class="float-left" style="margin-bottom:-0.5em" >
                             <div style="margin-bottom:0.25em">
-                                 Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                 & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                out of <span style="color:#9a009a;"> {{pagination.total}} </span> Househelps
+                                 Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                 & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Househelps
                             </div>
-                            <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
                         </span>
                         <span class="float-right" style="margin-bottom:-0.5em" >
                             <div style="margin-bottom:0.25em">
-                                 Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                 of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                                 Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                 of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
                             </div>
-                             <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                             <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
                         </span>
                   </div>
               </div>
@@ -148,146 +127,43 @@
                         <div class="modal-body">
                             <h5 class="modal-title" v-show="editmodeHousehelp" id="HousehelpModalLabel">Update Househelp</h5>
                             <h5 class="modal-title" v-show="!editmodeHousehelp" id="HousehelpModalLabel">Add New Househelp</h5>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="first_name" class="col-form-label"> Househelp Passport</label>
+                                    <img v-show="editmodeHousehelp" :src="updateHousehelpPassPhoto(househelpform.photo)" alt="" width="100%" >
+                                </div>
+                                <div class="form-group col-md-8">
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="first_name" class="col-form-label"> Househelp First Name</label>
                                             <input v-model="househelpform.first_name" type="text" name="first_name" placeholder="Househelp First Name"
                                                 class="form-control" :class="{ 'is-invalid': househelpform.errors.has('first_name') }" >
                                             <has-error style="color: #e83e8c" :form="househelpform" field="first_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="last_name" class=" col-form-label">househelp_Last Name </label>
                                             <input v-model="househelpform.last_name" type="househelp_last_name" name="last_name" placeholder="Househelp Last Name"
                                                 class="form-control" :class="{ 'is-invalid': househelpform.errors.has('last_name') }" >
                                             <has-error style="color: #e83e8c" :form="househelpform" field="last_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                    </div>
+                                    <div class="row">
+                                         <div class="form-group col-md-6">
                                             <label for="email" class=" col-form-label">Email </label>
                                             <input v-model="househelpform.email" type="email" name="email" placeholder="Email Address"
                                                 class="form-control" :class="{ 'is-invalid': househelpform.errors.has('email') }" >
                                             <has-error style="color: #e83e8c" :form="househelpform" field="email"></has-error>
                                         </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
+                                            <label for="password" class=" col-form-label">Password </label>
                                             <input v-model="househelpform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': househelpform.errors.has('password') }">
                                             <has-error :form="househelpform" field="password"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="phone" class="col-form-label"> Househelp Phone</label>
-                                                <div>
-                                                    <vue-tel-input v-model="househelpform.phone" name="phone" @onInput="InputPhone"
-                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('phone') }">
-                                                    </vue-tel-input>
-                                                    <has-error style="color: #e83e8c" :form="househelpform" field="phone"></has-error>
-                                                </div>
-                                                <div v-if="househelpform.phone" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{phone.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{phone.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="landline" class=" col-form-label">Landline</label>
-                                                <vue-tel-input v-model="househelpform.landline" name="landline" @onInput="InputLandline"
-                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('landline') }">
-                                                </vue-tel-input>
-                                                <has-error style="color: #e83e8c" :form="househelpform" field="landline"></has-error>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                <div v-if="househelpform.landline" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{landline.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{landline.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="id_no" class="col-form-label">ID no.</label>
-                                            <input v-model="househelpform.id_no" type="text" name="id_no" placeholder="ID NO"
-                                                class="form-control" :class="{ 'is-invalid': househelpform.errors.has('id_no') }" >
-                                            <has-error style="color: #e83e8c" :form="househelpform" field="id_no"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="address" class=" col-form-label">Address</label>
-                                            <input v-model="househelpform.address" type="text" name="address" placeholder="Address"
-                                                class="form-control" :class="{ 'is-invalid': househelpform.errors.has('address') }" >
-                                            <has-error style="color: #e83e8c" :form="househelpform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="gender_id">Select Gender</label>
-                                            <select class="form-control" v-model="househelpform.gender_id"
-                                                    :class="{ 'is-invalid':househelpform.errors.has('gender_id') }">
-                                                    <option disabled value="">Select gender</option>
-                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="househelpform" field="gender_id"></has-error>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-3">
-                                            <label for="country_id">Select Country</label>
-                                            <select class="form-control" @change="countryCounties(househelpform.country_id)"
-                                            v-model="househelpform.country_id" :class="{ 'is-invalid': househelpform.errors.has('country_id') }">
-                                                    <option disabled value="">Select Country</option>{{househelpform.country_id}}
-                                                    <option v-for="country in Countries" :value="country.id" :key="country.id">{{country.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="househelpform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="county_id" class=" col-form-label">County</label>
-                                            <select class="form-control" @change="countyConstituencies(househelpform.county_id)"
-                                            v-model="househelpform.county_id" :class="{ 'is-invalid': househelpform.errors.has('county_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="county in Counties" :value="county.id" :key="county.id">{{county.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="househelpform" field="county_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="constituency_id" class=" col-form-label">Constituency</label>
-                                            <select class="form-control" @change="constituencyWards(househelpform.constituency_id)"
-                                            v-model="househelpform.constituency_id" :class="{ 'is-invalid': househelpform.errors.has('constituency_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="constituency in Constituencies" :value="constituency.id" :key="constituency.id">{{constituency.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="househelpform" field="constituency_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="ward_id" class="col-form-label"> Ward </label>
-                                            <select class="form-control"
-                                            v-model="househelpform.ward_id" :class="{ 'is-invalid': househelpform.errors.has('ward_id') }">
-                                                    <option disabled value="">Select Ward</option>
-                                                    <option v-for="ward in Wards" :value="ward.id" :key="ward.id">{{ward.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="househelpform" field="ward_id"></has-error>
-                                        </div>
-
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="photo" class=" col-form-label">Househelp PassPort Image</label><br>
-                                                <input @change="househelpChangePassPhoto($event)" type="file" name="photo"
-                                                    :class="{ 'is-invalid': househelpform.errors.has('photo') }">
-                                                    <img v-show="editmodeHousehelp" :src="updateHousehelpPassPhoto(househelpform.photo)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeHousehelp" :src="househelpform.photo" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="househelpform" field="photo"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="id_photo_front" class=" col-form-label">Househelp FrontSide ID Photo</label><br>
-                                                <input @change="househelpChangeIDFrontPhoto($event)" type="file" name="id_photo_front"
-                                                    :class="{ 'is-invalid': househelpform.errors.has('id_photo_front') }">
-                                                    <img v-show="editmodeHousehelp" :src="updateHousehelpIDFrontPhoto(househelpform.id_photo_front)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeHousehelp" :src="househelpform.id_photo_front" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="househelpform" field="id_photo_front"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="backside_i_photod" class=" col-form-label">BackSide ID Photo</label><br>
-                                                <input @change="househelpChangeIDBackPhoto($event)" type="file" name="id_photo_back"
-                                                    :class="{ 'is-invalid': househelpform.errors.has('backside_id') }">
-                                                    <img v-show="editmodeHousehelp" :src="updateHousehelpIDBackPhoto(househelpform.id_photo_back)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeHousehelp" :src="househelpform.id_photo_back" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="househelpform" field="id_photo_back"></has-error>
-                                        </div>
-                                    </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -309,9 +185,9 @@
         name:"Organisation-Househelps",
         data(){
             return{
-
                 newHousehelp: false,
                 editmodeHousehelp: false,
+                imageUrl:'',
                 househelpform: new Form({
                         id:'',
                         first_name:'',
@@ -319,33 +195,8 @@
                         email:'',
                         password:'',
                         user_type:'',
-                        user_id:'',
-                        organisation_id:'',
-                        position_id:'',
-                        gender_id:'',
                         photo:'',
-                        active:'',
-                        id_no:'',
-                        id_photo_front:'',
-                        id_photo_back:'',
-                        about_me:'',
-                        phone:'',
-                        landline:'',
-                        address:'',
-                        country_id:'',
-                        county_id:'',
-                        constituency_id:'',
-                        ward_id:'',
                 }),
-                 //househelp
-                phone:{
-                        isValid: false,
-                        country: undefined,
-                },
-                landline:{
-                        isValid: false,
-                        country: undefined,
-                },
                 url:'/api/househelp/get/list',
                 pagination:[],
             }
@@ -374,17 +225,18 @@
             Genders(){
                return this.$store.getters.Genders
             },
-            Househelps(){
+            Users(){
                 return this.$store.getters.HousehelpsList
             },
-
+            Pagination(){
+                return this.$store.getters.Pagination
+            }
         },
         methods:{
              loadHousehelps(){
                 this.$Progress.start();
-                return this.$store.dispatch( "househelpslist", this.url)
+                return this.$store.dispatch("househelpslist", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.househelps),
                     toast({
                      type: 'success',
                      title: 'Fetched the Househelp data successfully'
@@ -397,19 +249,6 @@
                     title: 'There was something Wrong'
                     })
                 })
-            },
-            makingPagination(data){
-                let pagination = {
-                    current_page : data.current_page,
-                    last_page: data.last_page,
-                    from: data.from,
-                    to: data.to,
-                    total: data.total,
-                    next_page_url: data.next_page_url,
-                    prev_page_url: data.prev_page_url,
-                }
-                this.pagination = pagination;
-                console.log( this.pagination, 'pagination')
             },
             fetchPaginatedHousehelps(url){
                 this.url = url;
@@ -638,31 +477,93 @@
                             type: 'success',
                             title: 'Fetched the Househelp data successfully'
                             })
-                            console.log(response.data.househelp)
-                            this.househelpform.fill(response.data.househelp)
-                            this.househelpform.user_id = response.data.househelp.bureauhousehelps[0].pivot.user_id
-                            this.househelpform.organisation_id = response.data.househelp.bureauhousehelps[0].pivot.organisation_id
-                            this.househelpform.position_id = response.data.househelp.bureauhousehelps[0].pivot.position_id
-                            this.househelpform.gender_id = response.data.househelp.bureauhousehelps[0].pivot.gender_id
-                            this.househelpform.photo = response.data.househelp.bureauhousehelps[0].pivot.photo
-                            this.househelpform.id_no = response.data.househelp.bureauhousehelps[0].pivot.id_no
-                            this.househelpform.id_photo_front = response.data.househelp.bureauhousehelps[0].pivot.id_photo_front
-                            this.househelpform.id_photo_back = response.data.househelp.bureauhousehelps[0].pivot.id_photo_back
-                            this.househelpform.phone = response.data.househelp.bureauhousehelps[0].pivot.phone
-                            this.househelpform.landline = response.data.househelp.bureauhousehelps[0].pivot.landline
-                            this.househelpform.address = response.data.househelp.bureauhousehelps[0].pivot.address
+                            console.log(response.data.user)
+                            this.househelpform.fill(response.data.user)
+                            this.househelpform.first_name = response.data.user.first_name;
+                            this.househelpform.last_name = response.data.user.last_name;
+                            this.househelpform.email = response.data.user.email;
+                            this.househelpform.user_type = response.data.user.user_type;
+                            this.househelpform.photo = response.data.user.bureauhousehelps[0].pivot.photo
 
-                            this.househelpform.country_id = response.data.househelp.bureauhousehelps[0].pivot.country_id
-                            //get county id using the country id
-                            this.househelpform.county_id = response.data.househelp.bureauhousehelps[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.househelp.bureauhousehelps[0].pivot.country_id);
-                            //get contituency using county id
-                            this.househelpform.constituency_id = response.data.househelp.bureauhousehelps[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.househelp.bureauhousehelps[0].pivot.county_id);
-                            // //get ward usng constituency id
-                            this.househelpform.ward_id = response.data.househelp.bureauhousehelps[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.househelp.bureauhousehelps[0].pivot.constituency_id);
+                            // this.househelpform.user_id = response.data.user.bureauhousehelps[0].pivot.user_id
+                            // this.househelpform.organisation_id = response.data.user.bureauhousehelps[0].pivot.organisation_id
+                            // this.househelpform.position_id = response.data.user.bureauhousehelps[0].pivot.position_id
+                            // this.househelpform.gender_id = response.data.user.bureauhousehelps[0].pivot.gender_id
+                            // this.househelpform.photo = response.data.user.bureauhousehelps[0].pivot.photo
+                            // this.househelpform.id_no = response.data.user.bureauhousehelps[0].idstatus_id_number
+                            // this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].idstatus_id_photo_front
+                            // this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].idstatus_id_photo_back
+
+                            // if(response.data.user.bureauhousehelps[0].idstatus_waiting_card_photo){
+                            //     this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].idstatus_waiting_card_photo
+                            // }
+
+
+                            // this.househelpform.phone = response.data.user.bureauhousehelps[0].pivot.phone
+                            // this.househelpform.address = response.data.user.bureauhousehelps[0].pivot.address
+
+                            // this.househelpform.country_id = response.data.user.bureauhousehelps[0].pivot.country_id
+                            // //get county id using the country id
+                            // this.househelpform.county_id = response.data.user.bureauhousehelps[0].pivot.county_id
+                            // this.$store.dispatch('countrycounties', response.data.user.bureauhousehelps[0].pivot.country_id);
+                            // //get contituency using county id
+                            // this.househelpform.constituency_id = response.data.user.bureauhousehelps[0].pivot.constituency_id
+                            // this.$store.dispatch('countyconstituencies', response.data.user.bureauhousehelps[0].pivot.county_id);
+                            // // //get ward usng constituency id
+                            // this.househelpform.ward_id = response.data.user.bureauhousehelps[0].pivot.ward_id
+                            // this.$store.dispatch('constituencywards', response.data.user.bureauhousehelps[0].pivot.constituency_id);
                             this.$Progress.finish();
+
+
+
+                            // this.househelpform.user_id = response.data.user.bureauhousehelps[0].user_id;
+                            // this.househelpform.bureau_id = response.data.user.bureauhousehelps[0].bureau_id;
+                            // this.househelpform.photo = response.data.user.bureauhousehelps[0].photo;
+                            // this.househelpform.about_me = response.data.user.bureauhousehelps[0].about_me;
+                            // this.househelpform.phone = response.data.user.bureauhousehelps[0].phone;
+                            // this.househelpform.address = response.data.user.bureauhousehelps[0].address;
+                            // this.househelpform.country_id = response.data.user.bureauhousehelps[0].country_id;
+                            // this.househelpform.county_id = response.data.user.bureauhousehelps[0].county_id;
+                            // this.househelpform.constituency_id = response.data.user.bureauhousehelps[0].constituency_id;
+                            // this.househelpform.ward_id = response.data.user.bureauhousehelps[0].ward_id;
+                            // //extra
+                            // this.househelpform.birth_date = response.data.user.bureauhousehelps[0].birth_date;
+                            // this.househelpform.age = response.data.user.bureauhousehelps[0].age;
+                            // this.househelpform.gender_id = response.data.user.bureauhousehelps[0].gender_id;
+                            // this.househelpform.education_id = response.data.user.bureauhousehelps[0].education_id;
+                            // this.househelpform.experience_id = response.data.user.bureauhousehelps[0].experience_id;
+                            // this.househelpform.maritalstatus_id = response.data.user.bureauhousehelps[0].maritalstatus_id;
+                            // this.househelpform.tribe_id = response.data.user.bureauhousehelps[0].tribe_id;
+                            // this.househelpform.skill_id = response.data.user.bureauhousehelps[0].skill_id;
+                            // this.househelpform.operation_id = response.data.user.bureauhousehelps[0].operation_id;
+                            // this.househelpform.duration_id = response.data.user.bureauhousehelps[0].duration_id;
+                            // this.househelpform.englishstatus_id = response.data.user.bureauhousehelps[0].englishstatus_id;
+                            // this.househelpform.religion_id = response.data.user.bureauhousehelps[0].religion_id;
+                            // this.househelpform.kid_id = response.data.user.bureauhousehelps[0].kid_id;
+                            // //idstatus
+                            // this.househelpform.IDstatus = response.data.user.bureauhousehelps[0].IDstatus;
+                            // this.househelpform.idstatus_id = response.data.user.bureauhousehelps[0].idstatus_id;//id of idstatus row
+                            // this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0].bureau_househelp_id;
+                            // this.househelpform.id_status = response.data.user.bureauhousehelps[0].id_status;
+                            // this.househelpform.id_number = response.data.user.bureauhousehelps[0].id_number;
+                            // this.househelpform.ref_number = response.data.user.bureauhousehelps[0].ref_number;
+                            // this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].id_photo_front;
+                            // this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].id_photo_back;
+                            // this.househelpform.waiting_card_photo = response.data.user.bureauhousehelps[0].waiting_card_photo;
+                            // this.househelpform.reason = response.data.user.bureauhousehelps[0].reason;
+                            // this.househelpform.status = response.data.user.bureauhousehelps[0].status;
+                            // //health status
+                            // this.househelpform.HealthStatus = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.health_status_id = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.health_status = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.HIV_status = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.allergy = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.chronic_details = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.other_chronics = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.specify = response.data.user.bureauhousehelps[0];
+                            // this.househelpform.status = response.data.user.bureauhousehelps[0];
+
                         })
                         .catch(()=>{
                             this.$Progress.fail();
@@ -703,10 +604,10 @@
             updateHousehelp(id){
                   console.log('update househelp')
                   this.$Progress.start();
-                     this.househelpform.patch('/api/househelp/update/'+id)
+                     this.househelpform.patch('/api/user/update/'+id)
                         .then(()=>{
-                            this.loadHousehelps();
                          $('#HousehelpModal').modal('hide')
+                         this.loadHousehelps();
                          toast({
                             type: 'success',
                             title: 'Househelp Created successfully'
@@ -714,11 +615,12 @@
                             this.$Progress.finish();
                         })
                         .catch(()=>{
-                            this.$Progress.fail();
                             toast({
                             type: 'error',
                             title: 'There was something wrong'
                             })
+                            $('#HousehelpModal').modal('show')
+                            this.$Progress.fail();
                         })
             },
             deleteHousehelp(id){
