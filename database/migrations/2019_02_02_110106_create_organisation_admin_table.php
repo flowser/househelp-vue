@@ -20,11 +20,12 @@ class CreateOrganisationAdminTable extends Migration
             $table->unsignedInteger('position_id');
             $table->unsignedInteger('gender_id')->nullable();
             $table->string('photo')->nullable();
+            $table->string('background_image')->nullable();
             $table->tinyInteger('active')->default(1)->unsigned();
 
             $table->string('id_no', 120)->nullable();
-            $table->string('id_photo_front', 120)->nullable();
-            $table->string('id_photo_back', 120)->nullable();
+            $table->string('id_photo_front')->nullable();
+            $table->string('id_photo_back')->nullable();
             $table->longText('about_me')->nullable();
             $table->string('phone')->nullable();
             $table->string('landline')->nullable();

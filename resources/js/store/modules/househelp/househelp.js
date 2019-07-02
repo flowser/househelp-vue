@@ -116,6 +116,7 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
+                console.log('househelpslist', response)
                 commit('househelpslist', response.data.users.data);
                 commit('pagination', response.data.users)
 

@@ -22,6 +22,7 @@ class BureauEmployee extends Pivot
         'bureau_id',
         'position_id',
         'photo',
+        'background_image',
         'active',
         'id_no',
         'id_photo_front',

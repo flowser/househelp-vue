@@ -74,6 +74,25 @@
                   </tr>
                 </tbody>
               </table>
+              <div v-if="Bureaus.length" >
+                  <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
+                        <span class="float-left" style="margin-bottom:-0.5em" >
+                            <div style="margin-bottom:0.25em">
+                                 Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                 & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Bureaus
+                            </div>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedBureaus(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
+                        </span>
+                        <span class="float-right" style="margin-bottom:-0.5em" >
+                            <div style="margin-bottom:0.25em">
+                                 Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                 of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
+                            </div>
+                             <button class="btn btn-info" v-on:click="fetchPaginatedBureaus(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
+                        </span>
+                  </div>
+              </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -771,6 +790,8 @@
                         isValid: false,
                         country: undefined,
                 },
+                url:'/api/bureaus/get',
+                pagination:[],
             }
         },
         mounted() {
@@ -796,8 +817,33 @@
             Bureaus(){
                return this.$store.getters.Bureaus
             },
+            Pagination(){
+                return this.$store.getters.BureausPagination
+            }
         },
         methods:{
+            loadBureaus(){
+                this.$Progress.start();
+                return this.$store.dispatch("bureaus", this.url)
+                 .then((response)=>{
+                    toast({
+                     type: 'success',
+                     title: 'Fetched the Bureaus data successfully'
+                    })
+                    this.$Progress.finish();
+                })
+                .catch(()=>{
+                    this.$Progress.fail();
+                    toast({
+                    type: 'error',
+                    title: 'There was something Wrong'
+                    })
+                })
+            },
+            fetchPaginatedBureaus(url){
+                this.url = url;
+                this.loadBureaus();
+            },
             //Bureau verification
             validateBureau() {
                 this.$Progress.start()
@@ -947,9 +993,6 @@
             },
             loadWards(){
                 return this.$store.dispatch( "constituencywards")//get all from towns.index
-            },
-            loadBureaus(){
-                return this.$store.dispatch( "bureaus")//get all from bureau. bureau linked to user
             },
             loadBureaudirectors(){
                 return this.$store.dispatch( "bureausdirectors")//get all from bureau. bureau linked to user

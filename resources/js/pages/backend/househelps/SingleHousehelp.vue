@@ -4,8 +4,7 @@
     <section class="content">
             <div class="card card-widget widget-user" >
               <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header text-white"  :style="{ background: `url(${imageUrl}) no-repeat center
-                          center;width:100%;height:300px` }">
+                <div class="widget-user-header text-white"  style="background-color: #070075c4; center center;width:100%;height:300px">
                     <div class="clearfix">
                         <span class="float-left">
                             <h3 class="widget-user-username" v-if="Househelp.user">{{Househelp.user.full_name}}</h3>
@@ -84,12 +83,18 @@
                             </div>
                             <div class="card-body">
                                  <div class="row">
-                                    <div class="col" style="padding: 3px;">
+                                    <div class="col-sm-3" style="padding: 3px;">
                                         <img class="card-img-top" :src="househelpLoadPassPhoto(Househelp.photo)" style="width:100%; height:130px" alt="Card image cap">
                                     </div>
-                                    <div class="col" style="padding: 3px;" v-if="Househelp.idstatus">
-                                        <img class="card-img-top" :src="househelpLoadIDFrontPhoto(Househelp.idstatus.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="househelpLoadIDBackPhoto(Househelp.idstatus.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    <div class="col-sm-3" style="padding: 3px;" v-if="Househelp.idstatus">
+                                        <div v-if="Househelp.idstatus.id_photo_front !=null">
+                                            <img class="card-img-top" :src="househelpLoadIDFrontPhoto(Househelp.idstatus.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                            <img class="card-img-top" :src="househelpLoadIDBackPhoto(Househelp.idstatus.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                        </div>
+                                         <div  style="padding: 3px;" v-else>
+                                            Waiting Card<br>
+                                            <img class="card-img-top" :src="househelpLoadWaitingCard(Househelp.idstatus.waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        </div>
                                     </div>
                                     <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
                                         <div v-if="Househelp.user">{{Househelp.user.full_name}},</div>
@@ -206,7 +211,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form-wizard role="form" @on-complete="updateHousehelp(Househelp.id)" ref="wizard">
+                        <form-wizard role="form" @on-complete="updateHousehelp(househelpform.id)" ref="wizard">
                             <h5 class="modal-title" id="HousehelpModalLabel">Uppdate Current Househelp Demographic data</h5>
                             <tab-content title="Househelp Househelp Info" :before-change="validateupdateHousehelpDemograhic">
                                       <div class="row">
@@ -238,7 +243,7 @@
                                         <div class="form-group col-md-4">
                                             <div> Current Age is {{this.househelpform.age}} Years</div>
                                             <label for="birth_date" class="col-form-label">Househelp Birth Date</label>
-                                                <datetime v-model="househelpform.birth_date" type="text" id="birth_date" placeholder="Househelp Birth Date"
+                                                <datetime  v-model="househelpform.birth_date" v-on:input="househelpChangeDOB($event)" type="text" id="birth_date" placeholder="Househelp Birth Date"
                                                 class="form-control"  input-class="form-control border-0" style="padding-top: 0px;"  :class="{ 'is-invalid': househelpform.errors.has('birth_date') }"></datetime>
                                             <has-error style="color: #e83e8c" :form="househelpform" field="birth_date"></has-error>
                                         </div>
@@ -349,6 +354,7 @@
                                                 <input @change="househelpChangeIDFrontPhoto($event)" type="file" name="id_photo_front"
                                                     :class="{ 'is-invalid': househelpform.errors.has('id_photo_front') }"
                                                      class="form-control" style=" border: 1px solid #ffffff;padding-left: 0px;">
+
                                                     <img :src="updateHousehelpIDFrontPhoto(househelpform.id_photo_front)" alt="" width="100%" >
                                                 <has-error style="color: #e83e8c" :form="househelpform" field="id_photo_front"></has-error>
                                             </div>
@@ -503,8 +509,7 @@
                                     </div>
                                     <div class=" row">
                                         <div class="form-group col-md-4">
-                                            <div>Househelp ID status</div>
-
+                                            <div>Househelp Health Status</div>
                                             <div >
                                                 <input type="radio" v-model="Healthstatus" value="HEALTHY">
                                                 <label for="Healthstatus" class="col-form-label"> Is Healthy</label>
@@ -518,43 +523,39 @@
                                                 <input type="radio" v-model="Healthstatus" value="HASCHRONIC">
                                                 <label for="Healthstatus" class="col-form-label">Has Other Chronic</label>
                                             </div>
-                                            <div v-if="this.househelpform.other_chronics = 'Has Other Chronic Issues'">
-                                                <input type="radio" v-model="Healthstatus" value="HASCHRONIC" checked>
-                                                <label for="Healthstatus" class="col-form-label">Has Other Chronic</label>
-                                            </div>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div v-show="Healthstatus === 'HEALTHY'">
-                                                   <label for="HIV_status" class="col-form-label">HIV status</label>
-                                                    <input v-model="househelpform.HIV_status" type="text" name="HIV_status" placeholder="HIV status"
-                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('HIV_status') }" >
-                                                   <has-error style="color: #e83e8c" :form="househelpform" field="HIV_status"></has-error>
+                                                   <label for="health_HIV_status" class="col-form-label">HIV status</label>
+                                                    <input v-model="househelpform.health_HIV_status" type="text" name="health_HIV_status" placeholder="HIV status"
+                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('health_HIV_status') }" >
+                                                   <has-error style="color: #e83e8c" :form="househelpform" field="health_HIV_status"></has-error>
                                             </div>
                                             <div v-show="Healthstatus === 'HASMINOR'">
-                                                <label for="HIV_status" class="col-form-label">HIV status</label>
-                                                    <input v-model="househelpform.HIV_status" type="text" name="HIV_status" placeholder="HIV status"
-                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('HIV_status') }" >
-                                                   <has-error style="color: #e83e8c" :form="househelpform" field="HIV_status"></has-error>
+                                                <label for="health_HIV_status" class="col-form-label">HIV status</label>
+                                                    <input v-model="househelpform.health_HIV_status" type="text" name="health_HIV_status" placeholder="HIV status"
+                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('health_HIV_status') }" >
+                                                   <has-error style="color: #e83e8c" :form="househelpform" field="health_HIV_status"></has-error>
                                             </div>
                                             <div v-show="Healthstatus === 'HASCHRONIC'">
-                                                <label for="HIV_status" class="col-form-label"> HIV status</label>
-                                                    <input v-model="househelpform.HIV_status" type="text" name="HIV_status" placeholder="HIV status"
-                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('HIV_status') }" >
-                                                   <has-error style="color: #e83e8c" :form="househelpform" field="HIV_status"></has-error>
+                                                <label for="health_HIV_status" class="col-form-label"> HIV status</label>
+                                                    <input v-model="househelpform.health_HIV_status" type="text" name="health_HIV_status" placeholder="HIV status"
+                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('health_HIV_status') }" >
+                                                   <has-error style="color: #e83e8c" :form="househelpform" field="health_HIV_status"></has-error>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div v-show="Healthstatus === 'HASMINOR'">
-                                                <label for="specify" class="col-form-label">Allergies Specification</label>
-                                                <input v-model="househelpform.specify" type="text" name="specify" placeholder="Allergies Specification"
-                                                   class="form-control" :class="{ 'is-invalid': househelpform.errors.has('specify') }" >
-                                               <has-error style="color: #e83e8c" :form="househelpform" field="specify"></has-error>
+                                                <label for="health_specify" class="col-form-label">Allergies Specification</label>
+                                                <input v-model="househelpform.health_specify" type="text" name="health_specify" placeholder="Allergies Specification"
+                                                   class="form-control" :class="{ 'is-invalid': househelpform.errors.has('health_specify') }" >
+                                               <has-error style="color: #e83e8c" :form="househelpform" field="health_specify"></has-error>
                                             </div>
                                             <div v-show="Healthstatus === 'HASCHRONIC'">
-                                                   <label for="chronic_details" class="col-form-label">Chronic Issues</label>
-                                                    <input v-model="househelpform.chronic_details" type="text" name="chronic_details" placeholder="Chronic Issues"
-                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('chronic_details') }" >
-                                                   <has-error style="color: #e83e8c" :form="househelpform" field="chronic_details"></has-error>
+                                                   <label for="health_chronic_details" class="col-form-label">Chronic Issues</label>
+                                                    <input v-model="househelpform.health_chronic_details" type="text" name="health_chronic_details" placeholder="Chronic Issues"
+                                                    class="form-control" :class="{ 'is-invalid': househelpform.errors.has('health_chronic_details') }" >
+                                                   <has-error style="color: #e83e8c" :form="househelpform" field="health_chronic_details"></has-error>
                                             </div>
                                         </div>
                                     </div>
@@ -709,16 +710,6 @@
             </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
     </section>
     <!-- /.content -->
     </div>
@@ -730,7 +721,7 @@
             return{
                 imageUrl:'',
                 IDstatus:'',    //id status check
-                Healthstatus: '',
+                Healthstatus:'',
                 househelpform: new Form({
                         id:'',
                         first_name:'',
@@ -765,6 +756,8 @@
                         religion_id:'',
                         kid_id:'',
                         //id status
+                        //id status
+
                         IDstatus:'',
                         idstatus_id:'',//id of idstatus row
                         bureau_househelp_id:'',
@@ -774,20 +767,17 @@
                         id_photo_front:'',
                         id_photo_back:'',
                         waiting_card_photo:'',
-                        reason:'',
-                        status:'',
+                        id_status_reason:'',
 
                         //health status
                         HealthStatus:'',
                         health_status_id:'',
-                        bureau_househelp_id:'',
                         health_status:'',
-                        HIV_status:'',
-                        allergy:'',
-                        chronic_details:'',
-                        other_chronics:'',
-                        specify:'',
-                        status:'',
+                        health_HIV_status:'',
+                        health_allergy:'',
+                        health_chronic_details:'',
+                        health_other_chronics:'',
+                        health_specify:'',
                 }),
                 househelpkinform: new Form({
                         id:'',
@@ -911,6 +901,26 @@
             },
              //Househelp Update Demographic
             validateupdateHousehelpDemograhic() {
+                if(this.IDstatus === "HasID"){
+                    this.househelpform.IDstatus = "HasID";
+                    this.househelpform.id_status = "Yes";
+                    this.househelpform.id_status_reason = "Has ID Card";
+                }
+                if(this.IDstatus === "HASIDbutlost"){
+                    this.househelpform.IDstatus = "HASIDbutlost";
+                    this.househelpform.id_status = "Yes";
+                    this.househelpform.id_status_reason = "Has ID Card but lost, however applied for replacement";
+                }
+                if(this.IDstatus === "NOIDbutapplied"){
+                    this.househelpform.IDstatus = "NOIDbutapplied";
+                    this.househelpform.id_status = "No";
+                    this.househelpform.id_status_reason = "Dont Have ID Card but applied for new Card";
+                }
+                if(this.IDstatus === "NOID"){
+                    this.househelpform.IDstatus = "NOID";
+                    this.househelpform.id_status = "No";
+                    this.househelpform.id_status_reason = "Dont Have ID Card and Has not applied for new Card";
+                }
                 let id = this.househelpform.id;
                 this.$Progress.start()
                 return this.househelpform.patch('/api/househelp/verify/updatedemographics/' +id)
@@ -932,6 +942,31 @@
             },
             //Househelp update Attributes Info info verification
             validateupdateHousehelpAttributes() {
+                 if(this.Healthstatus === "HEALTHY"){
+                    this.househelpform.HealthStatus = "HEALTHY";
+                    this.househelpform.health_status = "Healthy";
+                    this.househelpform.health_allergy = null;
+                    this.househelpform.health_chronic_details = null;
+                    this.househelpform.health_other_chronics = null;
+                    this.househelpform.health_specify = null;
+                }
+                if(this.Healthstatus === "HASMINOR"){
+                    this.househelpform.HealthStatus = "HASMINOR";
+                    this.househelpform.health_status = "Has Minor Health Issues";
+                    this.househelpform.health_allergy = "yes";
+                    // this.househelpform.health_specify = null;filled in form by user
+                    this.househelpform.health_chronic_details = null;
+                    this.househelpform.health_other_chronics = null;
+                }
+                if(this.Healthstatus === "HASCHRONIC"){
+                    this.househelpform.HealthStatus = "HASCHRONIC";
+                    this.househelpform.health_status = "Has Other Chronic Issues";
+                    this.househelpform.health_allergy = null;
+                    this.househelpform.health_specify = null;
+                    this.househelpform.health_other_chronics = "yes";
+                    // this.househelpform.health_chronic_details = null;filled in form by user
+                }
+                this.$Progress.start()
                 let id = this.househelpform.id;
                 this.$Progress.start()
                 return this.househelpform.patch('/api/househelp/verify/updateattributes/' +id)
@@ -1076,6 +1111,26 @@
                         reader.readAsDataURL(file);
                 }
             },
+            househelpChangeDOB(event){
+
+            var current_age = this.househelpform.age;
+                var birthday = moment(event);
+                var now = moment();
+                var age = now.diff(birthday, 'years');
+                if(age<18){
+                     toast({
+                        type: 'error',
+                        title: 'This person is of below the age of 18 years',
+                     })
+                     this.househelpform.age = current_age;
+                }else{
+                    toast({
+                       type: 'sucess',
+                       title: 'Age and date of birth added successfully',
+                   })
+                   this.househelpform.age = age;
+                }
+            },
             househelpChangeIDFrontPhoto(event){
              let file = event.target.files[0];
                 if(file.size>1048576){
@@ -1125,6 +1180,8 @@
                     let reader = new FileReader();
                         reader.onload = event=> {
                             this.househelpform.id_photo_back =event.target.result
+                            this.househelpform.ref_number = null;
+                            this.househelpform.waiting_card_photo = null;
                             };
                         reader.readAsDataURL(file);
                 }
@@ -1150,6 +1207,7 @@
             },
             updateHousehelpIDFrontPhoto(househelpform_id_photo_front){
                 let img = this.househelpform.id_photo_front;
+                console.log(img, "hosuelep")
                       if(img ==null){
                           return "/assets/bureau/img/website/empty.png";
                       }else{
@@ -1157,7 +1215,7 @@
                             return this.househelpform.id_photo_front;
                         }else{
                             if(househelpform_id_photo_front){
-                                return "assets/bureau/img/househelps/IDs/front/"+househelpform_id_photo_front;
+                                return "/assets/bureau/img/househelps/IDs/front/"+househelpform_id_photo_front;
                             }else{
                                 return "/assets/bureau/img/website/empty.png";
                             }
@@ -1174,7 +1232,7 @@
                             return this.househelpform.id_photo_back;
                         }else{
                             if(househelpform_id_photo_back){
-                                return "assets/bureau/img/househelps/IDs/back/"+househelpform_id_photo_back;
+                                return "/assets/bureau/img/househelps/IDs/back/"+househelpform_id_photo_back;
                             }else{
                                 return "/assets/bureau/img/website/empty.png";
                             }
@@ -1191,7 +1249,7 @@
                             return this.househelpform.waiting_card_photo;
                         }else{
                             if(househelpform_waiting_card_photo){
-                                return "assets/bureau/img/househelps/waitingcards/"+househelpform_waiting_card_photo;
+                                return "/assets/bureau/img/househelps/waitingcards/"+househelpform_waiting_card_photo;
                             }else{
                                 return "/assets/bureau/img/website/empty.png";
                             }
@@ -1209,10 +1267,11 @@
                             type: 'success',
                             title: 'Fetched the Househelp data successfully'
                             })
-                            console.log(response.data.user, 'jjjjkukyk')
                             this.househelpform.fill(response.data.user)
 
-                            this.househelpform.id = response.data.user.id;
+                            //id is of househelp not user
+                            this.househelpform.id = response.data.user.bureauhousehelps[0].id;
+
                             this.househelpform.first_name = response.data.user.first_name;
                             this.househelpform.last_name = response.data.user.last_name;
                             this.househelpform.email = response.data.user.email;
@@ -1252,88 +1311,86 @@
                             this.househelpform.religion_id = response.data.user.bureauhousehelps[0].pivot.religion_id;
                             this.househelpform.kid_id = response.data.user.bureauhousehelps[0].pivot.kid_id;
                             //id status
-                            this.househelpform.IDstatus = response.data.user.bureauhousehelps[0].pivot.IDstatus;
-                            this.househelpform.idstatus_id = response.data.user.bureauhousehelps[0].pivot.idstatus_id;//id of idstatus row
-                            this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0].pivot.bureau_househelp_id;
-                            this.househelpform.id_status = response.data.user.bureauhousehelps[0].pivot.id_status;
-                            this.househelpform.id_number = response.data.user.bureauhousehelps[0].pivot.id_number;
-                            this.househelpform.ref_number = response.data.user.bureauhousehelps[0].pivot.ref_number;
-                            this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].pivot.id_photo_front;
-                            this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].pivot.id_photo_back;
-                            this.househelpform.waiting_card_photo = response.data.user.bureauhousehelps[0].pivot.waiting_card_photo;
+                                // IDstatus
+                                // idstatus_id//id of idstatus row
+                                // bureau_househelp_id
+                                // id_status
+                                // id_number
+                                // ref_number
+                                // id_photo_front
+                                // id_photo_back
+                                // waiting_card_photo
+                                // reason
+                            this.househelpform.idstatus_id = response.data.user.bureauhousehelps[0].idstatus_id;//id of idstatus row
+                            this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0].id;
+                            this.househelpform.id_status = response.data.user.bureauhousehelps[0].idstatus_status;
+
+                            this.househelpform.id_number = response.data.user.bureauhousehelps[0].idstatus_id_number;
+                            this.househelpform.ref_number = response.data.user.bureauhousehelps[0].idstatus_ref_number;
 
                             if(this.househelpform.id_number != null && this.househelpform.ref_number == null){
                                  this.IDstatus = "HasID";
+                                 this.househelpform.IDstatus = "HasID";
+                                 this.househelpform.id_status_reason = "Has ID Card";
+                                 this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].idstatus_id_photo_front;
+                                 this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].idstatus_id_photo_back;
 
                             }else if(this.househelpform.id_number != null && this.househelpform.ref_number != null){                               this.IDstatus = "HASIDbutlost";
-                                    this.IDstatus = "HASIDbutlost";
+                                 this.IDstatus = "HASIDbutlost";
+                                 this.househelpform.IDstatus = "HASIDbutlost";
+                                 this.househelpform.id_status_reason = "Has ID Card but lost, however applied for replacement";
+                                 this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].idstatus_id_photo_front;
+                                 this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].idstatus_id_photo_back;
+                                 this.househelpform.waiting_card_photo = response.data.user.bureauhousehelps[0].idstatus_waiting_card_photo;
 
                             }else if(this.househelpform.id_number == null && this.househelpform.ref_number != null){
                                 this.IDstatus = "NOIDbutapplied";
+                                this.househelpform.IDstatus = "NOIDbutapplied";
+                                this.househelpform.id_status_reason = "Dont Have ID Card but applied for new Card";
+                                this.househelpform.waiting_card_photo = response.data.user.bureauhousehelps[0].idstatus_waiting_card_photo;
 
                             }else if(this.househelpform.id_number == null && this.househelpform.ref_number == null){
                                 this.IDstatus = "NOID";
+                                this.househelpform.IDstatus = "NOID";
+                                this.househelpform.id_status_reason = "Dont Have ID Card and Has not applied for new Card";
                             }
                             console.log(this.IDstatus, 'status')
-                            this.househelpform.reason = response.data.user.bureauhousehelps[0].pivot.reason;
-                            this.househelpform.status = response.data.user.bureauhousehelps[0].pivot.status;
+                            console.log(this.househelpform.id_photo_front, 'front')
+                            console.log(this.househelpform.id_photo_back, 'back')
+
                             //health status
-                            this.househelpform.HealthStatus = response.data.user.bureauhousehelps[0].pivot.HealthStatus;
-                            this.househelpform.health_status_id = response.data.user.bureauhousehelps[0].pivot.health_status_id;
-                            this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0].pivot.bureau_househelp_id;
-                            this.househelpform.health_status = response.data.user.bureauhousehelps[0].pivot.health_status;
-                            this.househelpform.HIV_status = response.data.user.bureauhousehelps[0].pivot.HIV_status;
-                            this.househelpform.allergy = response.data.user.bureauhousehelps[0].pivot.allergy;
-                            this.househelpform.chronic_details = response.data.user.bureauhousehelps[0].pivot.chronic_details;
-                            this.househelpform.other_chronics = response.data.user.bureauhousehelps[0].pivot.other_chronics;
-                            this.househelpform.specify = response.data.user.bureauhousehelps[0].pivot.specify;
-                            this.househelpform.status = response.data.user.bureauhousehelps[0].pivot.status;
 
+                            this.househelpform.health_status_id = response.data.user.bureauhousehelps[0].healthstatus_id;
+                            this.househelpform.health_HIV_status = response.data.user.bureauhousehelps[0].healthstatus_HIV_status;
+                            this.househelpform.health_allergy = response.data.user.bureauhousehelps[0].healthstatus_allergy;
+                            this.househelpform.health_chronic_details = response.data.user.bureauhousehelps[0].healthstatus_chronic_details;
+                            this.househelpform.health_other_chronics = response.data.user.bureauhousehelps[0].healthstatus_other_chronics;
+                            this.househelpform.health_specify = response.data.user.bureauhousehelps[0].healthstatus_specify;
+                            this.househelpform.health_status = response.data.user.bureauhousehelps[0].healthstatus_status;
 
-
-                        //     //id status
-                        //     this.househelpform.idstatus_id = response.data.househelp.idstatus.id
-                        //     this.househelpform.bureau_househelp_id = response.data.househelp.idstatus.bureau_househelp_id
-                        //     this.househelpform.id_number = response.data.househelp.idstatus.id_number
-                        //     this.househelpform.ref_number = response.data.househelp.idstatus.ref_number
-                        //     this.househelpform.id_photo_front = response.data.househelp.idstatus.id_photo_front
-                        //     this.househelpform.id_photo_back = response.data.househelp.idstatus.id_photo_back
-                        //     this.househelpform.waiting_card_photo = response.data.househelp.idstatus.waiting_card_photo
-                        //     this.househelpform.reason = response.data.househelp.idstatus.reason
-                        //     this.househelpform.status = response.data.househelp.idstatus.status
-
-                        //     if(response.data.househelp.idstatus.reason == 'Has ID Card'){
-                        //         this.IDstatus = 'HasID'
-                        //     }
-                        //     if(response.data.househelp.idstatus.reason == 'Has ID Card but lost, however applied for replacement'){
-                        //         this.IDstatus = 'HASIDbutlost'
-                        //     }
-                        //     if(response.data.househelp.idstatus.reason == 'Dont Have ID Card but applied for new Card'){
-                        //         this.IDstatus = 'NOIDbutapplied'
-                        //     }
-                        //     if(response.data.househelp.idstatus.reason == 'Dont Have ID Card and Has not applied for new Card'){
-                        //         this.IDstatus = 'NOID'
-                        //     }
-
-                        //     // this.househelpform.health_status = response.data.househelp
-                        //     this.househelpform.HIV_status = response.data.househelp.healthstatus.HIV_status
-                        //     this.househelpform.allergy = response.data.househelp.healthstatus.allergy
-                        //     this.househelpform.health_status_id = response.data.househelp.healthstatus.id
-                        //     this.househelpform.bureau_househelp_id = response.data.househelp.healthstatus.bureau_househelp_id
-                        //     this.househelpform.chronic_details = response.data.househelp.healthstatus.chronic_details
-                        //     this.househelpform.other_chronics = response.data.househelp.healthstatus.other_chronics
-                        //     this.househelpform.specify = response.data.househelp.healthstatus.specify
-                        //     this.househelpform.status = response.data.househelp.healthstatus.status
-
-                        //     if(response.data.househelp.healthstatus.allergy == 'Healthy'){
-                        //         this.Healthstatus = 'HEALTHY'
-                        //     }
-                        //     if(response.data.househelp.healthstatus.allergy == 'Has Minor Health Issues'){
-                        //         this.Healthstatus = 'HASMINOR'
-                        //     }
-                        //     if(response.data.househelp.healthstatus.other_chronics == 'Has Other Chronic Issues'){
-                        //         console.log(response.data.househelp.healthstatus.allergy)
-                        //         this.Healthstatus = 'HASCHRONIC'
+                            if(this.househelpform.health_status == "Healthy"){
+                                this.Healthstatus = "HEALTHY";
+                                this.househelpform.HealthStatus = "HEALTHY";
+                                this.househelpform.health_status = "Healthy";
+                                this.househelpform.health_allergy = null;
+                                this.househelpform.health_other_chronics = null;
+                            }
+                            if(this.househelpform.health_status == "HASMINOR"){
+                                this.Healthstatus = "HASMINOR";
+                                this.househelpform.HealthStatus = "HASMINOR";
+                                this.househelpform.health_status = "HASMINOR";
+                                this.househelpform.health_allergy = "Has Minor Health Issues";
+                                this.househelpform.health_other_chronics = null;
+                            }
+                            if(this.househelpform.health_status == "HASCHRONIC"){
+                                this.Healthstatus = "HASCHRONIC";
+                                this.househelpform.HealthStatus = "HASCHRONIC";
+                                this.househelpform.health_status = "HASCHRONIC";
+                                this.househelpform.health_other_chronics = "Has Other Chronic Issues";
+                                this.househelpform.health_allergy = null;
+                            }
+                            console.log(this.househelpform, 'foGGrm')
+                            console.log(this.househelpform.health_specify, 'health_specify')
                         //     }
                             $('#HousehelpModal').modal('show')
                             this.$Progress.finish();
@@ -1414,17 +1471,16 @@
                 }
             },
             updateHousehelpKinPassPhoto(househelpkinform_househelpkin_photo){
-                // console.log(househelpkinform_bureauhousehelpkin_photo)
+                console.log(househelpkinform_househelpkin_photo)
                 let img = this.househelpkinform.photo;
                       if(img ==null){
                           return "/assets/bureau/img/website/empty.png";
-                        //  console.log('its reall null')
                       }else{
                           if(img.length>100){
                             return this.househelpkinform.photo;
                         }else{
                             if(househelpkinform_househelpkin_photo){
-                                return "assets/bureau/img/househelps/househelpkins/passports/"+househelpkinform_househelpkin_photo;
+                                   return "/assets/bureau/img/househelps/househelpkins/passports/"+househelpkinform_househelpkin_photo;
                             }else{
                                 return "/assets/bureau/img/website/empty.png";
                             }
@@ -1458,7 +1514,7 @@
                             return this.househelpkinform.id_photo_front;
                         }else{
                             if(househelpkinform_id_photo_front){
-                                return "assets/bureau/img/househelps/househelpkins/IDs/front/"+househelpkinform_id_photo_front;
+                                return "/assets/bureau/img/househelps/househelpkins/IDs/front/"+househelpkinform_id_photo_front;
                             }else{
                                 return "/assets/bureau/img/website/empty.png";
                             }
@@ -1492,7 +1548,7 @@
                             return this.househelpkinform.id_photo_back;
                         }else{
                             if(househelpkinform_id_photo_back){
-                                return "assets/bureau/img/househelps/househelpkins/IDs/back/"+househelpkinform_id_photo_back;
+                                return "/assets/bureau/img/househelps/househelpkins/IDs/back/"+househelpkinform_id_photo_back;
                             }else{
                                 return "/assets/bureau/img/website/empty.png";
                             }
@@ -1534,43 +1590,41 @@
                             type: 'success',
                             title: 'Fetched the Househelp data successfully'
                             })
-                            console.log(response.data)
-                            this.househelpkinform.fill(response.data.househelpkin)
-                            this.househelpkinform.id  = response.data.househelpkin.househelpkins[0].pivot.user_id
+                            console.log(response.data, 'hodsehekin')
+                            this.househelpkinform.fill(response.data.user)
+                            this.househelpkinform.id  = response.data.user.househelpkin.user_id
                         //househelp
-                            this.househelpkinform.first_name   = response.data.househelpkin.first_name
-                            this.househelpkinform.last_name    = response.data.househelpkin.last_name
-                            this.househelpkinform.email        = response.data.househelpkin.email
-                            this.househelpkinform.user_type    = response.data.househelpkin.user_type
+                            this.househelpkinform.first_name   = response.data.user.first_name
+                            this.househelpkinform.last_name    = response.data.user.last_name
+                            this.househelpkinform.email        = response.data.user.email
+                            this.househelpkinform.user_type    = response.data.user.user_type
 
-                            this.househelpkinform.bureau_househelp_id  = response.data.househelpkin.househelpkins[0].pivot.bureau_househelp_id
-                            this.househelpkinform.gender_id   = response.data.househelpkin.househelpkins[0].pivot.gender_id
-                            this.househelpkinform.user_id     = response.data.househelpkin.househelpkins[0].pivot.user_id
+                            this.househelpkinform.bureau_househelp_id  = response.data.user.househelpkin.bureau_househelp_id
+                            this.househelpkinform.gender_id   = response.data.user.househelpkin.gender_id
+                            this.househelpkinform.user_id     = response.data.user.househelpkin.user_id
 
-                            this.househelpkinform.househelp_id  = response.data.househelpkin.househelpkins[0].pivot.househelp_id
-                            this.househelpkinform.relationship_id  = response.data.househelpkin.househelpkins[0].pivot.relationship_id
+                            this.househelpkinform.househelp_id  = response.data.user.househelpkin.househelp_id
+                            this.househelpkinform.relationship_id  = response.data.user.househelpkin.relationship_id
 
-                            this.househelpkinform.id_no  = response.data.househelpkin.househelpkins[0].pivot.id_no
-                            this.househelpkinform.photo  = response.data.househelpkin.househelpkins[0].pivot.photo
+                            this.househelpkinform.id_no  = response.data.user.househelpkin.id_no
+                            this.househelpkinform.photo  = response.data.user.househelpkin.photo
 
-                            this.househelpkinform.id_photo_front  = response.data.househelpkin.househelpkins[0].pivot.id_photo_front
-                            this.househelpkinform.id_photo_back  = response.data.househelpkin.househelpkins[0].pivot.id_photo_back
-                            console.log(this.househelpkinform.id_photo_front)
-                            console.log(this.househelpkinform.id_photo_back)
-                            this.househelpkinform.phone  = response.data.househelpkin.househelpkins[0].pivot.phone
-                            this.househelpkinform.address  = response.data.househelpkin.househelpkins[0].pivot.address
+                            this.househelpkinform.id_photo_front  = response.data.user.househelpkin.id_photo_front
+                            this.househelpkinform.id_photo_back  = response.data.user.househelpkin.id_photo_back
+                            this.househelpkinform.phone  = response.data.user.househelpkin.phone
+                            this.househelpkinform.address  = response.data.user.househelpkin.address
 
-                        // //    //get country id
-                            this.househelpkinform.country_id = response.data.househelpkin.househelpkins[0].pivot.country_id
-                            //get county id using the country id
-                            this.househelpkinform.county_id = response.data.househelpkin.househelpkins[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.househelpkin.househelpkins[0].pivot.country_id);
+                        // // //    //get country id
+                            this.househelpkinform.country_id = response.data.user.househelpkin.country_id
+                        //     //get county id using the country id
+                            this.househelpkinform.county_id = response.data.user.househelpkin.county_id
+                            this.$store.dispatch('countrycounties', response.data.user.househelpkin.country_id);
                             //get contituency using county id
-                            this.househelpkinform.constituency_id = response.data.househelpkin.househelpkins[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.househelpkin.househelpkins[0].pivot.county_id);
+                            this.househelpkinform.constituency_id = response.data.user.househelpkin.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.user.househelpkin.county_id);
                             // //get ward usng constituency id
-                            this.househelpkinform.ward_id = response.data.househelpkin.househelpkins[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.househelpkin.househelpkins[0].pivot.constituency_id);
+                            this.househelpkinform.ward_id = response.data.user.househelpkin.ward_id
+                            this.$store.dispatch('constituencywards', response.data.user.househelpkin.constituency_id);
                             this.$Progress.finish();
                         })
                         .catch(()=>{

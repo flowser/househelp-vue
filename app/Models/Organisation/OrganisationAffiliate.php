@@ -22,6 +22,7 @@ class OrganisationAffiliate extends Pivot
         'position_id',
         'education_id',
         'photo',
+        'background_image',
         'active',
         'id_no',
         'id_photo_front',

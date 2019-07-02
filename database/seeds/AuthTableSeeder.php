@@ -34,7 +34,7 @@ class AuthTableSeeder extends Seeder
 
         $this->call(PermissionRoleTableSeeder::class);
         $this->call(UserTableSeeder::class);
-        // $this->call(UserRoleTableSeeder::class);
+        $this->call(UserRoleTableSeeder::class);
         $this->call(CountryTableSeeder::class);
         $this->call(CountyTableSeeder::class);
         $this->call(ConstituencyTableSeeder::class);
@@ -62,6 +62,7 @@ class AuthTableSeeder extends Seeder
         $this->call(HousehelpKinTableSeeder::class);
         $this->call(IDStatusTableSeeder::class);
         $this->call(HealthStatusTableSeeder::class);
+        $this->call(ClientTableSeeder::class);
         $this->enableForeignKeys();
     }
 }

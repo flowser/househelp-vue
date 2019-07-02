@@ -5,6 +5,7 @@ const state = {
     bureaudirectors:[],
     bureaudirectorslist:[],
     bureaudirector:[],
+    pagination:[],
   };
 const getters = {
     BureauDirectors(state){
@@ -15,6 +16,9 @@ const getters = {
     },
     BureauDirector(state){
       return state.bureaudirector;
+    },
+    BureauDirectorPagination(){
+        return state.pagination;
     }
   };
 const actions = {
@@ -22,8 +26,8 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                console.log(response.data, 'bureau')
-                commit('directors', response.data.directors.data);
+                commit('directors', response.data.users.data);
+                commit('pagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -36,8 +40,8 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                console.log(response.data, 'bureau')
-                commit('directorslist', response.data.directors.data)
+                commit('directorslist', response.data.users.data)
+                commit('pagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -63,7 +67,19 @@ const mutations = {
     },
     director(state, data){
       return state.bureaudirector = data;
-    }
+    },
+    pagination(state, data){
+        var pagination = {
+            current_page: data.current_page,
+            last_page: data.last_page,
+            from: data.from,
+            to: data.to,
+            total: data.total,
+            next_page_url: data.next_page_url,
+            prev_page_url: data.prev_page_url,
+        }
+        return state.pagination = pagination;
+    },
   };
 
 export default {

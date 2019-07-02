@@ -45,7 +45,7 @@ class BureauTableSeeder extends Seeder
             Bureau::create([
                 'organisation_id'=>          '1',
                 'name'           => $faker->unique()->company,
-                'logo' => $faker->unique()->image($Path, 400,300, 'animals', false),
+                'logo' => $faker->image($Path, 400,300, 'animals', false),
                 'bureau_email'   => $faker->companyEmail,
                 'phone'                => $faker->unique()->e164PhoneNumber,
                 'landline'             => $faker->unique()->tollFreePhoneNumber,

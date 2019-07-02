@@ -42,7 +42,7 @@ class HousehelpController extends Controller
                 if (auth('api')->user()->hasAnyRole(['Bureau Director'])) {
                     $bureaudirector = auth('api')->user()->bureaudirectors()->first();
                     // return $bureaudirector;
-                    $househelps = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
+                    $users = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
                                 {
                                   $query ->where('bureau_id', $bureaudirector->bureau_id);
                                 }
@@ -53,7 +53,7 @@ class HousehelpController extends Controller
                 else if (auth('api')->user()->hasAnyRole(['Bureau Admin'])) {
                     $bureaudirector = auth('api')->user()->bureauadmins()->first();
 
-                    $househelps = User::whereHas('bureauhousehelps', function($query) use( $bureaudirector)
+                    $users = User::whereHas('bureauhousehelps', function($query) use( $bureaudirector)
                                 {
                                   $query ->where('bureau_id',  $bureaudirector->bureau_id);
                                 }
@@ -62,7 +62,7 @@ class HousehelpController extends Controller
                             ->paginate(7);
                 }
                 return response()-> json([
-                    'househelps'=>$househelps,
+                    'users'=>$users,
                 ], 200);
             }
         }
@@ -513,8 +513,8 @@ class HousehelpController extends Controller
                     'househelp_religion_id'         => 'required',
                     'househelp_kid_id'              => 'required',
                     //CONDITION
-                    'status'                        => 'required',
-                    'HIV_status'                    => 'required',
+                    'health_status'                        => 'required',
+                    'health_HIV_status'                    => 'required',
 
                 ]);
         }elseif($request->has('HealthStatus') && $request['HealthStatus'] == "HASMINOR"){
@@ -530,9 +530,9 @@ class HousehelpController extends Controller
                     'househelp_religion_id'         => 'required',
                     'househelp_kid_id'              => 'required',
                     //CONDITION
-                    'HIV_status'                    => 'required',
-                    'allergy'                       => 'required',
-                    'specify'                       => 'required',
+                    'health_HIV_status'                    => 'required',
+                    'health_allergy'                       => 'required',
+                    'health_specify'                       => 'required',
 
                 ]);
         }elseif($request->has('HealthStatus') && $request['HealthStatus'] == "HASCHRONIC"){
@@ -548,9 +548,9 @@ class HousehelpController extends Controller
                     'househelp_religion_id'         => 'required',
                     'househelp_kid_id'              => 'required',
                     //CONDITION
-                    'HIV_status'                    => 'required',
-                    'other_chronics'                => 'required',
-                    'chronic_details'               => 'required',
+                    'health_HIV_status'                    => 'required',
+                    'health_other_chronics'                => 'required',
+                    'health_chronic_details'               => 'required',
                 ]);
         }
     }
@@ -580,20 +580,158 @@ class HousehelpController extends Controller
     //for update
     public function verifyUpdateDemographics (Request $request)
     {
-        $this->validate($request,[
+            if($request->has('IDstatus') && $request['IDstatus'] == "HasID") {
 
-       ]);
+                $request->validate([
+                    'first_name'  =>  'required',
+                    'last_name'  =>  'required',
+                    // 'email'  =>  'sometimes|required|email|max:255|unique:users',
+                    'password'  =>  'sometimes|required',
+                    'phone'  =>  'phone:AUTO,MOBILE',
+                    'address'  =>  'required|digits_between:1,20',
+                    'birth_date'  =>  'sometimes|required',
+                    'gender_id'  =>  'required',
+                    'country_id'  =>  'required',
+                    'county_id'  =>  'required',
+                    'constituency_id'  =>  'required',
+                    'ward_id'  =>  'required',
+                    'photo'  =>  'required',
+                    //default
+                    'id_status'       =>'required',
+                    'id_status_reason'=>'required',
+                    //condition
+                    'id_number'      =>  'required|digits_between:7,10',
+                    'id_photo_front' =>'required',
+                    'id_photo_back'  =>'required',
+            ]);
+            }elseif($request->has('IDstatus') && $request['IDstatus'] == "HASIDbutlost"){
+                $request->validate([
+                    'first_name'  =>  'required',
+                    'last_name'  =>  'required',
+                    // 'email'  =>  'sometimes|required|email|max:255|unique:users',
+                    'password'  =>  'sometimes|required',
+                    'phone'  =>  'phone:AUTO,MOBILE',
+                    'address'  =>  'required|digits_between:1,20',
+                    'birth_date'  =>  'sometimes|required',
+                    'gender_id'  =>  'required',
+                    'country_id'  =>  'required',
+                    'county_id'  =>  'required',
+                    'constituency_id'  =>  'required',
+                    'ward_id'  =>  'required',
+                    'photo'  =>  'required',
+                    //default
+                    'id_status'       =>'required',
+                    'id_status_reason'=>'required',
+                    //condition
+                    'id_number'      =>  'required|digits_between:7,10',
+                    'waiting_card_photo'=>'required',
+            ]);
+            }elseif($request->has('IDstatus') && $request['IDstatus'] == "NOIDbutapplied"){
+                $request->validate([
+                    'first_name'  =>  'required',
+                    'last_name'  =>  'required',
+                    // 'email'  =>  'sometimes|required|email|max:255|unique:users',
+                    'password'  =>  'sometimes|required',
+                    'phone'  =>  'phone:AUTO,MOBILE',
+                    'address'  =>  'required|digits_between:1,20',
+                    'birth_date'  =>  'sometimes|required',
+                    'gender_id'  =>  'required',
+                    'country_id'  =>  'required',
+                    'county_id'  =>  'required',
+                    'constituency_id'  =>  'required',
+                    'ward_id'  =>  'required',
+                    'photo'  =>  'required',
+                    //default
+                    'househelp_id_status'       =>'required',
+                    'househelp_id_status_reason'=>'required',
+                    //condition
+                    'ref_number'      =>'required',
+                    'waiting_card_photo'=>'required',
+            ]);
+            }elseif($request->has('IDstatus') && $request['IDstatus'] == "NOID"){
+                $request->validate([
+                    'first_name'  =>  'required',
+                    'last_name'  =>  'required',
+                    // 'email'  =>  'sometimes|required|email|max:255|unique:users',
+                    'password'  =>  'sometimes|required',
+                    'phone'  =>  'phone:AUTO,MOBILE',
+                    'address'  =>  'required|digits_between:1,20',
+                    'birth_date'  =>  'sometimes|required',
+                    'gender_id'  =>  'required',
+                    'country_id'  =>  'required',
+                    'county_id'  =>  'required',
+                    'constituency_id'  =>  'required',
+                    'ward_id'  =>  'required',
+                    'photo'  =>  'required',
+                    //default
+                    'id_status'       =>'required',
+                    'id_status_reason'=>'required',
+                    //condition no checking id here
+                    // 'ref_number'      =>'required',
+                    // 'waiting_card_photo'=>'required',
+            ]);
+            }
+
     }
     public function verifyUpdateAttributes (Request $request)
     {
-        $this->validate($request,[
+            if($request->has('HealthStatus') && $request['HealthStatus'] == "HEALTHY") {
+                $request->validate([
+                    'education_id'        => 'required',
+                    'experience_id'       => 'required',
+                    'maritalstatus_id'    => 'required',
+                    'tribe_id'            => 'required',
+                    'skill_id'            => 'required',
+                    'operation_id'        => 'required',
+                    'duration_id'         => 'required',
+                    'englishstatus_id'    => 'required',
+                    'religion_id'         => 'required',
+                    'kid_id'              => 'required',
+                    //CONDITION
+                    'health_status'                        => 'required',
+                    'health_HIV_status'                    => 'required',
 
-       ]);
+                ]);
+        }elseif($request->has('HealthStatus') && $request['HealthStatus'] == "HASMINOR"){
+                 $request->validate([
+                    'education_id'        => 'required',
+                    'experience_id'       => 'required',
+                    'maritalstatus_id'    => 'required',
+                    'tribe_id'            => 'required',
+                    'skill_id'            => 'required',
+                    'operation_id'        => 'required',
+                    'duration_id'         => 'required',
+                    'englishstatus_id'    => 'required',
+                    'religion_id'         => 'required',
+                    'kid_id'              => 'required',
+                    //CONDITION
+                    'health_HIV_status'                    => 'required',
+                    'health_allergy'                       => 'required',
+                    'health_specify'                       => 'required',
+
+                ]);
+        }elseif($request->has('HealthStatus') && $request['HealthStatus'] == "HASCHRONIC"){
+                $request->validate([
+                    'education_id'        => 'required',
+                    'experience_id'       => 'required',
+                    'maritalstatus_id'    => 'required',
+                    'tribe_id'            => 'required',
+                    'skill_id'            => 'required',
+                    'operation_id'        => 'required',
+                    'duration_id'         => 'required',
+                    'englishstatus_id'    => 'required',
+                    'religion_id'         => 'required',
+                    'kid_id'              => 'required',
+                    //CONDITION
+                    'health_HIV_status'                    => 'required',
+                    'health_other_chronics'                => 'required',
+                    'health_chronic_details'               => 'required',
+                ]);
+        }
     }
 
     public function store(Request $request, $id)
     {
-        // return $request;
         $bureau= Bureau::find($id);
         // return $request;
         if ($bureau){
@@ -849,7 +987,7 @@ class HousehelpController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $request;
+
         $user = User::find($request->user_id);
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
@@ -861,10 +999,6 @@ class HousehelpController extends Controller
             $user->password   = Hash::make($request->password);
         $user->assignRole('Househelp');
         $user->save();
-
-        if($user){
-
-        }
 
         $househelp = Househelp::find($id);
 
@@ -930,25 +1064,34 @@ class HousehelpController extends Controller
             $househelp ->kid_id           = $request->kid_id;
 
         $househelp->save();
-        if($househelp){
-
-
-        }
 
         //idstatus
         $Idstatus = Idstatus::find($request->idstatus_id);
             // front side id
-             $currentFrontside_id = $Idstatus->id_photo_front;
+            if($request->has('id_photo_front')){
+                $currentFrontside_id = $Idstatus->id_photo_front;
                 if($request->id_photo_front != $currentFrontside_id){
                     $fr_id_Path = public_path()."/assets/bureau/img/househelps/IDs/front/";
 
                     $S_currentFrontside_id = $fr_id_Path. $currentFrontside_id;
-
                     if($S_currentFrontside_id !=null){
                         if(file_exists($S_currentFrontside_id)){
                             @unlink($S_currentFrontside_id);
                         }
                          //deleting if exists
+                          // also delete if had waiting card and has full id now
+                         $currentWaiting_card = $Idstatus->waiting_card_photo;
+                         if($currentWaiting_card){
+                                 $wc_photo_Path = public_path()."/assets/bureau/img/househelps/waitingcards/";
+                                 $wc_currentWaiting_card = $wc_photo_Path. $currentWaiting_card;
+                                 if($wc_currentWaiting_card !=null){
+                                     if(file_exists($wc_currentWaiting_card)){
+                                         @unlink($wc_currentWaiting_card);
+                                     }
+                                 }
+                                 $Idstatus ->ref_number          = null;
+                                 $Idstatus ->waiting_card_photo  = null;
+                         }
                     }
                         $frontside_id = $request->id_photo_front;
 
@@ -964,10 +1107,12 @@ class HousehelpController extends Controller
                 }else{
                     $id_photo_front = $Idstatus->id_photo_front;
                 }
+            }
 
              // front side id
              //backside id
-             $currentBackside_id = $Idstatus->id_photo_back;
+             if($request->has('id_photo_back')){
+                $currentBackside_id = $Idstatus->id_photo_back;
                 if($request->id_photo_back != $currentBackside_id){
                     $bs_id_Path = public_path()."/assets/bureau/img/househelps/IDs/back/";
 
@@ -992,9 +1137,11 @@ class HousehelpController extends Controller
                 }else{
                     $id_photo_back = $Idstatus->id_photo_back;
                 }
+            }
              //backside id
              //waiting card photo
-             $currentWaiting_card = $Idstatus->waiting_card_photo;
+             if($request->has('waiting_card_photo')){
+                $currentWaiting_card = $Idstatus->waiting_card_photo;
                 if($request->waiting_card_photo != $currentWaiting_card){
                     $wc_photo_Path = public_path()."/assets/bureau/img/househelps/waitingcards/";
 
@@ -1005,6 +1152,7 @@ class HousehelpController extends Controller
                         }
                          //deleting if exists
                     }
+                        $waiting_card = $request->waiting_card_photo;
                         $wc_strpos = strpos($waiting_card, ';');
                         $wc_sub = substr($waiting_card, 0, $wc_strpos);
                         $wc_ex = explode('/', $wc_sub)[1];
@@ -1016,7 +1164,11 @@ class HousehelpController extends Controller
                     $waiting_card_photo = $wc_name;
                 }else{
                     $waiting_card_photo = $Idstatus->waiting_card_photo;
+                    $Idstatus ->waiting_card_photo  = $waiting_card_photo;
                 }
+             }
+
+
              //waiting card photo
 
              $Idstatus->bureau_househelp_id  = $househelp->id ;
@@ -1025,20 +1177,21 @@ class HousehelpController extends Controller
              $Idstatus ->id_number           = $request ->id_number;
              $Idstatus ->id_photo_front      = $id_photo_front;
              $Idstatus ->id_photo_back       = $id_photo_back;
-             $Idstatus ->waiting_card_photo  = $waiting_card_photo;
-             $Idstatus ->ref_number          = $request ->ref_number;
+
+
+
         $Idstatus->save();
         //idstatus
 
         //health status
         $Healthstatus = Healthstatus::find($request->health_status_id);
             $Healthstatus->bureau_househelp_id  = $househelp->id;
-            $Healthstatus->status          = $request->status;
-            $Healthstatus->HIV_status      = $request->HIV_status;
-            $Healthstatus->allergy         = $request->allergy;
-            $Healthstatus->specify         = $request->specify;
-            $Healthstatus->other_chronics  = $request->other_chronics;
-            $Healthstatus->chronic_details = $request->chronic_details;
+            $Healthstatus->status          = $request->health_status;
+            $Healthstatus->HIV_status      = $request->health_HIV_status;
+            $Healthstatus->allergy         = $request->health_allergy;
+            $Healthstatus->specify         = $request->health_specify;
+            $Healthstatus->other_chronics  = $request->health_other_chronics;
+            $Healthstatus->chronic_details = $request->health_chronic_details;
         $Healthstatus->save();
                  //health status
     }

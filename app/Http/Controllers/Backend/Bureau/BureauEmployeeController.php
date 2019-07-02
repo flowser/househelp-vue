@@ -196,10 +196,10 @@ class BureauEmployeeController extends Controller
     public function edit($id)
     {
 
-        $employee = User::with('roles','permissions','bureauemployees')
+        $user = User::with('roles','permissions','bureauemployees')
                             ->find($id);
         return response()-> json([
-            'employee'=>$employee,
+            'user'=>$user,
         ], 200);
 
     }

@@ -19,6 +19,7 @@ class CreateBureauHousehelpTable extends Migration
             $table->unsignedInteger('bureau_id');
             //Househelp details
             $table->string('photo')->nullable();
+            $table->string('background_image')->nullable();
             $table->string('age')->nullable();
 
             // $table->float('search_fee', 8, 2);

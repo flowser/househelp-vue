@@ -20,23 +20,23 @@
                 <thead>
                   <tr>
                     <th>S1</th>
-                    <th>Bureaudirector Details</th>
+                    <th>Bureau Directors Details</th>
                     <th>Roles</th>
                     <th>Permissions</th>
                     <th style="padding-left: 14px">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(bureaudirector, index) in Bureaudirectors" :key="bureaudirector.id">
+                  <tr v-for="(user, index) in Users" :key="user.id">
                     <td >{{index+1}}</td>
                     <td style="width: 500px;">
-                        <div class="row" style="width:100%" v-for="bureau in bureaudirector.bureaudirectors" :key="bureau.id">
+                        <div class="row" style="width:100%" v-for="director in user.bureaudirectors" :key="director.id">
                             <div class="col-sm-3" style="padding: 3px;">
-                                 <img class="card-img-top" :src="bureaudirectorLoadPassPhoto(bureau.pivot.photo)" style="width:100%" alt="Card image cap">
+                                 <img class="card-img-top" :src="bureaudirectorLoadPassPhoto(director.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
                             <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="bureaudirectorLoadIDFrontPhoto(bureau.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="bureaudirectorLoadIDBackPhoto(bureau.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
+                                <img class="card-img-top" :src="bureaudirectorLoadIDFrontPhoto(director.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
+                                <img class="card-img-top" :src="bureaudirectorLoadIDBackPhoto(director.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
                             </div>
                             <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
                                 <div>{{bureaudirector.full_name}},</div>
@@ -99,22 +99,22 @@
                   </tr>
                 </tbody>
               </table>
-              <div v-if="Bureaudirectors.length" >
+              <div v-if="Users.length" >
                    <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                            <span class="float-left" style="margin-bottom:-0.5em" >
                                <div style="margin-bottom:0.25em">
-                                   Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                   & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                   out of <span style="color:#9a009a;"> {{pagination.total}} </span> Bureaudirectors
+                                   Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                   & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                   out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Bureau Directors
                                </div>
-                               <button class="btn btn-info" v-on:click="fetchPaginatedBureaudirectors(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                               <button class="btn btn-info" v-on:click="fetchPaginatedBureaudirectors(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
                            </span>
                            <span class="float-right" style="margin-bottom:-0.5em" >
                                <div style="margin-bottom:0.25em">
-                                   Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                   of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                                   Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                   of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
                                </div>
-                               <button class="btn btn-info" v-on:click="fetchPaginatedBureaudirectors(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                               <button class="btn btn-info" v-on:click="fetchPaginatedBureaudirectors(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
                            </span>
                    </div>
                </div>
@@ -366,8 +366,11 @@
             Genders(){
                return this.$store.getters.Genders
             },
-            Bureaudirectors(){
+            Users(){
                 return this.$store.getters.BureauDirectors
+            },
+            Pagination(){
+                return this.$store.getters.BureauDirectorPagination
             },
 
         },
@@ -411,7 +414,6 @@
                 this.$Progress.start();
                 return this.$store.dispatch( "bureaudirectors", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.directors),
                     toast({
                      type: 'success',
                      title: 'Fetched the Bureauedirector data successfully'
@@ -421,21 +423,9 @@
                     this.$Progress.fail();
                     toast({
                     type: 'error',
-                    title: 'There was something Wrong'
+                    title: 'There was something fffWrong'
                     })
                 })
-            },
-            makingPagination(data){
-                let pagination = {
-                    current_page : data.current_page,
-                    last_page: data.last_page,
-                    from: data.from,
-                    to: data.to,
-                    total: data.total,
-                    next_page_url: data.next_page_url,
-                    prev_page_url: data.prev_page_url,
-                }
-                this.pagination = pagination;
             },
             fetchPaginatedBureaudirectors(url){
                 this.url = url;

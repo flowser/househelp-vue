@@ -161,21 +161,21 @@ class UserTableSeeder extends Seeder
                 $user9->assignRole('Househelp Kin');
             }
           }
-        // // client id 225-234
-        // for ($i = 0; $i < 5; $i++) {
-        //     $user10 = User::create([
-        //         'first_name'        => $faker ->firstNameMale,
-        //         'last_name'         => $faker ->lastName,
-        //         'email'             => $faker ->unique()->safeEmail,
-        //         'password'          => Hash::make('flx4life'),
-        //         'confirmation_code' => md5(uniqid(mt_rand(), true)),
-        //         'user_type'        => 'Client',
-        //         'confirmed'         => true,
-        //     ]);
-        //     if($user10){
-        //         $user10->assignRole('Client');
-        //     }
-        //   }
+        // client id 235-239 5
+        for ($i = 0; $i < 5; $i++) {
+            $user10 = User::create([
+                'first_name'        => $faker ->firstNameMale,
+                'last_name'         => $faker ->lastName,
+                'email'             => $faker ->unique()->safeEmail,
+                'password'          => Hash::make('flx4life'),
+                'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                'user_type'        => 'Client',
+                'confirmed'         => true,
+            ]);
+            if($user10){
+                $user10->assignRole('Client');
+            }
+          }
 
         $this->enableForeignKeys();
     }

@@ -61,10 +61,10 @@ class HousehelpkinController extends Controller
      */
     public function edit($id)
     {
-        $househelpkin = User::with('roles','permissions','househelpkins')
+        $user = User::with('roles','permissions','househelpkin')
                             ->find($id);
         return response()-> json([
-            'househelpkin'=>$househelpkin,
+            'user'=>$user,
         ], 200);
     }
 
@@ -113,7 +113,7 @@ class HousehelpkinController extends Controller
        if($user){
 
         //getting previous photo
-        $currentPassport = $user->househelpkins()->first()->pivot->photo;
+        $currentPassport = $user->househelpkin()->first()->photo;
         // return $currentPassport;
         //processing photo nme and size
         if($request->photo != $currentPassport){
@@ -136,10 +136,10 @@ class HousehelpkinController extends Controller
              //end processing
             $photo= $ps_name;
         }else{
-            $photo = $user->househelpkins()->first()->pivot->photo;
+            $photo = $user->househelpkin()->first()->photo;
         }
        //front side id
-       $currentFrontside_id = $user->househelpkins()->first()->pivot->id_photo_front;
+       $currentFrontside_id = $user->househelpkin()->first()->id_photo_front;
         // return $currentFrontside_id;
         //processing id_photo_front nme and size
         if($request->id_photo_front != $currentFrontside_id){
@@ -163,11 +163,11 @@ class HousehelpkinController extends Controller
              //end processing
                 $id_photo_front = $fr_id_name;
         }else{
-            $id_photo_front = $user->househelpkins()->first()->pivot->id_photo_front;
+            $id_photo_front = $user->househelpkin()->first()->id_photo_front;
         }
 
         //backside id
-        $currentBackside_id = $user->househelpkins()->first()->pivot->id_photo_back;
+        $currentBackside_id = $user->househelpkin()->first()->id_photo_back;
         // return $currentBackside_id;
         //processing id_photo_back nme and size
         if($request->id_photo_back != $currentBackside_id){
@@ -191,7 +191,7 @@ class HousehelpkinController extends Controller
              //end processing
                 $id_photo_back = $bs_id_name;
         }else{
-            $id_photo_back = $user->househelpkins()->first()->pivot->id_photo_back;
+            $id_photo_back = $user->househelpkin()->first()->id_photo_back;
         }
 
 

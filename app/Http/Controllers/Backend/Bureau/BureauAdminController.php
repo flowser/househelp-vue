@@ -196,10 +196,10 @@ class BureauAdminController extends Controller
     public function edit($id)
     {
 
-        $admin = User::with('roles','permissions','bureauadmins')
+        $user = User::with('roles','permissions','bureauadmins')
                             ->find($id);
         return response()-> json([
-            'admin'=>$admin,
+            'user'=>$user,
         ], 200);
 
         // $admin = User::

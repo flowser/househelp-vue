@@ -170,11 +170,11 @@ class OrgEmployeeController extends Controller
     public function edit($id)
     {
 
-        $employee = User::
+        $user = User::
                         with('roles','permissions','organisationemployees')
                         ->find($id);
         return response()-> json([
-            'employee'=>$employee,
+            'user'=>$user,
         ], 200);
     }
 

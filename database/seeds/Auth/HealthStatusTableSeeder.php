@@ -17,9 +17,7 @@ class HealthStatusTableSeeder extends Seeder
         $faker = Faker\Factory::create();
         foreach (range(1,60) as $index){
             $HousehelpID = Househelp::where('id', '>=', 1)->where('id', '<=', 60)->orderBy('id', 'asc')->first()->id;
-
             $HousehelpIDS = Healthstatus::orderBy('id', 'asc')->pluck('bureau_househelp_id')->toArray();
-
             $uniqueHousehelpID = Househelp::where('id', '>=', 1)
                                ->where('id', '<=', 60)->whereNotIn('id',  $HousehelpIDS)->first()->id;
             if($HousehelpIDS){
@@ -56,8 +54,8 @@ class HealthStatusTableSeeder extends Seeder
                     'HIV_status'        => 'Negative',
                     'other_chronics'    => null,
                     'chronic_details'   => null,
-                    'allergy'           => 'nuts',
-                    'specify'           => null,
+                    'allergy'           => "Has Minor Health Issues",
+                    'specify'           => "nuts",
                 ]);
             }else{
                 Healthstatus::create([
@@ -66,8 +64,8 @@ class HealthStatusTableSeeder extends Seeder
                     'HIV_status'        => 'Negative',
                     'other_chronics'    => null,
                     'chronic_details'   => null,
-                    'allergy'           => 'nuts',
-                    'specify'           => null,
+                    'allergy'           => "Has Minor Health Issues",
+                    'specify'           => "nuts",
                 ]);
             }
         }
@@ -81,7 +79,7 @@ class HealthStatusTableSeeder extends Seeder
                     'bureau_househelp_id'=> $uniqueHousehelpID,
                     'status'            => 'HASCHRONIC',
                     'HIV_status'        => 'Negative',
-                    'other_chronics'    => 'none',
+                    'other_chronics'    => "Has Other Chronic Issues",
                     'chronic_details'   => 'Asthmatic',
                     'allergy'           =>  null,
                     'specify'           =>  null,
@@ -91,7 +89,7 @@ class HealthStatusTableSeeder extends Seeder
                     'bureau_househelp_id'=> $HousehelpID,
                     'status'            => 'HASCHRONIC',
                     'HIV_status'        => 'Negative',
-                    'other_chronics'    => 'none',
+                    'other_chronics'    => "Has Other Chronic Issues",
                     'chronic_details'   => 'Asthmatic',
                     'allergy'           =>  null,
                     'specify'           =>  null,

@@ -128,8 +128,7 @@
       <!-- /.row -->
     </section>
 
-    <!-- Role Modal -->
-        <div class="modal fade " id="EmployeeModal" tabindex="-1" role="dialog" aria-labelledby="EmployeeModalLabel" aria-hidden="true">
+    <div class="modal fade " id="EmployeeModal" tabindex="-1" role="dialog" aria-labelledby="EmployeeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,146 +140,43 @@
                         <div class="modal-body">
                             <h5 class="modal-title" v-show="editmodeEmployee" id="EmployeeModalLabel">Update Employee</h5>
                             <h5 class="modal-title" v-show="!editmodeEmployee" id="EmployeeModalLabel">Add New Employee</h5>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="first_name" class="col-form-label"> Employee Passport</label>
+                                    <img v-show="editmodeEmployee" :src="updateEmployeePassPhoto(employeeform.photo)" alt="" width="100%" >
+                                </div>
+                                <div class="form-group col-md-8">
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="first_name" class="col-form-label"> Employee First Name</label>
                                             <input v-model="employeeform.first_name" type="text" name="first_name" placeholder="Employee First Name"
                                                 class="form-control" :class="{ 'is-invalid': employeeform.errors.has('first_name') }" >
                                             <has-error style="color: #e83e8c" :form="employeeform" field="first_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="last_name" class=" col-form-label">employee_Last Name </label>
                                             <input v-model="employeeform.last_name" type="employee_last_name" name="last_name" placeholder="Employee Last Name"
                                                 class="form-control" :class="{ 'is-invalid': employeeform.errors.has('last_name') }" >
                                             <has-error style="color: #e83e8c" :form="employeeform" field="last_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                    </div>
+                                    <div class="row">
+                                         <div class="form-group col-md-6">
                                             <label for="email" class=" col-form-label">Email </label>
                                             <input v-model="employeeform.email" type="email" name="email" placeholder="Email Address"
                                                 class="form-control" :class="{ 'is-invalid': employeeform.errors.has('email') }" >
                                             <has-error style="color: #e83e8c" :form="employeeform" field="email"></has-error>
                                         </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
+                                            <label for="password" class=" col-form-label">Password </label>
                                             <input v-model="employeeform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': employeeform.errors.has('password') }">
                                             <has-error :form="employeeform" field="password"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="phone" class="col-form-label"> Employee Phone</label>
-                                                <div>
-                                                    <vue-tel-input v-model="employeeform.phone" name="phone" @onInput="InputPhone"
-                                                    class="form-control" :class="{ 'is-invalid': employeeform.errors.has('phone') }">
-                                                    </vue-tel-input>
-                                                    <has-error style="color: #e83e8c" :form="employeeform" field="phone"></has-error>
-                                                </div>
-                                                <div v-if="employeeform.phone" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{phone.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{phone.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="landline" class=" col-form-label">Landline</label>
-                                                <vue-tel-input v-model="employeeform.landline" name="landline" @onInput="InputLandline"
-                                                    class="form-control" :class="{ 'is-invalid': employeeform.errors.has('landline') }">
-                                                </vue-tel-input>
-                                                <has-error style="color: #e83e8c" :form="employeeform" field="landline"></has-error>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                <div v-if="employeeform.landline" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{landline.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{landline.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="id_no" class="col-form-label">ID no.</label>
-                                            <input v-model="employeeform.id_no" type="text" name="id_no" placeholder="ID NO"
-                                                class="form-control" :class="{ 'is-invalid': employeeform.errors.has('id_no') }" >
-                                            <has-error style="color: #e83e8c" :form="employeeform" field="id_no"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="address" class=" col-form-label">Address</label>
-                                            <input v-model="employeeform.address" type="text" name="address" placeholder="Address"
-                                                class="form-control" :class="{ 'is-invalid': employeeform.errors.has('address') }" >
-                                            <has-error style="color: #e83e8c" :form="employeeform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="gender_id">Select Gender</label>
-                                            <select class="form-control" v-model="employeeform.gender_id"
-                                                    :class="{ 'is-invalid':employeeform.errors.has('gender_id') }">
-                                                    <option disabled value="">Select gender</option>
-                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="employeeform" field="gender_id"></has-error>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-3">
-                                            <label for="country_id">Select Country</label>
-                                            <select class="form-control" @change="countryCounties(employeeform.country_id)"
-                                            v-model="employeeform.country_id" :class="{ 'is-invalid': employeeform.errors.has('country_id') }">
-                                                    <option disabled value="">Select Country</option>{{employeeform.country_id}}
-                                                    <option v-for="country in Countries" :value="country.id" :key="country.id">{{country.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="employeeform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="county_id" class=" col-form-label">County</label>
-                                            <select class="form-control" @change="countyConstituencies(employeeform.county_id)"
-                                            v-model="employeeform.county_id" :class="{ 'is-invalid': employeeform.errors.has('county_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="county in Counties" :value="county.id" :key="county.id">{{county.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="employeeform" field="county_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="constituency_id" class=" col-form-label">Constituency</label>
-                                            <select class="form-control" @change="constituencyWards(employeeform.constituency_id)"
-                                            v-model="employeeform.constituency_id" :class="{ 'is-invalid': employeeform.errors.has('constituency_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="constituency in Constituencies" :value="constituency.id" :key="constituency.id">{{constituency.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="employeeform" field="constituency_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="ward_id" class="col-form-label"> Ward </label>
-                                            <select class="form-control"
-                                            v-model="employeeform.ward_id" :class="{ 'is-invalid': employeeform.errors.has('ward_id') }">
-                                                    <option disabled value="">Select Ward</option>
-                                                    <option v-for="ward in Wards" :value="ward.id" :key="ward.id">{{ward.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="employeeform" field="ward_id"></has-error>
-                                        </div>
-
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="photo" class=" col-form-label">Employee PassPort Image</label><br>
-                                                <input @change="employeeChangePassPhoto($event)" type="file" name="photo"
-                                                    :class="{ 'is-invalid': employeeform.errors.has('photo') }">
-                                                    <img v-show="editmodeEmployee" :src="updateEmployeePassPhoto(employeeform.photo)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeEmployee" :src="employeeform.photo" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="employeeform" field="photo"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="id_photo_front" class=" col-form-label">Employee FrontSide ID Photo</label><br>
-                                                <input @change="employeeChangeIDFrontPhoto($event)" type="file" name="id_photo_front"
-                                                    :class="{ 'is-invalid': employeeform.errors.has('id_photo_front') }">
-                                                    <img v-show="editmodeEmployee" :src="updateEmployeeIDFrontPhoto(employeeform.id_photo_front)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeEmployee" :src="employeeform.id_photo_front" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="employeeform" field="id_photo_front"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="backside_i_photod" class=" col-form-label">BackSide ID Photo</label><br>
-                                                <input @change="employeeChangeIDBackPhoto($event)" type="file" name="id_photo_back"
-                                                    :class="{ 'is-invalid': employeeform.errors.has('backside_id') }">
-                                                    <img v-show="editmodeEmployee" :src="updateEmployeeIDBackPhoto(employeeform.id_photo_back)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeEmployee" :src="employeeform.id_photo_back" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="employeeform" field="id_photo_back"></has-error>
-                                        </div>
-                                    </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -291,6 +187,8 @@
                 </div>
             </div>
         </div>
+
+
 
   </div>
 </div>
@@ -310,36 +208,9 @@
                         last_name:'',
                         email:'',
                         password:'',
-                        employee_type:'',
-                        permissions:[],
-                        roles:[],
-                        user_id:'',
-                        organisation_id:'',
-                        position_id:'',
-                        gender_id:'',
+                        user_type:'',
                         photo:'',
-                        active:'',
-                        id_no:'',
-                        id_photo_front:'',
-                        id_photo_back:'',
-                        about_me:'',
-                        phone:'',
-                        landline:'',
-                        address:'',
-                        country_id:'',
-                        county_id:'',
-                        constituency_id:'',
-                        ward_id:'',
                 }),
-                 //employee
-                phone:{
-                        isValid: false,
-                        country: undefined,
-                },
-                landline:{
-                        isValid: false,
-                        country: undefined,
-                },
                 url:'/api/orgemployee/get',
                 pagination:[],
             }
@@ -590,30 +461,12 @@
                             type: 'success',
                             title: 'Fetched the Employee data successfully'
                             })
-                            console.log(response.data)
-                            this.employeeform.fill(response.data.employee)
-                            this.employeeform.user_id = response.data.employee.organisationemployees[0].pivot.user_id
-                            this.employeeform.organisation_id = response.data.employee.organisationemployees[0].pivot.organisation_id
-                            this.employeeform.position_id = response.data.employee.organisationemployees[0].pivot.position_id
-                            this.employeeform.gender_id = response.data.employee.organisationemployees[0].pivot.gender_id
-                            this.employeeform.photo = response.data.employee.organisationemployees[0].pivot.photo
-                            this.employeeform.id_no = response.data.employee.organisationemployees[0].pivot.id_no
-                            this.employeeform.id_photo_front = response.data.employee.organisationemployees[0].pivot.id_photo_front
-                            this.employeeform.id_photo_back = response.data.employee.organisationemployees[0].pivot.id_photo_back
-                            this.employeeform.phone = response.data.employee.organisationemployees[0].pivot.phone
-                            this.employeeform.landline = response.data.employee.organisationemployees[0].pivot.landline
-                            this.employeeform.address = response.data.employee.organisationemployees[0].pivot.address
-
-                            this.employeeform.country_id = response.data.employee.organisationemployees[0].pivot.country_id
-                            //get county id using the country id
-                            this.employeeform.county_id = response.data.employee.organisationemployees[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.employee.organisationemployees[0].pivot.country_id);
-                            //get contituency using county id
-                            this.employeeform.constituency_id = response.data.employee.organisationemployees[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.employee.organisationemployees[0].pivot.county_id);
-                            // //get ward usng constituency id
-                            this.employeeform.ward_id = response.data.employee.organisationemployees[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.employee.organisationemployees[0].pivot.constituency_id);
+                            this.employeeform.fill(response.data.user)
+                            this.employeeform.first_name = response.data.user.first_name;
+                            this.employeeform.last_name = response.data.user.last_name;
+                            this.employeeform.email = response.data.user.email;
+                            this.employeeform.user_type = response.data.user.user_type;
+                            this.employeeform.photo = response.data.user.organisationemployees[0].pivot.photo
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -655,9 +508,9 @@
             updateEmployee(id){
                   console.log('update employee')
                   this.$Progress.start();
-                     this.employeeform.patch('/api/orgemployee/update/'+id)
+                     this.employeeform.patch('/api/user/update/'+id)
                         .then(()=>{
-                            this.$store.dispatch( "employees")
+                            this.loadEmployees();
                          $('#EmployeeModal').modal('hide')
                          toast({
                             type: 'success',

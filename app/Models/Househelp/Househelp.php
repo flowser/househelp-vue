@@ -33,6 +33,7 @@ class Househelp extends Model
         'user_id',
         'bureau_id',
         'photo',
+        'background_image',
         'about_me',
         'phone',
         'address',

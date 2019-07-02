@@ -18,6 +18,8 @@ use App\Models\Client\Standard\Parcel_Collection;
 
 class OrganisationClient extends Model
 {
+
+    protected $table = "organisation_client";
     protected $fillable = [
         'user_id',
         'gender_id',

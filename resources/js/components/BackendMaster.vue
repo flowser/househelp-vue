@@ -10,8 +10,7 @@
         <!-- Main Sidebar Container -->
 
         <!-- Content Wrapper. Contains page content -->
-        {{loggedIn}},<br>
-        {{LoggedUser}}
+
             <vue-progress-bar></vue-progress-bar>
             <router-view></router-view>
         <!-- /.content-wrapper -->

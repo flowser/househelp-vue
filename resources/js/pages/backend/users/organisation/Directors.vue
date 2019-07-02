@@ -27,54 +27,45 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(director, index) in Directors" :key="director.id">
+                  <tr v-for="(user, index) in Users" :key="user.id">
                     <td >{{index+1}}</td>
                     <td style="width: 500px;">
-                        <div class="row" style="width:100%" v-for="organisation in director.organisationdirectors" :key="organisation.id">
+                        <div class="row" style="width:100%" v-for="director in user.organisationdirectors" :key="director.id">
                             <div class="col-sm-3" style="padding: 3px;">
-                                 <img class="card-img-top" :src="directorLoadPassPhoto(organisation.pivot.photo)" style="width:100%" alt="Card image cap">
-                            </div>
-                            <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="directorLoadIDFrontPhoto(organisation.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="directorLoadIDBackPhoto(organisation.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
+                                 <img class="card-img-top" :src="directorLoadPassPhoto(director.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
                             <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
-                                <div>{{director.full_name}},</div>
-                                <div v-for="position in director.positions" :key="position.id">
-                                    {{position.name}},
-                                    <span style="color:#9a009a;">
-                                        {{organisation.name}},
-                                    </span>
+                                <div>{{user.full_name}},</div>
+                                <div>
+                                     Bureau: <span style="color:#9a009a;">{{director.name}},</span>
                                 </div>
-                                <div> ID: ,<span style="color:#9a009a;">{{organisation.pivot.id_no}}</span>,
-                                    Phone: <span style="color:#9a009a;">{{organisation.pivot.phone}},</span>
+                                <div> ID: ,<span style="color:#9a009a;">{{director.pivot.id_no}}</span>,
+                                    Phone: <span style="color:#9a009a;">{{director.pivot.phone}},</span>
                                 </div>
                                 <div>
-                                     Mail: <span style="color:#9a009a;">{{director.email}},</span>
+                                     Mail: <span style="color:#9a009a;">{{user.email}},</span>
                                 </div>
-                                    <div>P. O. Box , <span style="color:#9a009a;">{{organisation.pivot.address}}</span>,
+                                    <div>P. O. Box , <span style="color:#9a009a;">{{director.pivot.address}}</span>,
                                     </div>
-                                <div v-for="ward in director.wards" :key="ward.id">
-                                    <span style="color:#9a009a;">{{ward.name}}</span> ward,
-                                    <span v-for="constituency in director.constituencies" :key="constituency.id" style="color:#9a009a;">
-                                        {{constituency.name}}</span> constituency,
+
+                                <div>
+                                    <span style="color:#9a009a;">{{director.ward_name}}</span> ward,
+                                    <span style="color:#9a009a;">{{director.constituency_name}}</span> constituency,
                                 </div>
-                                <div v-for="county in director.counties" :key="county.id" >
-                                    <span style="color:#9a009a;">{{county.name}}</span> county,
-                                    <span v-for="country in director.countries" :key="country.id" style="color:#9a009a;">
-                                        {{country.name}},
-                                    </span>
+                                <div >
+                                    <span style="color:#9a009a;">{{director.county_name}}</span> county,
+                                    <span style="color:#9a009a;">{{director.country_name}},</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="role in director.roles" :key="role.id" class="pl-2">
+                        <span v-for="role in user.roles" :key="role.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 " >{{role.name}} </div>
                         </span>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="permission in director.permissions" :key="permission.id" class="pl-2">
+                        <span v-for="permission in user.permissions" :key="permission.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 ">{{permission.name}} </div>
                         </span>
                     </td>
@@ -82,15 +73,15 @@
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em"> Updated at:
-                                    <span style="color:#9a009a;">{{director.created_at | dateformat}} </span>
+                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
                                 </div>
                             </span>
                             <span class="float-right">
-                                <a href=""  @click.prevent="editDirectorModal(director.id)">
+                                <a href=""  @click.prevent="editDirectorModal(user.id)">
                                     <i class="fa fa-edit blue"></i>
                                 </a>
                                 /
-                                <a href=""  @click.prevent="deleteDirector(director.id)">
+                                <a href=""  @click.prevent="deleteDirector(user.id)">
                                     <i class="fa fa-trash red"></i>
                                 </a>
                             </span>
@@ -99,25 +90,25 @@
                   </tr>
                 </tbody>
               </table>
-              <div v-if="Directors.length" >
-                  <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
-                          <span class="float-left" style="margin-bottom:-0.5em" >
-                              <div style="margin-bottom:0.25em">
-                                  Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                  & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                  out of <span style="color:#9a009a;"> {{pagination.total}} </span> Directors
-                              </div>
-                              <button class="btn btn-info" v-on:click="fetchPaginatedDirectors(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
-                          </span>
-                          <span class="float-right" style="margin-bottom:-0.5em" >
-                              <div style="margin-bottom:0.25em">
-                                  Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                  of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
-                              </div>
-                              <button class="btn btn-info" v-on:click="fetchPaginatedDirectors(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
-                          </span>
-                  </div>
-              </div>
+              <div v-if="Users.length" >
+                   <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
+                           <span class="float-left" style="margin-bottom:-0.5em" >
+                               <div style="margin-bottom:0.25em">
+                                   Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                   & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                   out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Bureaudirectors
+                               </div>
+                               <button class="btn btn-info" v-on:click="fetchPaginatedBureaudirectors(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
+                           </span>
+                           <span class="float-right" style="margin-bottom:-0.5em" >
+                               <div style="margin-bottom:0.25em">
+                                   Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                   of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
+                               </div>
+                               <button class="btn btn-info" v-on:click="fetchPaginatedBureaudirectors(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
+                           </span>
+                   </div>
+               </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -128,8 +119,7 @@
       <!-- /.row -->
     </section>
 
-    <!-- Role Modal -->
-        <div class="modal fade " id="DirectorModal" tabindex="-1" role="dialog" aria-labelledby="DirectorModalLabel" aria-hidden="true">
+<div class="modal fade " id="DirectorModal" tabindex="-1" role="dialog" aria-labelledby="DirectorModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,146 +131,43 @@
                         <div class="modal-body">
                             <h5 class="modal-title" v-show="editmodeDirector" id="DirectorModalLabel">Update Director</h5>
                             <h5 class="modal-title" v-show="!editmodeDirector" id="DirectorModalLabel">Add New Director</h5>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="first_name" class="col-form-label"> Director Passport</label>
+                                    <img v-show="editmodeDirector" :src="updateDirectorPassPhoto(directorform.photo)" alt="" width="100%" >
+                                </div>
+                                <div class="form-group col-md-8">
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="first_name" class="col-form-label"> Director First Name</label>
                                             <input v-model="directorform.first_name" type="text" name="first_name" placeholder="Director First Name"
                                                 class="form-control" :class="{ 'is-invalid': directorform.errors.has('first_name') }" >
                                             <has-error style="color: #e83e8c" :form="directorform" field="first_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="last_name" class=" col-form-label">director_Last Name </label>
                                             <input v-model="directorform.last_name" type="director_last_name" name="last_name" placeholder="Director Last Name"
                                                 class="form-control" :class="{ 'is-invalid': directorform.errors.has('last_name') }" >
                                             <has-error style="color: #e83e8c" :form="directorform" field="last_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                    </div>
+                                    <div class="row">
+                                         <div class="form-group col-md-6">
                                             <label for="email" class=" col-form-label">Email </label>
                                             <input v-model="directorform.email" type="email" name="email" placeholder="Email Address"
                                                 class="form-control" :class="{ 'is-invalid': directorform.errors.has('email') }" >
                                             <has-error style="color: #e83e8c" :form="directorform" field="email"></has-error>
                                         </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
+                                            <label for="password" class=" col-form-label">Password </label>
                                             <input v-model="directorform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': directorform.errors.has('password') }">
                                             <has-error :form="directorform" field="password"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="phone" class="col-form-label"> Director Phone</label>
-                                                <div>
-                                                    <vue-tel-input v-model="directorform.phone" name="phone" @onInput="InputPhone"
-                                                    class="form-control" :class="{ 'is-invalid': directorform.errors.has('phone') }">
-                                                    </vue-tel-input>
-                                                    <has-error style="color: #e83e8c" :form="directorform" field="phone"></has-error>
-                                                </div>
-                                                <div v-if="directorform.phone" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{phone.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{phone.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="landline" class=" col-form-label">Landline</label>
-                                                <vue-tel-input v-model="directorform.landline" name="landline" @onInput="InputLandline"
-                                                    class="form-control" :class="{ 'is-invalid': directorform.errors.has('landline') }">
-                                                </vue-tel-input>
-                                                <has-error style="color: #e83e8c" :form="directorform" field="landline"></has-error>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                <div v-if="directorform.landline" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{landline.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{landline.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="id_no" class="col-form-label">ID no.</label>
-                                            <input v-model="directorform.id_no" type="text" name="id_no" placeholder="ID NO"
-                                                class="form-control" :class="{ 'is-invalid': directorform.errors.has('id_no') }" >
-                                            <has-error style="color: #e83e8c" :form="directorform" field="id_no"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="address" class=" col-form-label">Address</label>
-                                            <input v-model="directorform.address" type="text" name="address" placeholder="Address"
-                                                class="form-control" :class="{ 'is-invalid': directorform.errors.has('address') }" >
-                                            <has-error style="color: #e83e8c" :form="directorform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="gender_id">Select Gender</label>
-                                            <select class="form-control" v-model="directorform.gender_id"
-                                                    :class="{ 'is-invalid':directorform.errors.has('gender_id') }">
-                                                    <option disabled value="">Select gender</option>
-                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="directorform" field="gender_id"></has-error>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-3">
-                                            <label for="country_id">Select Country</label>
-                                            <select class="form-control" @change="countryCounties(directorform.country_id)"
-                                            v-model="directorform.country_id" :class="{ 'is-invalid': directorform.errors.has('country_id') }">
-                                                    <option disabled value="">Select Country</option>{{directorform.country_id}}
-                                                    <option v-for="country in Countries" :value="country.id" :key="country.id">{{country.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="directorform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="county_id" class=" col-form-label">County</label>
-                                            <select class="form-control" @change="countyConstituencies(directorform.county_id)"
-                                            v-model="directorform.county_id" :class="{ 'is-invalid': directorform.errors.has('county_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="county in Counties" :value="county.id" :key="county.id">{{county.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="directorform" field="county_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="constituency_id" class=" col-form-label">Constituency</label>
-                                            <select class="form-control" @change="constituencyWards(directorform.constituency_id)"
-                                            v-model="directorform.constituency_id" :class="{ 'is-invalid': directorform.errors.has('constituency_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="constituency in Constituencies" :value="constituency.id" :key="constituency.id">{{constituency.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="directorform" field="constituency_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="ward_id" class="col-form-label"> Ward </label>
-                                            <select class="form-control"
-                                            v-model="directorform.ward_id" :class="{ 'is-invalid': directorform.errors.has('ward_id') }">
-                                                    <option disabled value="">Select Ward</option>
-                                                    <option v-for="ward in Wards" :value="ward.id" :key="ward.id">{{ward.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="directorform" field="ward_id"></has-error>
-                                        </div>
-
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="photo" class=" col-form-label">Director PassPort Image</label><br>
-                                                <input @change="directorChangePassPhoto($event)" type="file" name="photo"
-                                                    :class="{ 'is-invalid': directorform.errors.has('photo') }">
-                                                    <img v-show="editmodeDirector" :src="updateDirectorPassPhoto(directorform.photo)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeDirector" :src="directorform.photo" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="directorform" field="photo"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="id_photo_front" class=" col-form-label">Director FrontSide ID Photo</label><br>
-                                                <input @change="directorChangeIDFrontPhoto($event)" type="file" name="id_photo_front"
-                                                    :class="{ 'is-invalid': directorform.errors.has('id_photo_front') }">
-                                                    <img v-show="editmodeDirector" :src="updateDirectorIDFrontPhoto(directorform.id_photo_front)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeDirector" :src="directorform.id_photo_front" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="directorform" field="id_photo_front"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="backside_i_photod" class=" col-form-label">BackSide ID Photo</label><br>
-                                                <input @change="directorChangeIDBackPhoto($event)" type="file" name="id_photo_back"
-                                                    :class="{ 'is-invalid': directorform.errors.has('backside_id') }">
-                                                    <img v-show="editmodeDirector" :src="updateDirectorIDBackPhoto(directorform.id_photo_back)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeDirector" :src="directorform.id_photo_back" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="directorform" field="id_photo_back"></has-error>
-                                        </div>
-                                    </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -291,6 +178,8 @@
                 </div>
             </div>
         </div>
+
+
 
   </div>
 </div>
@@ -311,33 +200,8 @@
                         email:'',
                         password:'',
                         user_type:'',
-                        user_id:'',
-                        organisation_id:'',
-                        position_id:'',
-                        gender_id:'',
                         photo:'',
-                        active:'',
-                        id_no:'',
-                        id_photo_front:'',
-                        id_photo_back:'',
-                        about_me:'',
-                        phone:'',
-                        landline:'',
-                        address:'',
-                        country_id:'',
-                        county_id:'',
-                        constituency_id:'',
-                        ward_id:'',
                 }),
-                 //director
-                phone:{
-                        isValid: false,
-                        country: undefined,
-                },
-                landline:{
-                        isValid: false,
-                        country: undefined,
-                },
                 url:'/api/orgdirector/get',
                 pagination:[],
 
@@ -367,9 +231,12 @@
             Genders(){
                return this.$store.getters.Genders
             },
-            Directors(){
+            Users(){
                 return this.$store.getters.Directors
             },
+            Pagination(){
+                return this.$store.getters.DirectorPagination
+            }
 
         },
         methods:{
@@ -412,7 +279,6 @@
                 this.$Progress.start();
                 return this.$store.dispatch( "directors", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.directors),
                     toast({
                      type: 'success',
                      title: 'Fetched the Director data successfully'
@@ -425,19 +291,6 @@
                     title: 'There was something Wrong'
                     })
                 })
-            },
-            makingPagination(data){
-                let pagination = {
-                    current_page : data.current_page,
-                    last_page: data.last_page,
-                    from: data.from,
-                    to: data.to,
-                    total: data.total,
-                    next_page_url: data.next_page_url,
-                    prev_page_url: data.prev_page_url,
-                }
-                this.pagination = pagination;
-                console.log( this.pagination, 'pagination')
             },
             fetchPaginatedDirectors(url){
                 this.url = url;
@@ -588,30 +441,12 @@
                             type: 'success',
                             title: 'Fetched the Director data successfully'
                             })
-                            console.log(response.data)
-                            this.directorform.fill(response.data.director)
-                            this.directorform.user_id = response.data.director.organisationdirectors[0].pivot.user_id
-                            this.directorform.organisation_id = response.data.director.organisationdirectors[0].pivot.organisation_id
-                            this.directorform.position_id = response.data.director.organisationdirectors[0].pivot.position_id
-                            this.directorform.gender_id = response.data.director.organisationdirectors[0].pivot.gender_id
-                            this.directorform.photo = response.data.director.organisationdirectors[0].pivot.photo
-                            this.directorform.id_no = response.data.director.organisationdirectors[0].pivot.id_no
-                            this.directorform.id_photo_front = response.data.director.organisationdirectors[0].pivot.id_photo_front
-                            this.directorform.id_photo_back = response.data.director.organisationdirectors[0].pivot.id_photo_back
-                            this.directorform.phone = response.data.director.organisationdirectors[0].pivot.phone
-                            this.directorform.landline = response.data.director.organisationdirectors[0].pivot.landline
-                            this.directorform.address = response.data.director.organisationdirectors[0].pivot.address
-
-                            this.directorform.country_id = response.data.director.organisationdirectors[0].pivot.country_id
-                            //get county id using the country id
-                            this.directorform.county_id = response.data.director.organisationdirectors[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.director.organisationdirectors[0].pivot.country_id);
-                            //get contituency using county id
-                            this.directorform.constituency_id = response.data.director.organisationdirectors[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.director.organisationdirectors[0].pivot.county_id);
-                            // //get ward usng constituency id
-                            this.directorform.ward_id = response.data.director.organisationdirectors[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.director.organisationdirectors[0].pivot.constituency_id);
+                            this.directorform.fill(response.data.user)
+                            this.directorform.first_name = response.data.user.first_name;
+                            this.directorform.last_name = response.data.user.last_name;
+                            this.directorform.email = response.data.user.email;
+                            this.directorform.user_type = response.data.user.user_type;
+                            this.directorform.photo = response.data.user.organisationdirectors[0].pivot.photo
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -634,7 +469,7 @@
                             type: 'success',
                             title: 'Director Created successfully'
                             })
-                            this.$store.dispatch( "directors")
+                            this.loadDirectorss();
                             this.directorform.reset()
                             $('#DirectorModal').modal('hide')
                               this.$Progress.finish()
@@ -653,9 +488,9 @@
             updateDirector(id){
                   console.log('update director')
                   this.$Progress.start();
-                     this.directorform.patch('/api/orgdirector/update/'+id)
+                     this.directorform.patch('/api/user/update/'+id)
                         .then(()=>{
-                            this.$store.dispatch( "directors")
+                            this.loadDirectors();
                          $('#DirectorModal').modal('hide')
                          toast({
                             type: 'success',
@@ -691,7 +526,7 @@
                             type: 'success',
                             title: 'Director Deleted successfully'
                             })
-                            this.$store.dispatch( "directors")
+                            this.loadDirectorss();
                             this.$Progress.finish();
                         })
                         .catch(()=>{

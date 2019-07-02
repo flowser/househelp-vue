@@ -7,6 +7,7 @@ use App\Models\Bureau\BureauAdmin;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Househelp\Househelp;
 use App\Models\Bureau\BureauDirector;
+use App\Models\Househelp\HousehelpKin;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Client\OrganisationClient;
@@ -456,12 +457,14 @@ class User extends Authenticatable
                             'englishstatuses.name as englishstatus_name',
                             'religions.name as religion_name',
                             'kids.name as kid_name',
+                            'healthstatuses.id as healthstatus_id',
                             'healthstatuses.status as healthstatus_status',
                             'healthstatuses.HIV_status as healthstatus_HIV_status',
                             'healthstatuses.other_chronics as healthstatus_other_chronics',
                             'healthstatuses.chronic_details as healthstatus_chronic_details',
                             'healthstatuses.allergy as healthstatus_allergy',
                             'healthstatuses.specify as healthstatus_specify',
+                            'idstatuses.id as idstatus_id',
                             'idstatuses.status as idstatus_status',
                             'idstatuses.reason as idstatus_reason',
                             'idstatuses.id_number as idstatus_id_number',
@@ -475,31 +478,16 @@ class User extends Authenticatable
     // //logged in househelp
 
     //houshelps kins
-    public function househelpkins()
+    public function househelpkin()
     {
-        return $this->belongsToMany(Househelp::class,'househelp_kin', 'user_id','bureau_househelp_id')
-                    ->withPivot(
-                        'photo',
-                        'active',
-                        'id_no',
-                        'id_photo_front',
-                        'id_photo_back',
-                        'phone',
-                        'address',
-                        'gender_id',
-                        'relationship_id',
-                        'country_id',
-                        'county_id',
-                        'constituency_id',
-                        'ward_id'
-                    )
-                    ->join('genders', 'househelp_kin.gender_id', '=', 'genders.id')
-                    ->join('relationships', 'househelp_kin.relationship_id', '=', 'relationships.id')
-                    ->join('countries', 'househelp_kin.country_id', '=', 'countries.id')
-                    ->join('counties', 'househelp_kin.county_id', '=', 'counties.id')
-                    ->join('constituencies', 'househelp_kin.constituency_id', '=', 'constituencies.id')
-                    ->join('wards', 'househelp_kin.ward_id', '=', 'wards.id')
-                    ->select('bureau_househelp.*',
+        return $this->hasOne(HousehelpKin::class)
+                    ->leftjoin('genders', 'househelp_kin.gender_id', '=', 'genders.id')
+                    ->leftjoin('relationships', 'househelp_kin.relationship_id', '=', 'relationships.id')
+                    ->leftjoin('countries', 'househelp_kin.country_id', '=', 'countries.id')
+                    ->leftjoin('counties', 'househelp_kin.county_id', '=', 'counties.id')
+                    ->leftjoin('constituencies', 'househelp_kin.constituency_id', '=', 'constituencies.id')
+                    ->leftjoin('wards', 'househelp_kin.ward_id', '=', 'wards.id')
+                    ->select(
                         'househelp_kin.*',
                             'genders.name as gender_name',
                             'relationships.name as relationship_name',
@@ -507,8 +495,7 @@ class User extends Authenticatable
                             'counties.name as county_name',
                             'constituencies.name as constituency_name',
                             'wards.name as ward_name'
-                    )
-                    ->withTimestamps();
+                    );
     }
 
     public function abouts()

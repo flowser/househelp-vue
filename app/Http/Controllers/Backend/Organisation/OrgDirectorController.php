@@ -26,7 +26,7 @@ class OrgDirectorController extends Controller
         if (auth()->check()) {
             if (auth()->user()->hasRole('Superadmin')) {
                 $organisationadmin = auth('api')->user()->organisationadmins()->first();
-                $directors = User::whereHas('organisationdirectors', function($query) use($organisationadmin)
+                $users = User::whereHas('organisationdirectors', function($query) use($organisationadmin)
                                         {
                                         $query ->where('organisation_id', $organisationadmin->organisation_id);
                                         }
@@ -37,7 +37,7 @@ class OrgDirectorController extends Controller
             }
         }
         return response()-> json([
-            'directors'=>$directors,
+            'users'=>$users,
         ], 200);
 
     }
@@ -155,10 +155,10 @@ class OrgDirectorController extends Controller
     }
         public function show($id)
     {
-        $director = User::with('roles','permissions','organisationdirectors')
+        $user = User::with('roles','permissions','organisationdirectors')
                             ->find($id);
         return response()-> json([
-            'director'=>$director,
+            'user'=>$user,
         ], 200);
     }
 
@@ -172,11 +172,11 @@ class OrgDirectorController extends Controller
     public function edit($id)
     {
 
-        $director = User::
+        $user = User::
                         with('roles','permissions','organisationdirectors')
                         ->find($id);
         return response()-> json([
-            'director'=>$director,
+            'user'=>$user,
         ], 200);
     }
 

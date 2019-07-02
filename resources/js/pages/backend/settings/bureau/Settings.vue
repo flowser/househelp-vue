@@ -12,8 +12,7 @@
                     <!-- </div> -->
                     <div class="card card-widget widget-user" >
                     <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header text-white" :style="{ background: `url(${imageUrl}) no-repeat center
-                          center;width:100%;height:300px` }">
+                        <div class="widget-user-header text-white" style="background-color: #070075c4; center center;width:100%;height:300px">
                         <div class="clearfix">
                                     <span class="float-left">
                                         <h3 class="widget-user-username">{{Organisation.name}}</h3>

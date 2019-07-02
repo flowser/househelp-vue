@@ -26,7 +26,7 @@ class BureauDirectorController extends Controller
             if (auth()->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
                 if (auth()->user()->hasAnyRole(['Bureau Director'])) {
                     $bureau = auth('api')->user()->bureaudirectors()->first();
-                    $directors = User::whereHas('bureaudirectors', function($query) use($bureau)
+                    $users = User::whereHas('bureaudirectors', function($query) use($bureau)
                                 {
                                   $query ->where('bureau_id', $bureau->bureau_id);
                                 }
@@ -36,7 +36,7 @@ class BureauDirectorController extends Controller
                 }else if (auth()->user()->hasAnyRole(['Bureau Admin'])) {
                     $bureau = auth('api')->user()->bureauadmins()->first();
 
-                    $directors = User::whereHas('bureaudirectors', function($query) use($bureau)
+                    $users = User::whereHas('bureaudirectors', function($query) use($bureau)
                                 {
                                   $query ->where('bureau_id', $bureau->bureau_id);
                                 }
@@ -45,7 +45,7 @@ class BureauDirectorController extends Controller
                             ->paginate(7);
                 }
                 return response()-> json([
-                    'directors'=>$directors,
+                    'users'=>$users,
                 ], 200);
             }
         }
@@ -55,13 +55,13 @@ class BureauDirectorController extends Controller
     {
            if (auth()->check()) {
                if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
-                   $directors = User::whereHas('bureaudirectors')->with('roles','permissions','bureaudirectors')->role('Bureau Director')
+                   $users = User::whereHas('bureaudirectors')->with('roles','permissions','bureaudirectors')->role('Bureau Director')
                 //    $directors = User::with('roles','permissions','bureaudirectors')->role('Bureau Director')
                      ->paginate(7);
                }
            }
            return response()-> json([
-               'directors'=>$directors,
+               'users'=>$users,
            ], 200);
 
     }
@@ -189,11 +189,11 @@ class BureauDirectorController extends Controller
      */
     public function edit($id)
     {
-        $director = User::
+        $user = User::
                         with('roles','permissions','bureaudirectors')
                         ->find($id);
         return response()-> json([
-            'director'=>$director,
+            'user'=>$user,
         ], 200);
     }
 

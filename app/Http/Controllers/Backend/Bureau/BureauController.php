@@ -28,7 +28,7 @@ class BureauController extends Controller
     {
         $bureaus = Bureau::
                         with('country', 'county', 'constituency', 'ward')
-                        ->get();
+                        ->paginate(10);
 
         return response()-> json([
             'bureaus' => $bureaus,
@@ -250,7 +250,7 @@ class BureauController extends Controller
 
         $bureau = Bureau::
                         with('country', 'county', 'constituency', 'ward', 'bureaudirectors','bureauadmins',
-                         'bureauemployees')
+                         'bureauemployees', 'bureauhousehelps')
                         ->find($id);
 
         return response()-> json([

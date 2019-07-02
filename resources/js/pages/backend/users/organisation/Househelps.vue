@@ -9,9 +9,9 @@
             <div class="card-header">
               <h3 class="card-title">Househelps Table</h3>
               <div class="card-tools">
-                    <button class="btn btn-success"  @click.prevent="newHousehelpModal()">Add New Househelp
+                    <!-- <button class="btn btn-success"  @click.prevent="newHousehelpModal()">Add New Househelp
                          <i class="fas fa-plus fw"></i>
-                     </button>
+                     </button> -->
 
               </div>
             </div>

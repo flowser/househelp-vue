@@ -184,11 +184,10 @@ public function index()
     public function edit($id)
     {
 
-        $client = User::
-                        with('roles','permissions','organisationclients')
+        $user = User::with('roles','permissions','organisationclients')
                         ->find($id);
         return response()-> json([
-            'client'=>$client,
+            'user'=>$user,
         ], 200);
     }
 

@@ -708,12 +708,12 @@
                         househelp_id_photo_back:'',
                         househelp_waiting_card_photo:'',
                         //health status
-                        status:'',
-                        HIV_status:'',
-                        other_chronics:'',
-                        chronic_details:'',
-                        allergy:'',
-                        specify:'',
+                        health_status:'',
+                        health_HIV_status:'',
+                        health_other_chronics:'',
+                        health_chronic_details:'',
+                        health_allergy:'',
+                        health_specify:'',
 
                         //househelp
                         househelpkin_first_name:'',
@@ -942,22 +942,32 @@
             },
             //Househelp Attributes Info info verification
             validateHousehelpAttributes() {
-                if(this.Healthstatus === 'HEALTHY'){
-                    this.househelp_kinform.HealthStatus = 'HEALTHY';
-                    this.househelp_kinform.status = 'Healthy';
+                if(this.Healthstatus === "HEALTHY"){
+                    this.househelpform.HealthStatus = "HEALTHY";
+                    this.househelpform.health_status = "Healthy";
+                    this.househelpform.health_allergy = null;
+                    this.househelpform.health_chronic_details = null;
+                    this.househelpform.health_other_chronics = null;
+                    this.househelpform.health_specify = null;
                 }
-                if(this.Healthstatus === 'HASMINOR'){
-                    this.househelp_kinform.HealthStatus = 'HASMINOR';
-                    this.househelp_kinform.status = 'HASMINOR';
-                    this.househelp_kinform.allergy = 'Has Minor Health Issues';
+                if(this.Healthstatus === "HASMINOR"){
+                    this.househelpform.HealthStatus = "HASMINOR";
+                    this.househelpform.health_status = "Has Minor Health Issues";
+                    this.househelpform.health_allergy = "yes";
+                    // this.househelpform.health_specify = null;filled in form by user
+                    this.househelpform.health_chronic_details = null;
+                    this.househelpform.health_other_chronics = null;
                 }
-                if(this.Healthstatus === 'HASCHRONIC'){
-                    this.househelp_kinform.HealthStatus = 'HASCHRONIC';
-                    this.househelp_kinform.status = 'HASCHRONIC';
-                    this.househelp_kinform.other_chronics = 'Has Other Chronic Issues';
+                if(this.Healthstatus === "HASCHRONIC"){
+                    this.househelpform.HealthStatus = "HASCHRONIC";
+                    this.househelpform.health_status = "Has Other Chronic Issues";
+                    this.househelpform.health_allergy = null;
+                    this.househelpform.health_specify = null;
+                    this.househelpform.health_other_chronics = "yes";
+                    // this.househelpform.health_chronic_details = null;filled in form by user
                 }
                 this.$Progress.start()
-                return this.househelp_kinform.post('/househelp/verify/attributes')
+                return this.househelp_kinform.post('/api/househelp/verify/attributes')
                     .then((response)=>{
                         return true;
                         toast({

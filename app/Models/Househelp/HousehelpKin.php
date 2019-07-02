@@ -22,6 +22,7 @@ class HousehelpKin extends Model
         'bureau_househelp_id',
         'relationship_id',
         'photo',
+        'background_image',
 
         'id_no',
         'id_photo_front',

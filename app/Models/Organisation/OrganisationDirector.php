@@ -23,6 +23,7 @@ class OrganisationDirector extends Pivot
         'organisation_id',
         'position_id',
         'photo',
+        'background_image',
         'active',
         'id_no',
         'id_photo_front',

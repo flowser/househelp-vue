@@ -27,54 +27,48 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(admin, index) in Admins" :key="admin.id">
+                  <tr v-for="(user, index) in Users" :key="user.id">
                     <td >{{index+1}}</td>
                     <td style="width: 550px;">
-                        <div class="row" style="width:100%" v-for="organisation in admin.organisationadmins" :key="organisation.id">
+                        <div class="row" style="width:100%" v-for="admin in user.organisationadmins" :key="admin.id">
                             <div class="col-sm-3" style="padding: 3px;">
-                                 <img class="card-img-top" :src="adminLoadPassPhoto(organisation.pivot.photo)" style="width:100%" alt="Card image cap">
+                                 <img class="card-img-top" :src="adminLoadPassPhoto(admin.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="adminLoadIDFrontPhoto(organisation.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="adminLoadIDBackPhoto(organisation.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
-                            </div>
-                            <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
-                                <div>{{admin.full_name}},</div>
-                                <div v-for="position in admin.positions" :key="position.id">
-                                    {{position.name}},
-                                    <span style="color:#9a009a;">
-                                        {{organisation.name}},
-                                    </span>
+                            <!-- <div class="col-sm-3" style="padding: 3px;">
+                                <img class="card-img-top" :src="adminLoadIDFrontPhoto(admin.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
+                                <img class="card-img-top" :src="adminLoadIDBackPhoto(admin.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
+                            </div> -->
+                            <div class="col-sm-9" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                                <div>{{user.full_name}},</div>
+                                <div>
+                                     Organisation: <span style="color:#9a009a;">{{admin.name}},</span>
                                 </div>
-                                <div> ID: ,<span style="color:#9a009a;">{{organisation.pivot.id_no}}</span>,
-                                    Phone: <span style="color:#9a009a;">{{organisation.pivot.phone}},</span>
+                                <div> ID: ,<span style="color:#9a009a;">{{admin.pivot.id_no}}</span>,
+                                    Phone: <span style="color:#9a009a;">{{admin.pivot.phone}},</span>
                                 </div>
                                 <div>
-                                     Mail: <span style="color:#9a009a;">{{admin.email}},</span>
+                                     Mail: <span style="color:#9a009a;">{{user.mail}},</span>
                                 </div>
-                                    <div>P. O. Box , <span style="color:#9a009a;">{{organisation.pivot.address}}</span>,
+                                    <div>P. O. Box , <span style="color:#9a009a;">{{admin.pivot.address}}</span>,
                                     </div>
-                                <div v-for="ward in admin.wards" :key="ward.id">
-                                    <span style="color:#9a009a;">{{ward.name}}</span> ward,
-                                    <span v-for="constituency in admin.constituencies" :key="constituency.id" style="color:#9a009a;">
-                                        {{constituency.name}}</span> constituency,
+                               <div>
+                                    <span style="color:#9a009a;">{{admin.ward_name}}</span> ward,
+                                    <span style="color:#9a009a;">{{admin.constituency_name}}</span> constituency,
                                 </div>
-                                <div v-for="county in admin.counties" :key="county.id" >
-                                    <span style="color:#9a009a;">{{county.name}}</span> county,
-                                    <span v-for="country in admin.countries" :key="country.id" style="color:#9a009a;">
-                                        {{country.name}},
-                                    </span>
+                                <div >
+                                    <span style="color:#9a009a;">{{admin.county_name}}</span> county,
+                                    <span style="color:#9a009a;">{{admin.country_name}},</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="role in admin.roles" :key="role.id" class="pl-2">
+                        <span v-for="role in user.roles" :key="role.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 " >{{role.name}} </div>
                         </span>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="permission in admin.permissions" :key="permission.id" class="pl-2">
+                        <span v-for="permission in user.permissions" :key="permission.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 ">{{permission.name}} </div>
                         </span>
                     </td>
@@ -82,15 +76,15 @@
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em"> Updated at:
-                                    <span style="color:#9a009a;">{{admin.created_at | dateformat}} </span>
+                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
                                 </div>
                             </span>
                             <span class="float-right">
-                                <a href=""  @click.prevent="editAdminModal(admin.id)">
+                                <a href=""  @click.prevent="editAdminModal(user.id)">
                                     <i class="fa fa-edit blue"></i>
                                 </a>
                                 /
-                                <a href=""  @click.prevent="deleteAdmin(admin.id)">
+                                <a href=""  @click.prevent="deleteAdmin(user.id)">
                                     <i class="fa fa-trash red"></i>
                                 </a>
                             </span>
@@ -99,22 +93,22 @@
                   </tr>
                 </tbody>
               </table>
-              <div v-if="Admins.length" >
+              <div v-if="Users.length" >
                     <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em">
-                                    Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                    & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                    out of <span style="color:#9a009a;"> {{pagination.total}} </span> Admins
+                                    Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                    & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                    out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Admins
                                 </div>
-                                <button class="btn btn-info" v-on:click="fetchPaginatedAdmins(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                                <button class="btn btn-info" v-on:click="fetchPaginatedAdmins(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
                             </span>
                             <span class="float-right" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em">
-                                    Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                    of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                                    Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                    of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
                                 </div>
-                                <button class="btn btn-info" v-on:click="fetchPaginatedAdmins(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                                <button class="btn btn-info" v-on:click="fetchPaginatedAdmins(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
                             </span>
                     </div>
                 </div>
@@ -127,9 +121,7 @@
       </div>
       <!-- /.row -->
     </section>
-
-    <!-- Role Modal -->
-        <div class="modal fade " id="AdminModal" tabindex="-1" role="dialog" aria-labelledby="AdminModalLabel" aria-hidden="true">
+    <div class="modal fade " id="AdminModal" tabindex="-1" role="dialog" aria-labelledby="AdminModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,146 +133,43 @@
                         <div class="modal-body">
                             <h5 class="modal-title" v-show="editmodeAdmin" id="AdminModalLabel">Update Admin</h5>
                             <h5 class="modal-title" v-show="!editmodeAdmin" id="AdminModalLabel">Add New Admin</h5>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="first_name" class="col-form-label"> Admin Passport</label>
+                                    <img v-show="editmodeAdmin" :src="updateAdminPassPhoto(adminform.photo)" alt="" width="100%" >
+                                </div>
+                                <div class="form-group col-md-8">
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="first_name" class="col-form-label"> Admin First Name</label>
                                             <input v-model="adminform.first_name" type="text" name="first_name" placeholder="Admin First Name"
                                                 class="form-control" :class="{ 'is-invalid': adminform.errors.has('first_name') }" >
                                             <has-error style="color: #e83e8c" :form="adminform" field="first_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="last_name" class=" col-form-label">admin_Last Name </label>
                                             <input v-model="adminform.last_name" type="admin_last_name" name="last_name" placeholder="Admin Last Name"
                                                 class="form-control" :class="{ 'is-invalid': adminform.errors.has('last_name') }" >
                                             <has-error style="color: #e83e8c" :form="adminform" field="last_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                    </div>
+                                    <div class="row">
+                                         <div class="form-group col-md-6">
                                             <label for="email" class=" col-form-label">Email </label>
                                             <input v-model="adminform.email" type="email" name="email" placeholder="Email Address"
                                                 class="form-control" :class="{ 'is-invalid': adminform.errors.has('email') }" >
                                             <has-error style="color: #e83e8c" :form="adminform" field="email"></has-error>
                                         </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
+                                            <label for="password" class=" col-form-label">Password </label>
                                             <input v-model="adminform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': adminform.errors.has('password') }">
                                             <has-error :form="adminform" field="password"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="phone" class="col-form-label"> Admin Phone</label>
-                                                <div>
-                                                    <vue-tel-input v-model="adminform.phone" name="phone" @onInput="InputPhone"
-                                                    class="form-control" :class="{ 'is-invalid': adminform.errors.has('phone') }">
-                                                    </vue-tel-input>
-                                                    <has-error style="color: #e83e8c" :form="adminform" field="phone"></has-error>
-                                                </div>
-                                                <div v-if="adminform.phone" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{phone.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{phone.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="landline" class=" col-form-label">Landline</label>
-                                                <vue-tel-input v-model="adminform.landline" name="landline" @onInput="InputLandline"
-                                                    class="form-control" :class="{ 'is-invalid': adminform.errors.has('landline') }">
-                                                </vue-tel-input>
-                                                <has-error style="color: #e83e8c" :form="adminform" field="landline"></has-error>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                <div v-if="adminform.landline" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{landline.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{landline.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="id_no" class="col-form-label">ID no.</label>
-                                            <input v-model="adminform.id_no" type="text" name="id_no" placeholder="ID NO"
-                                                class="form-control" :class="{ 'is-invalid': adminform.errors.has('id_no') }" >
-                                            <has-error style="color: #e83e8c" :form="adminform" field="id_no"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="address" class=" col-form-label">Address</label>
-                                            <input v-model="adminform.address" type="text" name="address" placeholder="Address"
-                                                class="form-control" :class="{ 'is-invalid': adminform.errors.has('address') }" >
-                                            <has-error style="color: #e83e8c" :form="adminform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="gender_id">Select Gender</label>
-                                            <select class="form-control" v-model="adminform.gender_id"
-                                                    :class="{ 'is-invalid':adminform.errors.has('gender_id') }">
-                                                    <option disabled value="">Select gender</option>
-                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="adminform" field="gender_id"></has-error>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-3">
-                                            <label for="country_id">Select Country</label>
-                                            <select class="form-control" @change="countryCounties(adminform.country_id)"
-                                            v-model="adminform.country_id" :class="{ 'is-invalid': adminform.errors.has('country_id') }">
-                                                    <option disabled value="">Select Country</option>{{adminform.country_id}}
-                                                    <option v-for="country in Countries" :value="country.id" :key="country.id">{{country.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="adminform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="county_id" class=" col-form-label">County</label>
-                                            <select class="form-control" @change="countyConstituencies(adminform.county_id)"
-                                            v-model="adminform.county_id" :class="{ 'is-invalid': adminform.errors.has('county_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="county in Counties" :value="county.id" :key="county.id">{{county.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="adminform" field="county_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="constituency_id" class=" col-form-label">Constituency</label>
-                                            <select class="form-control" @change="constituencyWards(adminform.constituency_id)"
-                                            v-model="adminform.constituency_id" :class="{ 'is-invalid': adminform.errors.has('constituency_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="constituency in Constituencies" :value="constituency.id" :key="constituency.id">{{constituency.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="adminform" field="constituency_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="ward_id" class="col-form-label"> Ward </label>
-                                            <select class="form-control"
-                                            v-model="adminform.ward_id" :class="{ 'is-invalid': adminform.errors.has('ward_id') }">
-                                                    <option disabled value="">Select Ward</option>
-                                                    <option v-for="ward in Wards" :value="ward.id" :key="ward.id">{{ward.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="adminform" field="ward_id"></has-error>
-                                        </div>
-
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="photo" class=" col-form-label">Admin PassPort Image</label><br>
-                                                <input @change="adminChangePassPhoto($event)" type="file" name="photo"
-                                                    :class="{ 'is-invalid': adminform.errors.has('photo') }">
-                                                    <img v-show="editmodeAdmin" :src="updateAdminPassPhoto(adminform.photo)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeAdmin" :src="adminform.photo" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="adminform" field="photo"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="id_photo_front" class=" col-form-label">Admin FrontSide ID Photo</label><br>
-                                                <input @change="adminChangeIDFrontPhoto($event)" type="file" name="id_photo_front"
-                                                    :class="{ 'is-invalid': adminform.errors.has('id_photo_front') }">
-                                                    <img v-show="editmodeAdmin" :src="updateAdminIDFrontPhoto(adminform.id_photo_front)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeAdmin" :src="adminform.id_photo_front" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="adminform" field="id_photo_front"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="backside_i_photod" class=" col-form-label">BackSide ID Photo</label><br>
-                                                <input @change="adminChangeIDBackPhoto($event)" type="file" name="id_photo_back"
-                                                    :class="{ 'is-invalid': adminform.errors.has('backside_id') }">
-                                                    <img v-show="editmodeAdmin" :src="updateAdminIDBackPhoto(adminform.id_photo_back)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeAdmin" :src="adminform.id_photo_back" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="adminform" field="id_photo_back"></has-error>
-                                        </div>
-                                    </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -291,6 +180,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
   </div>
 </div>
@@ -311,33 +203,8 @@
                         email:'',
                         password:'',
                         user_type:'',
-                        user_id:'',
-                        organisation_id:'',
-                        position_id:'',
-                        gender_id:'',
                         photo:'',
-                        active:'',
-                        id_no:'',
-                        id_photo_front:'',
-                        id_photo_back:'',
-                        about_me:'',
-                        phone:'',
-                        landline:'',
-                        address:'',
-                        country_id:'',
-                        county_id:'',
-                        constituency_id:'',
-                        ward_id:'',
                 }),
-                 //admin
-                phone:{
-                        isValid: false,
-                        country: undefined,
-                },
-                landline:{
-                        isValid: false,
-                        country: undefined,
-                },
                  url:'/api/orgadmin/get',
                 pagination:[],
             }
@@ -366,9 +233,12 @@
             Genders(){
                return this.$store.getters.Genders
             },
-            Admins(){
+            Users(){
                 return this.$store.getters.Admins
             },
+            Pagination(){
+                return this.$store.getters.AdminPagination
+            }
 
         },
         methods:{
@@ -411,7 +281,6 @@
                 this.$Progress.start();
                 return this.$store.dispatch( "admins", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.admins),
                     toast({
                      type: 'success',
                      title: 'Fetched the Admin data successfully'
@@ -424,19 +293,6 @@
                     title: 'There was something Wrong'
                     })
                 })
-            },
-            makingPagination(data){
-                let pagination = {
-                    current_page : data.current_page,
-                    last_page: data.last_page,
-                    from: data.from,
-                    to: data.to,
-                    total: data.total,
-                    next_page_url: data.next_page_url,
-                    prev_page_url: data.prev_page_url,
-                }
-                this.pagination = pagination;
-                console.log( this.pagination, 'pagination')
             },
             fetchPaginatedAdmins(url){
                 this.url = url;
@@ -588,30 +444,12 @@
                             type: 'success',
                             title: 'Fetched the Admin data successfully'
                             })
-                            console.log(response.data)
-                            this.adminform.fill(response.data.admin)
-                            this.adminform.user_id = response.data.admin.organisationadmins[0].pivot.user_id
-                            this.adminform.organisation_id = response.data.admin.organisationadmins[0].pivot.organisation_id
-                            this.adminform.position_id = response.data.admin.organisationadmins[0].pivot.position_id
-                            this.adminform.gender_id = response.data.admin.organisationadmins[0].pivot.gender_id
-                            this.adminform.photo = response.data.admin.organisationadmins[0].pivot.photo
-                            this.adminform.id_no = response.data.admin.organisationadmins[0].pivot.id_no
-                            this.adminform.id_photo_front = response.data.admin.organisationadmins[0].pivot.id_photo_front
-                            this.adminform.id_photo_back = response.data.admin.organisationadmins[0].pivot.id_photo_back
-                            this.adminform.phone = response.data.admin.organisationadmins[0].pivot.phone
-                            this.adminform.landline = response.data.admin.organisationadmins[0].pivot.landline
-                            this.adminform.address = response.data.admin.organisationadmins[0].pivot.address
-
-                            this.adminform.country_id = response.data.admin.organisationadmins[0].pivot.country_id
-                            //get county id using the country id
-                            this.adminform.county_id = response.data.admin.organisationadmins[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.admin.organisationadmins[0].pivot.country_id);
-                            //get contituency using county id
-                            this.adminform.constituency_id = response.data.admin.organisationadmins[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.admin.organisationadmins[0].pivot.county_id);
-                            // //get ward usng constituency id
-                            this.adminform.ward_id = response.data.admin.organisationadmins[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.admin.organisationadmins[0].pivot.constituency_id);
+                            this.adminform.fill(response.data.user)
+                            this.adminform.first_name = response.data.user.first_name;
+                            this.adminform.last_name = response.data.user.last_name;
+                            this.adminform.email = response.data.user.email;
+                            this.adminform.user_type = response.data.user.user_type;
+                            this.adminform.photo = response.data.user.organisationadmins[0].pivot.photo
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -653,9 +491,9 @@
             updateAdmin(id){
                   console.log('update admin')
                   this.$Progress.start();
-                     this.adminform.patch('/api/orgadmin/update/'+id)
+                     this.adminform.patch('/api/user/update/'+id)
                         .then(()=>{
-                            this.$store.dispatch( "admins")
+                            this.loadAdmins();
                          $('#AdminModal').modal('hide')
                          toast({
                             type: 'success',
