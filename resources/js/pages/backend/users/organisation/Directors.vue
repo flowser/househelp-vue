@@ -34,7 +34,7 @@
                             <div class="col-sm-3" style="padding: 3px;">
                                  <img class="card-img-top" :src="directorLoadPassPhoto(director.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                            <div class="col-sm-9" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
                                 <div>{{user.full_name}},</div>
                                 <div>
                                      Bureau: <span style="color:#9a009a;">{{director.name}},</span>

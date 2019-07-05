@@ -27,32 +27,31 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(client, index) in Clients" :key="client.id">
+                  <tr v-for="(user, index) in Users" :key="user.id">
                     <td >{{index+1}}</td>
                     <td style="width: 550px;">
-                        <div class="row" style="width:100%" v-for="organisation in client.organisationclients" :key="organisation.id">
+                        <div class="row" style="width:100%" v-for="client in user.organisationclients" :key="client.id">
                             <div class="col-sm-3" style="padding: 3px;">
-                                 <img class="card-img-top" :src="clientLoadPassPhoto(organisation.pivot.photo)" style="width:100%" alt="Card image cap">
+                                 <img class="card-img-top" :src="clientLoadPassPhoto(client.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
                             <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="clientLoadIDFrontPhoto(organisation.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="clientLoadIDBackPhoto(organisation.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
+                                <img class="card-img-top" :src="clientLoadIDFrontPhoto(client.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
+                                <img class="card-img-top" :src="clientLoadIDBackPhoto(client.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
                             </div>
                             <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
                                 <div>{{client.full_name}},</div>
-                                <div v-for="position in client.positions" :key="position.id">
-                                    {{position.name}},
+                                <div> Organisation
                                     <span style="color:#9a009a;">
-                                        {{organisation.name}},
+                                        {{client.name}},
                                     </span>
                                 </div>
-                                <div> ID: ,<span style="color:#9a009a;">{{organisation.pivot.id_no}}</span>,
-                                    Phone: <span style="color:#9a009a;">{{organisation.pivot.phone}},</span>
+                                <div> ID: ,<span style="color:#9a009a;">{{client.pivot.id_no}}</span>,
+                                    Phone: <span style="color:#9a009a;">{{client.pivot.phone}},</span>
                                 </div>
                                 <div>
-                                     Mail: <span style="color:#9a009a;">{{client.email}},</span>
+                                     Mail: <span style="color:#9a009a;">{{user.email}},</span>
                                 </div>
-                                    <div>P. O. Box , <span style="color:#9a009a;">{{organisation.pivot.address}}</span>,
+                                    <div>P. O. Box , <span style="color:#9a009a;">{{client.pivot.address}}</span>,
                                     </div>
                                 <div v-for="ward in client.wards" :key="ward.id">
                                     <span style="color:#9a009a;">{{ward.name}}</span> ward,
@@ -69,12 +68,12 @@
                         </div>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="role in client.roles" :key="role.id" class="pl-2">
+                        <span v-for="role in user.roles" :key="role.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 " >{{role.name}} </div>
                         </span>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="permission in client.permissions" :key="permission.id" class="pl-2">
+                        <span v-for="permission in user.permissions" :key="permission.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 ">{{permission.name}} </div>
                         </span>
                     </td>
@@ -86,11 +85,11 @@
                                 </div>
                             </span>
                             <span class="float-right">
-                                <a href=""  @click.prevent="editClientModal(client.id)">
+                                <a href=""  @click.prevent="editClientModal(user.id)">
                                     <i class="fa fa-edit blue"></i>
                                 </a>
                                 /
-                                <a href=""  @click.prevent="deleteClient(client.id)">
+                                <a href=""  @click.prevent="deleteClient(user.id)">
                                     <i class="fa fa-trash red"></i>
                                 </a>
                             </span>
@@ -99,7 +98,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div v-if="Clients.length" >
+              <div v-if="Users.length" >
                   <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                           <span class="float-left" style="margin-bottom:-0.5em" >
                               <div style="margin-bottom:0.25em">
@@ -239,7 +238,7 @@
             Genders(){
                return this.$store.getters.Genders
             },
-            Clients(){
+            Users(){
                 return this.$store.getters.Clients
             },
 

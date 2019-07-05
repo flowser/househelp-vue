@@ -27,54 +27,45 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(employee, index) in Employees" :key="employee.id">
+                  <tr v-for="(user, index) in Users" :key="user.id">
                     <td >{{index+1}}</td>
                     <td style="width: 550px;">
-                        <div class="row" style="width:100%" v-for="organisation in employee.organisationemployees" :key="organisation.id">
+                        <div class="row" style="width:100%" v-for="employee in user.organisationemployees" :key="employee.id">
                             <div class="col-sm-3" style="padding: 3px;">
-                                 <img class="card-img-top" :src="employeeLoadPassPhoto(organisation.pivot.photo)" style="width:100%" alt="Card image cap">
+                                 <img class="card-img-top" :src="employeeLoadPassPhoto(employee.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="employeeLoadIDFrontPhoto(organisation.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="employeeLoadIDBackPhoto(organisation.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
-                            </div>
-                            <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
-                                <div>{{employee.full_name}},</div>
-                                <div v-for="position in employee.positions" :key="position.id">
-                                    {{position.name}},
-                                    <span style="color:#9a009a;">
-                                        {{organisation.name}},
+                            <div class="col-sm-9" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                                <div>{{user.full_name}},</div>
+                                <div> Organisation <span style="color:#9a009a;">
+                                        {{employee.name}},
                                     </span>
                                 </div>
-                                <div> ID: ,<span style="color:#9a009a;">{{organisation.pivot.id_no}}</span>,
-                                    Phone: <span style="color:#9a009a;">{{organisation.pivot.phone}},</span>
+                                <div> ID: ,<span style="color:#9a009a;">{{employee.pivot.id_no}}</span>,
+                                    Phone: <span style="color:#9a009a;">{{employee.pivot.phone}},</span>
                                 </div>
                                 <div>
-                                     Mail: <span style="color:#9a009a;">{{employee.email}},</span>
+                                     Mail: <span style="color:#9a009a;">{{user.email}},</span>
                                 </div>
-                                    <div>P. O. Box , <span style="color:#9a009a;">{{organisation.pivot.address}}</span>,
+                                    <div>P. O. Box , <span style="color:#9a009a;">{{employee.pivot.address}}</span>,
                                     </div>
-                                <div v-for="ward in employee.wards" :key="ward.id">
-                                    <span style="color:#9a009a;">{{ward.name}}</span> ward,
-                                    <span v-for="constituency in employee.constituencies" :key="constituency.id" style="color:#9a009a;">
-                                        {{constituency.name}}</span> constituency,
+                                <div>
+                                    <span style="color:#9a009a;">{{employee.ward_name}}</span> ward,
+                                    <span style="color:#9a009a;">{{employee.constituency_name}}</span> constituency,
                                 </div>
-                                <div v-for="county in employee.counties" :key="county.id" >
-                                    <span style="color:#9a009a;">{{county.name}}</span> county,
-                                    <span v-for="country in employee.countries" :key="country.id" style="color:#9a009a;">
-                                        {{country.name}},
-                                    </span>
+                                <div >
+                                    <span style="color:#9a009a;">{{employee.county_name}}</span> county,
+                                    <span style="color:#9a009a;">{{employee.country_name}},</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="role in employee.roles" :key="role.id" class="pl-2">
+                        <span v-for="role in user.roles" :key="role.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 " >{{role.name}} </div>
                         </span>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="permission in employee.permissions" :key="permission.id" class="pl-2">
+                        <span v-for="permission in user.permissions" :key="permission.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 ">{{permission.name}} </div>
                         </span>
                     </td>
@@ -82,15 +73,15 @@
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em"> Updated at:
-                                    <span style="color:#9a009a;">{{employee.created_at | dateformat}} </span>
+                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
                                 </div>
                             </span>
                             <span class="float-right">
-                                <a href=""  @click.prevent="editEmployeeModal(employee.id)">
+                                <a href=""  @click.prevent="editEmployeeModal(user.id)">
                                     <i class="fa fa-edit blue"></i>
                                 </a>
                                 /
-                                <a href=""  @click.prevent="deleteEmployee(employee.id)">
+                                <a href=""  @click.prevent="deleteEmployee(user.id)">
                                     <i class="fa fa-trash red"></i>
                                 </a>
                             </span>
@@ -99,7 +90,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div v-if="Employees.length" >
+              <div v-if="Users.length" >
                     <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                         <span class="float-left" style="margin-bottom:-0.5em" >
                             <div style="margin-bottom:0.25em">
@@ -239,7 +230,7 @@
             Genders(){
                return this.$store.getters.Genders
             },
-            Employees(){
+            Users(){
                 return this.$store.getters.Employees
             },
 

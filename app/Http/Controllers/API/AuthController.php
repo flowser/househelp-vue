@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Events\UserReferred;
 use Illuminate\Http\Request;
-use App\Models\Client\Client;
 use App\Models\Standard\User;
 use Spatie\Permission\Models\Role;
 use App\Models\Househelp\Househelp;
@@ -24,13 +23,13 @@ class AuthController extends Controller
 
         try {
             $response = $http->post(config('services.passport.login_endpoint'), [
-            // $response = $http->post('http://laravel-vue-api.test/oauth/token', [
+            // $response = $http->post('http://househelp-vue.test/oauth/token', [
                 'form_params' => [
                     'grant_type' => 'password',
                     'client_id' => config('services.passport.client_id'),
                     // 'client_id' => 2,
                     'client_secret' => config('services.passport.client_secret'),
-                    // 'client_secret' => 'dghicpoihOYK7UygCjuz5B7vU38YqsYE7VuNeVFD',
+                    // 'client_secret' => 'GmhuNoiqQvdYQvicHgs8u9HbxpfRQPLinS7jyqHR',
                     'username' => $request->email,
                     'password' => $request->password,
                 ]

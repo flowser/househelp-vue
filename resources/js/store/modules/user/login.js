@@ -28,7 +28,7 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.post('/api/login', credentials)
                 .then(response => {
-                    console.log(credentials,)
+                    console.log(credentials, response);
                     localStorage.setItem('accessToken', response.data.access_token);
                     commit('updateAccessToken', response.data.access_token);
                     resolve(response)

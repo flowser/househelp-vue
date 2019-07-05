@@ -12,27 +12,27 @@ $fa-font-path:        "../webfonts";
 
 
 
-// @import "~admin-lte/dist/css/adminlte.css";
+@import "~admin-lte/dist/css/adminlte.css";
 
 
-    //admin lte 3
-    // @import '~admin-lte/plugins/font-awesome/css/font-awesome.min.css';
-    // // <!-- Ionicons -->
-    // @import url('https:// code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
+    // admin lte 3
+    @import '~admin-lte/plugins/fontawesome-free/css/fontawesome.min.css';
+    // <!-- Ionicons -->
+    @import url('https:// code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
 
-    // // <!-- Theme style -->
-    // @import '~admin-lte/dist/css/adminlte.min.css';
-    // // // <!-- iCheck -->
-    // @import '~admin-lte/plugins/iCheck/flat/blue.css';
-    // // // <!-- Morris chart -->
-    // @import '~admin-lte/plugins/morris/morris.css';
-    // // // // <!-- jvectormap -->
-    // @import '~admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css';
-    // // // // <!-- Date Picker -->
+    // <!-- Theme style -->
+    @import '~admin-lte/dist/css/adminlte.min.css';
+    // // <!-- iCheck -->
+    @import '~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.css';
+    // // <!-- Morris chart -->
+    @import '~admin-lte/plugins/morris/morris.css';
+    // // // <!-- jvectormap -->
+    @import '~admin-lte/plugins/jqvmap/jqvmap.css';
+    // // // <!-- Date Picker -->
     // @import '~admin-lte/plugins/datepicker/datepicker3.css';
-    // // // // <!-- Daterange picker -->
-    // @import '~admin-lte/plugins/daterangepicker/daterangepicker-bs3.css';
-    // // // // <!-- bootstrap wysihtml5 - text editor -->
+    // // // <!-- Daterange picker -->
+    @import '~admin-lte/plugins/daterangepicker/daterangepicker.css';
+    // // // <!-- bootstrap wysihtml5 - text editor -->
     // @import '~admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
 
 
