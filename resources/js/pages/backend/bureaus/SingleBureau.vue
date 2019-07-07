@@ -2051,7 +2051,7 @@
             this.loadMaritalstatuses();
             this.loadOperations();
             this.loadReligions();
-            this.loadSkills();;l
+            this.loadSkills();
             this.loadTribes();
             this.loadGenders();
             this.loadRelationships();
