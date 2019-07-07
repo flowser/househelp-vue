@@ -657,7 +657,11 @@
 </script>
 
 <script>
+    import VueTelInput from 'vue-tel-input';
     export default {
+        components: {
+            VueTelInput,
+        },
         name:"Househelps",
         data(){
             return{

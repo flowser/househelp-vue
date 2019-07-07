@@ -8,7 +8,7 @@
                     <div class="clearfix">
                         <span class="float-left">
                             <h3 class="widget-user-username" v-if="Househelp.user">{{Househelp.user.full_name}}</h3>
-                            <h5 class="widget-user-desc bg-green" style="margin-bottom:0">Phone: {{Househelp.phone}} ,</h5>
+                            <h5 class="widget-user-desc" style="margin-bottom:0">Phone: {{Househelp.phone}} ,</h5>
                             <h5 class="widget-user-desc" style="margin-bottom:0">P.O. Box {{Househelp.address}},</h5>
                             <h5 class="widget-user-desc" style="margin-bottom:0" v-if="Househelp.ward">{{Househelp.ward.name}} Ward,
                                 <span v-if="Househelp.constituency">{{Househelp.constituency.name}} Constituency,</span>
@@ -631,6 +631,7 @@
                                             <vue-tel-input v-model="househelpkinform.phone" name="phone" @onInput="HousehelpkinInputPhone1"
                                             class="form-control" :class="{ 'is-invalid': househelpkinform.errors.has('phone') }">
                                             </vue-tel-input>
+
                                             <has-error style="color: #e83e8c" :form="househelpkinform" field="phone"></has-error>
                                         </div>
                                         <div v-if="househelpkinform.phone" style="color: #e83e8c">
@@ -716,7 +717,11 @@
 </template>
 
 <script>
+import VueTelInput from 'vue-tel-input';
     export default {
+        components: {
+            VueTelInput,
+        },
         data(){
             return{
                 imageUrl:'',
@@ -853,8 +858,7 @@
             Wards(){
                return this.$store.getters.ConstituencyWards
             },
-            Househelp(){
-                console.log(this.$store.getters.Househelp)
+            Househelp(){                
                return this.$store.getters.Househelp
             },
             Genders(){

@@ -698,7 +698,11 @@
 
 <script>
 
+    import VueTelInput from 'vue-tel-input';
     export default {
+        components: {
+            VueTelInput,
+        },
         name:"List",
         data(){
             return{

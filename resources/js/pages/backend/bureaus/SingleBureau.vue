@@ -25,56 +25,64 @@
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-info">
-                            <div class="inner" v-if="Bureau.bureauhousehelps">
-                                <h3 >{{Bureau.bureauhousehelps.length}}</h3>
-                                <p>Househelps </p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <div class="inner" v-if="Bureau.bureauhousehelps">
+                                    <h3 >{{Bureau.bureauhousehelps.length}}</h3>
+                                    <p>Househelps </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-bag"></i>
+                                </div>
+                                <a href="" class="small-box-footer"  @click.prevent="loadHousehelps()">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
                             </div>
                         </div>
                         <!-- ./col -->
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-success">
-                            <div class="inner" v-if="Bureau.bureaudirectors">
-                                <h3 >{{Bureau.bureaudirectors.length}}</h3>
-                                <p>Directors</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <div class="inner" v-if="Bureau.bureaudirectors">
+                                    <h3 >{{Bureau.bureaudirectors.length}}</h3>
+                                    <p>Directors</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-stats-bars"></i>
+                                </div>
+                                <a href="" class="small-box-footer"  @click.prevent="DirectorsModal()">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
                             </div>
                         </div>
                         <!-- ./col -->
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-warning">
-                            <div class="inner" v-if="Bureau.bureauadmins">
-                                <h3 >{{Bureau.bureauadmins.length}}</h3>
-                                <p>Admins </p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <div class="inner" v-if="Bureau.bureauadmins">
+                                    <h3 >{{Bureau.bureauadmins.length}}</h3>
+                                    <p>Admins </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-person-add"></i>
+                                </div>
+                                <a href="" class="small-box-footer"  @click.prevent="AdminsModal()">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
                             </div>
                         </div>
                         <!-- ./col -->
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-danger">
-                            <div class="inner" v-if="Bureau.bureauemployees">
-                                <h3>{{Bureau.bureauemployees.length}}</h3>
-                                <p>Employees </p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <div class="inner" v-if="Bureau.bureauemployees">
+                                    <h3>{{Bureau.bureauemployees.length}}</h3>
+                                    <p>Employees </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-pie-graph"></i>
+                                </div>
+                                <a href="" class="small-box-footer"  @click.prevent="EmployeesModal()">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
                             </div>
                         </div>
                         <!-- ./col -->
@@ -171,215 +179,9 @@
                     </div>
                 </div>
                 <!-- /.widget-user -->
-
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="card col-md">
-                            <div class="card-header">
-                               <h3 class="card-title">Bureau Directors Table</h3>
-                                <div class="card-tools">
-                                        <button class="btn btn-success"  @click.prevent="newDirectorModal(Bureau.id)">Add New Director
-                                            <i class="fas fa-plus fw"></i>
-                                        </button>
-                                </div>
-                            </div>
-
-                            <div class="card-body">
-                                 <div class="row" v-for="director in Bureau.bureaudirectors" :key="director.id">
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="directorLoadPassPhoto(director.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
-                                    </div>
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="directorLoadIDFrontPhoto(director.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="directorLoadIDBackPhoto(director.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
-                                    </div>
-                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                        <div>{{director.full_name}},</div>
-                                        <div>
-                                            {{director.position_name}},
-                                            <span style="color:#9a009a;">
-                                                {{Bureau.name}},
-                                            </span>
-                                        </div>
-                                        <div> ID: ,<span style="color:#9a009a;">{{director.pivot.id_no}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{director.pivot.phone}},</span>
-                                        </div>
-                                        <div>
-                                            Mail: <span style="color:#9a009a;">{{director.email}},</span>
-                                        </div>
-                                            <div>P. O. Box , <span style="color:#9a009a;">{{director.pivot.address}}</span>,
-                                            </div>
-                                        <div>
-                                            <span style="color:#9a009a;">{{director.ward_name}}</span> ward,
-                                            <span style="color:#9a009a;">{{director.constituency_name}}</span> constituency,
-                                        </div>
-                                        <div >
-                                            <span style="color:#9a009a;">{{director.county_name}}</span> county,
-                                            <span style="color:#9a009a;">{{director.country_name}},</span>
-                                        </div>
-                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
-                                            <span class="float-left" style="margin-bottom:-0.5em" >
-                                                <div style="margin-bottom:0.25em"> Updated at:
-                                                    <span style="color:#9a009a;">{{director.created_at | dateformat}} </span>
-                                                </div>
-                                            </span>
-                                            <span class="float-right">
-                                                <a href=""  @click.prevent="viewDirectorModal(director.user_id)">
-                                                    <i class="fa fa-eye purple"></i>
-                                                </a>
-                                                <a href=""  @click.prevent="editDirectorModal(director.user_id)">
-                                                    <i class="fa fa-edit blue"></i>
-                                                </a>
-                                                /
-                                                <a href=""  @click.prevent="deleteDirector(director.user_id)">
-                                                    <i class="fa fa-trash red"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card col-md">
-                            <div class="card-header">
-                               <h3 class="card-title">Bureau Admins Table</h3>
-                                <div class="card-tools">
-                                        <button class="btn btn-success"  @click.prevent="newAdminModal(Bureau.id)">Add New Admin
-                                            <i class="fas fa-plus fw"></i>
-                                        </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                 <div class="row" v-for="admin in Bureau.bureauadmins" :key="admin.id">
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="adminLoadPassPhoto(admin.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
-                                    </div>
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="adminLoadIDFrontPhoto(admin.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="adminLoadIDBackPhoto(admin.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
-                                    </div>
-                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                        <div>{{admin.full_name}},</div>
-                                        <div>
-                                            {{admin.position_name}},
-                                            <span style="color:#9a009a;">
-                                                {{Bureau.name}},
-                                            </span>
-                                        </div>
-                                        <div> ID: ,<span style="color:#9a009a;">{{admin.pivot.id_no}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{admin.pivot.phone}},</span>
-                                        </div>
-                                        <div>
-                                            Mail: <span style="color:#9a009a;">{{admin.email}},</span>
-                                        </div>
-                                            <div>P. O. Box , <span style="color:#9a009a;">{{admin.pivot.address}}</span>,
-                                            </div>
-                                        <div>
-                                            <span style="color:#9a009a;">{{admin.ward_name}}</span> ward,
-                                            <span style="color:#9a009a;">{{admin.constituency_name}}</span> constituency,
-                                        </div>
-                                        <div >
-                                            <span style="color:#9a009a;">{{admin.county_name}}</span> county,
-                                            <span style="color:#9a009a;">{{admin.country_name}},</span>
-                                        </div>
-                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
-                                            <span class="float-left" style="margin-bottom:-0.5em" >
-                                                <div style="margin-bottom:0.25em"> Updated at:
-                                                    <span style="color:#9a009a;">{{admin.created_at | dateformat}} </span>
-                                                </div>
-                                            </span>
-                                            <span class="float-right">
-                                                <a href=""  @click.prevent="viewAdminModal(admin.user_id)">
-                                                    <i class="fa fa-eye purple"></i>
-                                                </a>
-                                                <a href=""  @click.prevent="editAdminModal(admin.user_id)">
-                                                    <i class="fa fa-edit blue"></i>
-                                                </a>
-                                                /
-                                                <a href=""  @click.prevent="deleteAdmin(admin.user_id)">
-                                                    <i class="fa fa-trash red"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="card col-md-6">
-                            <div class="card-header">
-                                <h3> Bureau Employees</h3>
-                                <div class="card-tools">
-                                        <button class="btn btn-success"  @click.prevent="newEmployeeModal(Bureau.id)">Add New Employee
-                                            <i class="fas fa-plus fw"></i>
-                                        </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                 <div class="row" v-for="employee in Bureau.bureauemployees" :key="employee.id">
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="employeeLoadPassPhoto(employee.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
-                                    </div>
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="employeeLoadIDFrontPhoto(employee.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="employeeLoadIDBackPhoto(employee.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
-                                    </div>
-                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                        <div>{{employee.full_name}},</div>
-                                        <div>
-                                            {{employee.position_name}},
-                                            <span style="color:#9a009a;">
-                                                {{Bureau.name}},
-                                            </span>
-                                        </div>
-                                        <div> ID: ,<span style="color:#9a009a;">{{employee.pivot.id_no}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{employee.pivot.phone}},</span>
-                                        </div>
-                                        <div>
-                                            Mail: <span style="color:#9a009a;">{{employee.email}},</span>
-                                        </div>
-                                            <div>P. O. Box , <span style="color:#9a009a;">{{employee.pivot.address}}</span>,
-                                            </div>
-                                        <div>
-                                            <span style="color:#9a009a;">{{employee.ward_name}}</span> ward,
-                                            <span style="color:#9a009a;">{{employee.constituency_name}}</span> constituency,
-                                        </div>
-                                        <div >
-                                            <span style="color:#9a009a;">{{employee.county_name}}</span> county,
-                                            <span style="color:#9a009a;">{{employee.country_name}},</span>
-                                        </div>
-                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
-                                            <span class="float-left" style="margin-bottom:-0.5em" >
-                                                <div style="margin-bottom:0.25em"> Updated at:
-                                                    <span style="color:#9a009a;">{{employee.created_at | dateformat}} </span>
-                                                </div>
-                                            </span>
-                                            <span class="float-right">
-                                                <a href=""  @click.prevent="viewEmployeeModal(employee.user_id)">
-                                                    <i class="fa fa-eye purple"></i>
-                                                </a>
-                                                <a href=""  @click.prevent="editEmployeeModal(employee.user_id)">
-                                                    <i class="fa fa-edit blue"></i>
-                                                </a>
-                                                /
-                                                <a href=""  @click.prevent="deleteEmployee(employee.user_id)">
-                                                    <i class="fa fa-trash red"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-
                 <!-- /.nav-tabs-custom -->
         </div>
-        <!-- Role Modal -->
+        <!-- Bureau Modal -->
         <div class="modal fade " id="BureauModal" tabindex="-1" role="dialog" aria-labelledby="BureauModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
@@ -577,6 +379,346 @@
                                 </div>
                             </tab-content>
                         </form-wizard>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Househelps modal -->
+        <div class="modal fade " id="HousehelpsModal" tabindex="-1" role="dialog" aria-labelledby="HousehelpsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"  id="HousehelpsModalLabel">Welcome to All {{Status}}</h3>
+                        <span>
+                            <button class="btn btn-success"  @click.prevent="newHousehelpModal(Bureau.id)">Add  <i class="fas fa-plus fw"></i></button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div v-if="Unemployed ==true && Employed ==false && Pending ==false">
+                                <el-button type="success">Unemployed ({{UnemployedPagination.total}}) </el-button>
+                                <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{EmployedPagination.total}})</el-button>
+                                <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{PendingPagination.total}})</el-button>
+                            </div>
+                            <div v-else-if="Unemployed ==false && Employed ==true && Pending ==false">
+                                <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{UnemployedPagination.total}})</el-button>
+                                <el-button type="success">Employed ({{EmployedPagination.total}}) </el-button>
+                                <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{PendingPagination.total}})</el-button>
+                            </div>
+                            <div v-else-if="Unemployed ==false && Employed ==false && Pending ==true">
+                                <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{UnemployedPagination.total}})</el-button>
+                                <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{EmployedPagination.total}})</el-button>
+                                <el-button type="success">Pending Employement ({{PendingPagination.total}})</el-button>
+                            </div>
+                        </div>
+                        <div class="row" v-for="user in Users" :key="user.id">
+                            <div class="row" v-for="househelp in user.bureauhousehelps" :key="househelp.id">
+                                <div class="col-sm-2" style="padding: 3px;">
+                                        <img class="card-img-top" :src="househelpLoadPassPhoto(househelp.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                                </div>
+                                <div class="col-sm-2" style="padding: 3px;">
+                                        <div v-if="househelp.idstatus_id_photo_front !=null">
+                                            <img class="card-img-top" :src="househelpLoadIDFrontPhoto(househelp.idstatus_id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                            <img class="card-img-top" :src="househelpLoadIDBackPhoto(househelp.idstatus_id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                        </div>
+                                         <div  style="padding: 3px;" v-else-if="househelp.idstatus_waiting_card_photo !=null">
+                                            Waiting Card<br>
+                                            <img class="card-img-top" :src="househelpLoadWaitingCard(househelp.idstatus_waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        </div>
+                                         <div  style="padding: 3px;" v-else>
+                                            No ID nor Applied<br>
+                                            <img class="card-img-top" :src="househelpLoadWaitingCard(househelp.idstatus_waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        </div>
+                                </div>
+                                <div class="col-sm-4" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div> Househelp: <span style="color:#9a009a;">{{user.full_name}},</span></div>
+                                        <div>
+                                               Bureau: <span style="color:#9a009a;">{{househelp.name}},</span>
+                                       </div>
+                                        <div v-if="househelp.idstatus_id_photo_front !=null">
+                                            ID: ,<span style="color:#9a009a;">{{househelp.idstatus_id_number}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span>
+                                        </div>
+                                        <div style="padding: 3px;" v-else-if="househelp.idstatus_waiting_card_photo !=null">
+                                            Waiting No.: ,<span style="color:#9a009a;">{{househelp.idstatus_ref_number}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span>
+                                        </div>
+                                        <div style="padding: 3px;" v-else>
+                                            ID.:<span style="color:#9a009a;"> No ID Nor Applied</span>,
+                                            Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{user.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{househelp.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{househelp.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{househelp.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{househelp.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{househelp.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewHousehelpModal(househelp.id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editHousehelpModal(user.id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteHousehelp(user.id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                </div>
+                                <div class="col-sm-4" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div> Househelp: <span style="color:#9a009a;">{{user.full_name}},</span></div>
+                                        <div>
+                                               Bureau: <span style="color:#9a009a;">{{househelp.name}},</span>
+                                       </div>
+                                        <div v-if="househelp.idstatus_id_photo_front !=null">
+                                            ID: ,<span style="color:#9a009a;">{{househelp.idstatus_id_number}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span>
+                                        </div>
+                                        <div style="padding: 3px;" v-else-if="househelp.idstatus_waiting_card_photo !=null">
+                                            Waiting No.: ,<span style="color:#9a009a;">{{househelp.idstatus_ref_number}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span>
+                                        </div>
+                                        <div style="padding: 3px;" v-else>
+                                            ID.:<span style="color:#9a009a;"> No ID Nor Applied</span>,
+                                            Phone: <span style="color:#9a009a;">{{househelp.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{user.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{househelp.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{househelp.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{househelp.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{househelp.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{househelp.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewHousehelpModal(user.id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editHousehelpModal(user.id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteHousehelp(user.id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="Users.length" >
+                            <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
+                                    <span class="float-left" style="margin-bottom:-0.5em" >
+                                        <div style="margin-bottom:0.25em">
+                                            Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                            & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                            out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Househelps
+                                        </div>
+                                        <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
+                                    </span>
+                                    <span class="float-right" style="margin-bottom:-0.5em" >
+                                        <div style="margin-bottom:0.25em">
+                                            Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                            of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
+                                        </div>
+                                        <button class="btn btn-info" v-on:click="fetchPaginatedHousehelps(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
+                                    </span>
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- view househelp -->
+        <div class="modal fade " id="ViewHousehelpModal" tabindex="-1" role="dialog" aria-labelledby="ViewHousehelpModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" >
+                            <div class="row" >
+                                <div class="col-sm-2" style="padding: 3px;">
+                                        <img class="card-img-top" :src="househelpLoadPassPhoto(Househelp.photo)" style="width:100%; height:130px" alt="Card image cap">
+                                </div>
+                                <!-- <div class="col-sm-2" style="padding: 3px;" v-if="Househelp.idstatus">
+                                        <div v-if="Househelp.idstatus !=null">
+                                            <img class="card-img-top" :src="househelpLoadIDFrontPhoto(Househelp.idstatus.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                            <img class="card-img-top" :src="househelpLoadIDBackPhoto(Househelp.idstatus.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                        </div>
+                                         <div  style="padding: 3px;" v-else-if="Househelp.idstatus.waiting_card_photo !=null">
+                                            Waiting Card<br>
+                                            <img class="card-img-top" :src="househelpLoadWaitingCard(Househelp.idstatus.waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        </div>
+                                         <div  style="padding: 3px;" v-else>
+                                            No ID nor Applied<br>
+                                            <img class="card-img-top" :src="househelpLoadWaitingCard(Househelp.idstatus.waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        </div>
+                                </div>                                 -->
+                                <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div v-if="Househelp.user"> Househelp: <span style="color:#9a009a;" >{{Househelp.user.full_name}},</span></div>
+                                        <!-- <div v-if="Househelp.idstatus.id_photo_front !=null">
+                                            ID: ,<span style="color:#9a009a;">{{Househelp.idstatus.id_number}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{Househelp.phone}},</span>
+                                        </div>
+                                        <div style="padding: 3px;" v-else-if="Househelp.idstatus.waiting_card_photo !=null">
+                                            Waiting No.: ,<span style="color:#9a009a;">{{Househelp.idstatus.ref_number}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{Househelp.phone}},</span>
+                                        </div>
+                                        <div style="padding: 3px;" v-else>
+                                            ID.:<span style="color:#9a009a;"> No ID Nor Applied</span>,
+                                            Phone: <span style="color:#9a009a;">{{Househelp.phone}},</span>
+                                        </div> -->
+                                        <div>
+                                            Mail: <span style="color:#9a009a;" v-if="Househelp.user">{{Househelp.user.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{Househelp.address}}</span>,
+                                            </div>
+                                       <div>
+                                            <span style="color:#9a009a;" v-if="Househelp.ward">{{Househelp.ward.name}}</span> ward,
+                                            <span style="color:#9a009a;" v-if="Househelp.constituency">{{Househelp.constituency.name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;" v-if="Househelp.county">{{Househelp.county.name}}</span> county,
+                                            <span style="color:#9a009a;" v-if="Househelp.country">{{Househelp.country.name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{Househelp.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewHousehelpModal(househelp.id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editHousehelpModal(Househelp.user_id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteHousehelp(Househelp.id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+                <!-- Directors modal -->
+        <div class="modal fade " id="DirectorsModal" tabindex="-1" role="dialog" aria-labelledby="DirectorsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"  id="DirectorsModalLabel">Directors</h3>
+                        <span>
+                            <button class="btn btn-success"  @click.prevent="newDirectorModal(Bureau.id)">Add  <i class="fas fa-plus fw"></i></button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" v-for="director in Bureau.bureaudirectors" :key="director.id">
+                             <div class="col" style="padding: 3px;">
+                                 <img class="card-img-top" :src="directorLoadPassPhoto(director.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                             </div>
+                             <div class="col" style="padding: 3px;">
+                                 <img class="card-img-top" :src="directorLoadIDFrontPhoto(director.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                 <img class="card-img-top" :src="directorLoadIDBackPhoto(director.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                             </div>
+                             <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div>{{director.full_name}},</div>
+                                        <div>
+                                            {{director.position_name}},
+                                            <span style="color:#9a009a;">
+                                                {{Bureau.name}},
+                                            </span>
+                                        </div>
+                                        <div> ID: ,<span style="color:#9a009a;">{{director.pivot.id_no}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{director.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{director.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{director.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{director.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{director.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{director.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{director.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{director.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewDirectorModal(director.user_id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editDirectorModal(director.user_id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteDirector(director.user_id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -876,6 +1018,81 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                        <!-- Admins modal -->
+        <div class="modal fade " id="AdminsModal" tabindex="-1" role="dialog" aria-labelledby="AdminsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"  id="AdminsModalLabel">Admins</h3>
+                        <span>
+                            <button class="btn btn-success"  @click.prevent="newAdminModal(Bureau.id)">Add  <i class="fas fa-plus fw"></i></button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <div >
+                        <div class="modal-body">
+                            <div class="row" v-for="admin in Bureau.bureauadmins" :key="admin.id">
+                                    <div class="col" style="padding: 3px;">
+                                        <img class="card-img-top" :src="adminLoadPassPhoto(admin.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                                    </div>
+                                    <div class="col" style="padding: 3px;">
+                                        <img class="card-img-top" :src="adminLoadIDFrontPhoto(admin.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        <img class="card-img-top" :src="adminLoadIDBackPhoto(admin.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    </div>
+                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div>{{admin.full_name}},</div>
+                                        <div>
+                                            {{admin.position_name}},
+                                            <span style="color:#9a009a;">
+                                                {{Bureau.name}},
+                                            </span>
+                                        </div>
+                                        <div> ID: ,<span style="color:#9a009a;">{{admin.pivot.id_no}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{admin.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{admin.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{admin.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{admin.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{admin.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{admin.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{admin.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{admin.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewAdminModal(admin.user_id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editAdminModal(admin.user_id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteAdmin(admin.user_id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1181,6 +1398,82 @@
                 </div>
             </div>
         </div>
+
+                        <!-- Employees modal -->
+        <div class="modal fade " id="EmployeesModal" tabindex="-1" role="dialog" aria-labelledby="EmployeesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"  id="EmployeesModalLabel">Employees</h3>
+                        <span>
+                            <button class="btn btn-success"  @click.prevent="newEmployeeModal(Bureau.id)">Add  <i class="fas fa-plus fw"></i></button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <div >
+                        <div class="modal-body">
+                            <div class="row" v-for="employee in Bureau.bureauemployees" :key="employee.id">
+                                    <div class="col" style="padding: 3px;">
+                                        <img class="card-img-top" :src="employeeLoadPassPhoto(employee.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                                    </div>
+                                    <div class="col" style="padding: 3px;">
+                                        <img class="card-img-top" :src="employeeLoadIDFrontPhoto(employee.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        <img class="card-img-top" :src="employeeLoadIDBackPhoto(employee.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    </div>
+                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div>{{employee.full_name}},</div>
+                                        <div>
+                                            {{employee.position_name}},
+                                            <span style="color:#9a009a;">
+                                                {{Bureau.name}},
+                                            </span>
+                                        </div>
+                                        <div> ID: ,<span style="color:#9a009a;">{{employee.pivot.id_no}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{employee.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{employee.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{employee.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{employee.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{employee.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{employee.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{employee.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{employee.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewEmployeeModal(employee.user_id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editEmployeeModal(employee.user_id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteEmployee(employee.user_id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- create & edit Employee modal -->
         <div class="modal fade " id="EmployeeModal" tabindex="-1" role="dialog" aria-labelledby="EmployeeModalLabel" aria-hidden="true">
@@ -1489,10 +1782,114 @@
 
 <script>
 
+    import VueTelInput from 'vue-tel-input';
     export default {
+        components: {
+            VueTelInput,
+        },
         name:"SingleBureau",
         data(){
             return{
+                imageUrl:'',
+                IDstatus:'',    //id status check
+                Healthstatus:'',
+                househelpform: new Form({
+                        id:'',
+                        first_name:'',
+                        last_name:'',
+                        email:'',
+                        password:'',
+
+                        user_id:'',
+                        bureau_id:'',
+
+                        photo:'',
+
+                        about_me:'',
+                        phone:'',
+                        address:'',
+                        country_id:'',
+                        county_id:'',
+                        constituency_id:'',
+                        ward_id:'',
+                        //extra
+                        birth_date:'',
+                        age:'',
+                        gender_id:'',
+                        education_id:'',
+                        experience_id:'',
+                        maritalstatus_id:'',
+                        tribe_id:'',
+                        skill_id:'',
+                        operation_id:'',
+                        duration_id:'',
+                        englishstatus_id:'',
+                        religion_id:'',
+                        kid_id:'',
+                        //id status
+                        //id status
+
+                        IDstatus:'',
+                        idstatus_id:'',//id of idstatus row
+                        bureau_househelp_id:'',
+                        id_status:'',
+                        id_number:'',
+                        ref_number:'',
+                        id_photo_front:'',
+                        id_photo_back:'',
+                        waiting_card_photo:'',
+                        id_status_reason:'',
+
+                        //health status
+                        HealthStatus:'',
+                        health_status_id:'',
+                        health_status:'',
+                        health_HIV_status:'',
+                        health_allergy:'',
+                        health_chronic_details:'',
+                        health_other_chronics:'',
+                        health_specify:'',
+                }),
+                househelpkinform: new Form({
+                        id:'',
+                        //househelp
+                        first_name:'',
+                        last_name:'',
+                        email:'',
+                        password:'',
+                        user_type:'',
+
+
+                        bureau_househelp_id:'',
+                        gender_id:'',
+                        user_id:'',
+                        househelp_id:'',
+                        relationship_id:'',
+
+                        id_no:'',
+                        photo:'',
+                        id_photo_front:'',
+                        id_photo_back:'',
+                        phone:'',
+                        address:'',
+                        country_id:'',
+                        county_id:'',
+                        constituency_id:'',
+                        ward_id:'',
+                }),
+                Unemployed:'',
+                Employed:'',
+                Pending:'',
+                Status:'',
+                employmentstatus:false,
+                hirestatus:false,
+                urlform: new Form({
+                    bureau_id:'',
+                         url:'/api/househelp/get/unemployed/',//by default fetch unemploed househelp of specific bureau
+               unemployedurl: '/api/househelp/get/unemployed/',
+                 employedurl: '/api/househelp/get/employed/',
+                  pendingurl: '/api/househelp/get/pending/',
+               }),
                 newBureauDirector: false,
                 editmodeBureau: false,
                 bureauOutput:'',//view form data and confirm if is ok before submit
@@ -1630,6 +2027,16 @@
                         isValid: false,
                         country: undefined,
                 },
+                 //Househelp
+                phone5:{
+                        isValid: false,
+                        country: undefined,
+                },
+                 //househelpkin
+                phone6:{
+                        isValid: false,
+                        country: undefined,
+                },
             }
         },
         mounted() {
@@ -1637,7 +2044,19 @@
             this.loadCounties();
             this.loadConstituencies();///linked to methods and actions store
             this.loadWards();///linked to methods and actions store
+            this.loadEducations();
+            this.loadEnglishstatuses();
+            this.loadExperiences();
+            this.loadKids();
+            this.loadMaritalstatuses();
+            this.loadOperations();
+            this.loadReligions();
+            this.loadSkills();;l
+            this.loadTribes();
+            this.loadGenders();
+            this.loadRelationships();
             this.singlebureau();
+            this.getUnemployedHousehelps()
         },
         computed:{
             Countries(){
@@ -1653,36 +2072,178 @@
                return this.$store.getters.ConstituencyWards
             },
             Bureau(){
-                console.log(this.$store.getters.Bureau)
                return this.$store.getters.Bureau//single Bureau by parameter id
             },
+            Users(){
+               return this.$store.getters.HousehelpsList
+            },
+            Househelp(){
+               return this.$store.getters.Househelp
+            },
             Director(){
-                console.log(this.$store.getters.BureauDirector)
                return this.$store.getters.BureauDirector//View Single Bureau director  by parameter id
             },
             Admin(){
-                console.log(this.$store.getters.BureauAdmin)
                return this.$store.getters.BureauAdmin//View Single Bureau  admin by parameter id
             },
             Employee(){
-                console.log(this.$store.getters.BureauEmployee)
                return this.$store.getters.BureauEmployee//View Single Bureau  admin by parameter id
             },
-            // Househelp(){
-            //     console.log(this.$store.getters.BureauHousehelp)
-            //    return this.$store.getters.BureauHousehelps//View Single Bureau houshelp  by parameter id with their kins
-            // },
-            // CLient(){
-            //     console.log(this.$store.getters.BureauClient)
-            //    return this.$store.getters.BureauClient//View Single Bureau client  by parameter id
-            // },
+            Genders(){
+               return this.$store.getters.Genders
+            },
+            Relationships(){
+               return this.$store.getters.Relationships
+            },
+            Educations(){
+               return this.$store.getters.Educations
+            },
+            Durations(){
+               return this.$store.getters.Durations
+            },
+            Englishstatuses(){
+               return this.$store.getters.Englishstatuses
+            },
+            Experiences(){
+               return this.$store.getters.Experiences
+            },
+            Kids(){
+               return this.$store.getters.Kids
+            },
+            Maritalstatuses(){
+               return this.$store.getters.Maritalstatuses
+            },
+            Operations(){
+               return this.$store.getters.Operations
+            },
+            Religions(){
+               return this.$store.getters.Religions
+            },
+            Skills(){
+               return this.$store.getters.Skills
+            },
+            Tribes(){
+               return this.$store.getters.Tribes
+            },
+            Pagination(){
+                return this.$store.getters.Pagination
+            },
+            UnemployedPagination(){
+                return this.$store.getters.UnemployedPagination
+            },
+            EmployedPagination(){
+                return this.$store.getters.EmployedPagination
+            },
+            PendingPagination(){
+                return this.$store.getters.PendingPagination
+            },
         },
         methods:{
             singlebureau(){
-                        console.log(this.$route.params.id)
-                        this.$store.dispatch('BureauById', this.$route.params.id);   //action from index.js
-                    },
-
+                    this.$store.dispatch('BureauById', this.$route.params.id);   //action from index.js
+                    this.urlform.bureau_id = this.$route.params.id;
+           },
+            //Househelp Update Demographic
+            validateupdateHousehelpDemograhic() {
+                if(this.IDstatus === "HasID"){
+                    this.househelpform.IDstatus = "HasID";
+                    this.househelpform.id_status = "Yes";
+                    this.househelpform.id_status_reason = "Has ID Card";
+                }
+                if(this.IDstatus === "HASIDbutlost"){
+                    this.househelpform.IDstatus = "HASIDbutlost";
+                    this.househelpform.id_status = "Yes";
+                    this.househelpform.id_status_reason = "Has ID Card but lost, however applied for replacement";
+                }
+                if(this.IDstatus === "NOIDbutapplied"){
+                    this.househelpform.IDstatus = "NOIDbutapplied";
+                    this.househelpform.id_status = "No";
+                    this.househelpform.id_status_reason = "Dont Have ID Card but applied for new Card";
+                }
+                if(this.IDstatus === "NOID"){
+                    this.househelpform.IDstatus = "NOID";
+                    this.househelpform.id_status = "No";
+                    this.househelpform.id_status_reason = "Dont Have ID Card and Has not applied for new Card";
+                }
+                let id = this.househelpform.id;
+                this.$Progress.start()
+                return this.househelpform.patch('/api/househelp/verify/updatedemographics/' +id)
+                    .then((response)=>{
+                        return true;
+                        toast({
+                            type: 'success',
+                            title: 'Househelp Update Demographic Info Verifed successfully'
+                        })
+                        this.$Progress.finish()
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail()
+                        toast({
+                            type: 'error',
+                            title: 'The Househelp Update Demographic Info failed Verification.'
+                        })
+                    })
+            },
+            //Househelp update Attributes Info info verification
+            validateupdateHousehelpAttributes() {
+                 if(this.Healthstatus === "HEALTHY"){
+                    this.househelpform.HealthStatus = "HEALTHY";
+                    this.househelpform.health_status = "Healthy";
+                    this.househelpform.health_allergy = null;
+                    this.househelpform.health_chronic_details = null;
+                    this.househelpform.health_other_chronics = null;
+                    this.househelpform.health_specify = null;
+                }
+                if(this.Healthstatus === "HASMINOR"){
+                    this.househelpform.HealthStatus = "HASMINOR";
+                    this.househelpform.health_status = "Has Minor Health Issues";
+                    this.househelpform.health_allergy = "yes";
+                    // this.househelpform.health_specify = null;filled in form by user
+                    this.househelpform.health_chronic_details = null;
+                    this.househelpform.health_other_chronics = null;
+                }
+                if(this.Healthstatus === "HASCHRONIC"){
+                    this.househelpform.HealthStatus = "HASCHRONIC";
+                    this.househelpform.health_status = "Has Other Chronic Issues";
+                    this.househelpform.health_allergy = null;
+                    this.househelpform.health_specify = null;
+                    this.househelpform.health_other_chronics = "yes";
+                    // this.househelpform.health_chronic_details = null;filled in form by user
+                }
+                this.$Progress.start()
+                let id = this.househelpform.id;
+                this.$Progress.start()
+                return this.househelpform.patch('/api/househelp/verify/updateattributes/' +id)
+                    .then((response)=>{
+                        return true;
+                        toast({
+                            type: 'success',
+                            title: 'Househelp Update Attributes Info Verifed successfully'
+                        })
+                        this.$Progress.finish()
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail()
+                        toast({
+                            type: 'error',
+                            title: 'The Househelp Update Attributes Info failed Verification.'
+                        })
+                    })
+            },
+                        //Househelp and kin
+            HousehelpInputPhone1({ number, isValid, country }) {
+            console.log(number, isValid, country);
+            this.househelpform.phone = number;
+            this.phone5.isValid = isValid;
+            this.phone5.country = country && country.name;
+            },
+             //Househelpkin
+            HousehelpkinInputPhone1({ number, isValid, country }) {
+            console.log(number, isValid, country);
+            this.househelpkinform.phone = number;
+            this.phone6.isValid = isValid;
+            this.phone6.country = country && country.name;
+            },
             // phone and landline
             //Bureau
             BureauInputPhone({ number, isValid, country }) {
@@ -1738,7 +2299,6 @@
             this.landline4.isValid = isValid;
             this.landline4.country = country && country.name;
             },
-
             loadCountries(){
                 return this.$store.dispatch( "countries")//get all from roles.index
             },
@@ -1753,6 +2313,768 @@
             },
             loadBureau(){
                 return this.$store.dispatch( "bureaus")//get all from bureau. bureau linked to user
+            },
+            loadGenders(){
+               return this.$store.dispatch("genders")
+            },
+            loadRelationships(){
+               return this.$store.dispatch("relationships")
+            },
+            loadEducations(){
+               return this.$store.dispatch("educations")
+            },
+            loadDurations(){
+               return this.$store.dispatch("durations")
+            },
+            loadEnglishstatuses(){
+               return this.$store.dispatch("englishstatuses")
+            },
+            loadExperiences(){
+               return this.$store.dispatch("experiences")
+            },
+            loadKids(){
+               return this.$store.dispatch("kids")
+            },
+            loadMaritalstatuses(){
+               return this.$store.dispatch("maritalstatuses")
+            },
+            loadOperations(){
+               return this.$store.dispatch("operations")
+            },
+            loadReligions(){
+               return this.$store.dispatch("religions")
+            },
+            loadSkills(){
+               return this.$store.dispatch("skills")
+            },
+            loadTribes(){
+               return this.$store.dispatch("tribes")
+            },
+             // househelp
+            loadHousehelps(){
+               this.$Progress.start();
+                let employmentstatus = this.employmentstatus;
+                let hirestatus = this.hirestatus;
+               if(employmentstatus==false && hirestatus==false){
+                //    console.log(employmentstatus,"false", hirestatus, "false geting unemployed")
+                   return this.$store.dispatch( "househelpslist", this.urlform)
+                   .then((response)=>{
+                       $('#HousehelpsModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Bureau Househelps data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#HousehelpsModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
+
+               }else if(employmentstatus==true && hirestatus==false){
+                //    console.log(employmentstatus,"true", hirestatus, "false geting employed")
+                   return this.$store.dispatch( "househelpslist", this.urlform)
+                    .then((response)=>{
+                       $('#HousehelpsModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Bureau Househelps data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#HousehelpsModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
+
+               }else if(employmentstatus==false && hirestatus==true){
+                //    console.log(employmentstatus,"false", hirestatus, "true geting pending employment")
+                   return this.$store.dispatch( "househelpslist", this.urlform)
+                   .then((response)=>{
+                       $('#HousehelpsModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Bureau Househelps data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#HousehelpsModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
+               }
+            },
+            getUnemployedHousehelps(){
+                this.Unemployed = true;
+                this.Employed = false;
+                this.Pending = false;
+                this.Status = 'Unemployed';
+                this.employmentstatus = false;
+                this.hirestatus = false;//not pending
+                this.urlform.url = '/api/househelp/get/unemployed/';
+                this.$store.dispatch("unemployedhousehelps", this.urlform)
+                this.$store.dispatch("employedhousehelps", this.urlform)
+                this.$store.dispatch("pendinghousehelps", this.urlform)
+                this.loadHousehelps();
+            },
+            getEmployedHousehelps(){
+                this.Unemployed = false;
+                this.Employed = true;
+                this.Pending = false;
+                this.Status = 'Employed';
+                this.employmentstatus = true;
+                this.hirestatus = false;//not pending
+                this.urlform.url = '/api/househelp/get/employed/';
+                this.$store.dispatch("unemployedhousehelps", this.urlform)
+                this.$store.dispatch("employedhousehelps", this.urlform)
+                this.$store.dispatch("pendinghousehelps", this.urlform)
+                this.loadHousehelps();
+            },
+            getPendingEmployementHousehelps(){
+                this.Unemployed = false;
+                this.Employed = false;
+                this.Pending = true;
+                this.Status = 'Pending Employement';
+                this.employmentstatus = false;
+                this.hirestatus = true;// pending
+                this.urlform.url = '/api/househelp/get/pending/';
+                this.$store.dispatch("unemployedhousehelps", this.urlform)//for counting
+                this.$store.dispatch("employedhousehelps", this.urlform)//for counting
+                this.$store.dispatch("pendinghousehelps", this.urlform)//for counting
+                this.loadHousehelps();
+            },
+            fetchPaginatedHousehelps(url){
+                this.urlform.url = url;
+                this.loadHousehelps();
+            },
+            househelpLoadPassPhoto(Househelp_photo){
+                if(Househelp_photo){
+                    return "/assets/bureau/img/househelps/passports/"+Househelp_photo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpLoadIDFrontPhoto(househelp_idstatus_id_photo_front){
+                if(househelp_idstatus_id_photo_front){
+                    return "/assets/bureau/img/househelps/IDs/front/"+househelp_idstatus_id_photo_front;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpLoadIDBackPhoto(househelp_idstatus_id_photo_back){
+                if(househelp_idstatus_id_photo_back){
+                    return "/assets/bureau/img/househelps/IDs/back/"+househelp_idstatus_id_photo_back;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpLoadWaitingCard(househelp_idstatus_waiting_card_photo){
+                if(househelp_idstatus_waiting_card_photo){
+                    return "/assets/bureau/img/househelps/waitingcards/"+househelp_idstatus_waiting_card_photo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpChangePassPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpform.photo =event.target.result
+                                // console.log(event.target.result)
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            househelpChangeDOB(event){
+            var current_age = this.househelpform.age;
+                var birthday = moment(event);
+                var now = moment();
+                var age = now.diff(birthday, 'years');
+                if(age<18){
+                     toast({
+                        type: 'error',
+                        title: 'This person is of below the age of 18 years',
+                     })
+                     this.househelpform.age = current_age;
+                }else{
+                    toast({
+                       type: 'sucess',
+                       title: 'Age and date of birth added successfully',
+                   })
+                   this.househelpform.age = age;
+                }
+            },
+            househelpChangeIDFrontPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpform.id_photo_front =event.target.result
+                                // console.log(event.target.result)
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            househelpChangeWaitingCardPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpform.waiting_card_photo =event.target.result
+                                // console.log(event.target.result)
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            househelpChangeIDBackPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpform.id_photo_back =event.target.result
+                            this.househelpform.ref_number = null;
+                            this.househelpform.waiting_card_photo = null;
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            updateHousehelpPassPhoto(househelp_photo){
+                console.log(househelp_photo, 'edit')
+                let img = this.househelpform.photo;
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                        //  console.log('its reall null')
+                      }else{
+                          if(img.length>100){
+                            return this.househelpform.photo;
+                        }else{
+                            if(househelp_photo){
+                                return "/assets/bureau/img/househelps/passports/"+househelp_photo;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+
+            },
+            updateHousehelpIDFrontPhoto(househelpform_id_photo_front){
+                let img = this.househelpform.id_photo_front;
+                console.log(img, "hosuelep")
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                      }else{
+                          if(img.length>100){
+                            return this.househelpform.id_photo_front;
+                        }else{
+                            if(househelpform_id_photo_front){
+                                return "/assets/bureau/img/househelps/IDs/front/"+househelpform_id_photo_front;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+
+            },
+            updateHousehelpIDBackPhoto(househelpform_id_photo_back){
+                let img = this.househelpform.id_photo_back;
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                      }else{
+                          if(img.length>100){
+                            return this.househelpform.id_photo_back;
+                        }else{
+                            if(househelpform_id_photo_back){
+                                return "/assets/bureau/img/househelps/IDs/back/"+househelpform_id_photo_back;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+
+            },
+            updateHousehelpWaitingCardPhoto(househelpform_waiting_card_photo){
+                let img = this.househelpform.waiting_card_photo;
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                      }else{
+                          if(img.length>100){
+                            return this.househelpform.waiting_card_photo;
+                        }else{
+                            if(househelpform_waiting_card_photo){
+                                return "/assets/bureau/img/househelps/waitingcards/"+househelpform_waiting_card_photo;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+
+            },
+            viewHousehelpModal(id){
+                console.log(id)
+                this.$Progress.start();
+                    //get bueau househelp by id
+                this.$store.dispatch('HousehelpById', id)  //action from index.js
+                    .then((response)=>{
+                       $('#ViewHousehelpModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Bureau Househelp data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#ViewHousehelpModal').modal('show');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong Wheen feching data'
+                        })
+                    })
+            },
+            editHousehelpModal(id){
+                 this.househelpform.reset()
+                    this.$Progress.start();
+                      axios.get('/api/househelp/edit/'+id)
+                        .then((response)=>{
+                           toast({
+                            type: 'success',
+                            title: 'Fetched the Househelp data successfully'
+                            })
+                            this.househelpform.fill(response.data.user)
+
+                            //id is of househelp not user
+                            this.househelpform.id = response.data.user.bureauhousehelps[0].id;
+
+                            this.househelpform.first_name = response.data.user.first_name;
+                            this.househelpform.last_name = response.data.user.last_name;
+                            this.househelpform.email = response.data.user.email;
+                            this.househelpform.password = response.data.user.password;
+                            //
+                            this.househelpform.user_id = response.data.user.bureauhousehelps[0].pivot.user_id;
+                            this.househelpform.bureau_id = response.data.user.bureauhousehelps[0].pivot.bureau_id;
+                            this.househelpform.photo = response.data.user.bureauhousehelps[0].pivot.photo;
+                            //
+                            this.househelpform.about_me = response.data.user.bureauhousehelps[0].pivot.about_me;
+                            this.househelpform.phone = response.data.user.bureauhousehelps[0].pivot.phone;
+                            this.househelpform.address = response.data.user.bureauhousehelps[0].pivot.address;
+                            this.househelpform.country_id = response.data.user.bureauhousehelps[0].pivot.country_id;
+
+                            //get county id using the country id
+                            this.househelpform.county_id = response.data.user.bureauhousehelps[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.user.bureauhousehelps[0].pivot.country_id);
+                            //get contituency using county id
+                            this.househelpform.constituency_id = response.data.user.bureauhousehelps[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.user.bureauhousehelps[0].pivot.county_id);
+                            // //get ward usng constituency id
+                            this.househelpform.ward_id = response.data.user.bureauhousehelps[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.user.bureauhousehelps[0].pivot.constituency_id);
+
+                            //extra
+                            this.househelpform.birth_date = response.data.user.bureauhousehelps[0].pivot.birth_date;
+                            this.househelpform.age = response.data.user.bureauhousehelps[0].pivot.age;
+                            this.househelpform.gender_id = response.data.user.bureauhousehelps[0].pivot.gender_id;
+                            this.househelpform.education_id = response.data.user.bureauhousehelps[0].pivot.education_id;
+                            this.househelpform.experience_id = response.data.user.bureauhousehelps[0].pivot.experience_id;
+                            this.househelpform.maritalstatus_id = response.data.user.bureauhousehelps[0].pivot.maritalstatus_id;
+                            this.househelpform.tribe_id = response.data.user.bureauhousehelps[0].pivot.tribe_id;
+                            this.househelpform.skill_id = response.data.user.bureauhousehelps[0].pivot.skill_id;
+                            this.househelpform.operation_id = response.data.user.bureauhousehelps[0].pivot.operation_id;
+                            this.househelpform.duration_id = response.data.user.bureauhousehelps[0].pivot.duration_id;
+                            this.househelpform.englishstatus_id = response.data.user.bureauhousehelps[0].pivot.englishstatus_id;
+                            this.househelpform.religion_id = response.data.user.bureauhousehelps[0].pivot.religion_id;
+                            this.househelpform.kid_id = response.data.user.bureauhousehelps[0].pivot.kid_id;
+                            //id status
+                                // IDstatus
+                                // idstatus_id//id of idstatus row
+                                // bureau_househelp_id
+                                // id_status
+                                // id_number
+                                // ref_number
+                                // id_photo_front
+                                // id_photo_back
+                                // waiting_card_photo
+                                // reason
+                            this.househelpform.idstatus_id = response.data.user.bureauhousehelps[0].idstatus_id;//id of idstatus row
+                            this.househelpform.bureau_househelp_id = response.data.user.bureauhousehelps[0].id;
+                            this.househelpform.id_status = response.data.user.bureauhousehelps[0].idstatus_status;
+
+                            this.househelpform.id_number = response.data.user.bureauhousehelps[0].idstatus_id_number;
+                            this.househelpform.ref_number = response.data.user.bureauhousehelps[0].idstatus_ref_number;
+
+                            if(this.househelpform.id_number != null && this.househelpform.ref_number == null){
+                                 this.IDstatus = "HasID";
+                                 this.househelpform.IDstatus = "HasID";
+                                 this.househelpform.id_status_reason = "Has ID Card";
+                                 this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].idstatus_id_photo_front;
+                                 this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].idstatus_id_photo_back;
+
+                            }else if(this.househelpform.id_number != null && this.househelpform.ref_number != null){                               this.IDstatus = "HASIDbutlost";
+                                 this.IDstatus = "HASIDbutlost";
+                                 this.househelpform.IDstatus = "HASIDbutlost";
+                                 this.househelpform.id_status_reason = "Has ID Card but lost, however applied for replacement";
+                                 this.househelpform.id_photo_front = response.data.user.bureauhousehelps[0].idstatus_id_photo_front;
+                                 this.househelpform.id_photo_back = response.data.user.bureauhousehelps[0].idstatus_id_photo_back;
+                                 this.househelpform.waiting_card_photo = response.data.user.bureauhousehelps[0].idstatus_waiting_card_photo;
+
+                            }else if(this.househelpform.id_number == null && this.househelpform.ref_number != null){
+                                this.IDstatus = "NOIDbutapplied";
+                                this.househelpform.IDstatus = "NOIDbutapplied";
+                                this.househelpform.id_status_reason = "Dont Have ID Card but applied for new Card";
+                                this.househelpform.waiting_card_photo = response.data.user.bureauhousehelps[0].idstatus_waiting_card_photo;
+
+                            }else if(this.househelpform.id_number == null && this.househelpform.ref_number == null){
+                                this.IDstatus = "NOID";
+                                this.househelpform.IDstatus = "NOID";
+                                this.househelpform.id_status_reason = "Dont Have ID Card and Has not applied for new Card";
+                            }
+                            console.log(this.IDstatus, 'status')
+                            console.log(this.househelpform.id_photo_front, 'front')
+                            console.log(this.househelpform.id_photo_back, 'back')
+
+                            //health status
+
+                            this.househelpform.health_status_id = response.data.user.bureauhousehelps[0].healthstatus_id;
+                            this.househelpform.health_HIV_status = response.data.user.bureauhousehelps[0].healthstatus_HIV_status;
+                            this.househelpform.health_allergy = response.data.user.bureauhousehelps[0].healthstatus_allergy;
+                            this.househelpform.health_chronic_details = response.data.user.bureauhousehelps[0].healthstatus_chronic_details;
+                            this.househelpform.health_other_chronics = response.data.user.bureauhousehelps[0].healthstatus_other_chronics;
+                            this.househelpform.health_specify = response.data.user.bureauhousehelps[0].healthstatus_specify;
+                            this.househelpform.health_status = response.data.user.bureauhousehelps[0].healthstatus_status;
+
+                            if(this.househelpform.health_status == "Healthy"){
+                                this.Healthstatus = "HEALTHY";
+                                this.househelpform.HealthStatus = "HEALTHY";
+                                this.househelpform.health_status = "Healthy";
+                                this.househelpform.health_allergy = null;
+                                this.househelpform.health_other_chronics = null;
+                            }
+                            if(this.househelpform.health_status == "HASMINOR"){
+                                this.Healthstatus = "HASMINOR";
+                                this.househelpform.HealthStatus = "HASMINOR";
+                                this.househelpform.health_status = "HASMINOR";
+                                this.househelpform.health_allergy = "Has Minor Health Issues";
+                                this.househelpform.health_other_chronics = null;
+                            }
+                            if(this.househelpform.health_status == "HASCHRONIC"){
+                                this.Healthstatus = "HASCHRONIC";
+                                this.househelpform.HealthStatus = "HASCHRONIC";
+                                this.househelpform.health_status = "HASCHRONIC";
+                                this.househelpform.health_other_chronics = "Has Other Chronic Issues";
+                                this.househelpform.health_allergy = null;
+                            }
+                            console.log(this.househelpform, 'foGGrm')
+                            console.log(this.househelpform.health_specify, 'health_specify')
+                        //     }
+                            $('#HousehelpModal').modal('show')
+                            this.$Progress.finish();
+                        })
+                        .catch(()=>{
+                            this.$Progress.fail();
+                            //errors
+                            $('#HousehelpModal').modal('show');
+                            toast({
+                            type: 'error',
+                            title: 'There was something Wrong'
+                            })
+                        })
+            },
+            updateHousehelp(id){
+                  console.log(id)
+                  console.log(+this.$route.params.id)
+                  this.$Progress.start();
+                     this.househelpform.patch('/api/househelp/update/'+id)
+                        .then(()=>{
+                        this.$store.dispatch('HousehelpById', this.$route.params.id);
+                        this.$refs.wizard.reset()
+                         $('#HousehelpModal').modal('hide')
+
+                         toast({
+                            type: 'success',
+                            title: 'Househelp Created successfully'
+                            })
+                            this.$Progress.finish();
+                        })
+                        .catch(()=>{
+                            this.$Progress.fail();
+                            toast({
+                            type: 'error',
+                            title: 'There was something wrong'
+                            })
+                        })
+            },
+            // househelp kin
+            househelpkinLoadPassPhoto(househelpkinpivot_photo){
+                if(househelpkinpivot_photo){
+                    return "/assets/bureau/img/househelps/househelpkins/passports/"+househelpkinpivot_photo;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpkinLoadIDFrontPhoto(househelpkinpivot_id_photo_front){
+                if(househelpkinpivot_id_photo_front){
+                    return "/assets/bureau/img/househelps/househelpkins/IDs/front/"+househelpkinpivot_id_photo_front;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpkinLoadIDBackPhoto(househelpkinform_id_photo_back){
+                if(househelpkinform_id_photo_back){
+                    return "/assets/bureau/img/househelps/househelpkins/IDs/back/"+househelpkinform_id_photo_back;
+                }else{
+                    return "/assets/bureau/img/website/empty.png";
+                }
+            },
+            househelpkinChangePassPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpkinform.photo =event.target.result
+                                // console.log(event.target.result)
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            updateHousehelpKinPassPhoto(househelpkinform_househelpkin_photo){
+                console.log(househelpkinform_househelpkin_photo)
+                let img = this.househelpkinform.photo;
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                      }else{
+                          if(img.length>100){
+                            return this.househelpkinform.photo;
+                        }else{
+                            if(househelpkinform_househelpkin_photo){
+                                   return "/assets/bureau/img/househelps/househelpkins/passports/"+househelpkinform_househelpkin_photo;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+            },
+            househelpkinChangeIDFrontPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpkinform.id_photo_front =event.target.result
+                                // console.log(event.target.result)
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            updateHousehelpKinIDFrontPhoto(househelpkinform_id_photo_front){
+                let img = this.househelpkinform.id_photo_front;
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                      }else{
+                          if(img.length>100){
+                            return this.househelpkinform.id_photo_front;
+                        }else{
+                            if(househelpkinform_id_photo_front){
+                                return "/assets/bureau/img/househelps/househelpkins/IDs/front/"+househelpkinform_id_photo_front;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+
+            },
+            househelpkinChangeIDBackPhoto(event){
+             let file = event.target.files[0];
+                if(file.size>1048576){
+                    Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'The File you are uploading is larger than 2mbs!',
+                            // footer: '<a href>Why do I have this issue? Reduce the Logo Size</a>'
+                        })
+                }else{
+                    let reader = new FileReader();
+                        reader.onload = event=> {
+                            this.househelpkinform.id_photo_back =event.target.result
+                            };
+                        reader.readAsDataURL(file);
+                }
+            },
+            updateHousehelpKinIDBackPhoto(househelpkinform_id_photo_back){
+                let img = this.househelpkinform.id_photo_back;
+                      if(img ==null){
+                          return "/assets/bureau/img/website/empty.png";
+                      }else{
+                          if(img.length>100){
+                            return this.househelpkinform.id_photo_back;
+                        }else{
+                            if(househelpkinform_id_photo_back){
+                                return "/assets/bureau/img/househelps/househelpkins/IDs/back/"+househelpkinform_id_photo_back;
+                            }else{
+                                return "/assets/bureau/img/website/empty.png";
+                            }
+                        }
+                      }
+
+            },
+            viewHousehelpkinModal(id){
+                console.log(id)
+                this.$Progress.start();
+                    //get bueau househelpkin by id
+                this.$store.dispatch('HousehelpKinById', id)  //action from index.js
+                    .then((response)=>{
+                       $('#ViewHousehelpKinModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Househelpkin data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#ViewHousehelpKinModal').modal('show');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong Wheen feching data'
+                        })
+                    })
+            },
+            editHousehelpkinModal(id){
+                console.log(id)
+                 this.househelpkinform.reset()
+                    this.$Progress.start();
+                      axios.get('/api/househelpkin/edit/'+id)
+                        .then((response)=>{
+                           $('#HousehelpKinModal').modal('show')
+                           toast({
+                            type: 'success',
+                            title: 'Fetched the Househelp data successfully'
+                            })
+                            console.log(response.data, 'hodsehekin')
+                            this.househelpkinform.fill(response.data.user)
+                            this.househelpkinform.id  = response.data.user.househelpkin.user_id
+                        //househelp
+                            this.househelpkinform.first_name   = response.data.user.first_name
+                            this.househelpkinform.last_name    = response.data.user.last_name
+                            this.househelpkinform.email        = response.data.user.email
+                            this.househelpkinform.user_type    = response.data.user.user_type
+
+                            this.househelpkinform.bureau_househelp_id  = response.data.user.househelpkin.bureau_househelp_id
+                            this.househelpkinform.gender_id   = response.data.user.househelpkin.gender_id
+                            this.househelpkinform.user_id     = response.data.user.househelpkin.user_id
+
+                            this.househelpkinform.househelp_id  = response.data.user.househelpkin.househelp_id
+                            this.househelpkinform.relationship_id  = response.data.user.househelpkin.relationship_id
+
+                            this.househelpkinform.id_no  = response.data.user.househelpkin.id_no
+                            this.househelpkinform.photo  = response.data.user.househelpkin.photo
+
+                            this.househelpkinform.id_photo_front  = response.data.user.househelpkin.id_photo_front
+                            this.househelpkinform.id_photo_back  = response.data.user.househelpkin.id_photo_back
+                            this.househelpkinform.phone  = response.data.user.househelpkin.phone
+                            this.househelpkinform.address  = response.data.user.househelpkin.address
+
+                        // // //    //get country id
+                            this.househelpkinform.country_id = response.data.user.househelpkin.country_id
+                        //     //get county id using the country id
+                            this.househelpkinform.county_id = response.data.user.househelpkin.county_id
+                            this.$store.dispatch('countrycounties', response.data.user.househelpkin.country_id);
+                            //get contituency using county id
+                            this.househelpkinform.constituency_id = response.data.user.househelpkin.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.user.househelpkin.county_id);
+                            // //get ward usng constituency id
+                            this.househelpkinform.ward_id = response.data.user.househelpkin.ward_id
+                            this.$store.dispatch('constituencywards', response.data.user.househelpkin.constituency_id);
+                            this.$Progress.finish();
+                        })
+                        .catch(()=>{
+                            this.$Progress.fail();
+                            //errors
+                            $('#HousehelpKinModal').modal('show');
+                            toast({
+                            type: 'error',
+                            title: 'There was something Wrong'
+                            })
+                        })
+            },
+            updateHousehelpKin(id){
+               console.log(id)
+                  console.log(+this.$route.params.id)
+                  this.$Progress.start();
+                     this.househelpkinform.patch('/api/househelpkin/update/'+id)
+                        .then(()=>{
+                        this.$store.dispatch('HousehelpById', this.$route.params.id);
+                         $('#HousehelpKinModal').modal('hide')
+                         toast({
+                            type: 'success',
+                            title: 'Househelpkin Created successfully'
+                            })
+                            this.$Progress.finish();
+                        })
+                        .catch(()=>{
+                            this.$Progress.fail();
+                            toast({
+                            type: 'error',
+                            title: 'There was something wrong'
+                            })
+                        })
             },
 
             //Bureau
@@ -1894,7 +3216,6 @@
                             })
                         })
             },
-
             updateBureau(id){
                   console.log('update bureauanisaton')
                   this.$Progress.start();
@@ -1917,7 +3238,6 @@
                             })
                         })
             },
-
             DirectorcountryCounties(country_id){
                 console.log(country_id);
                 this.$store.dispatch('countrycounties', country_id);
@@ -2065,6 +3385,28 @@
                         }
                       }
 
+            },
+
+            DirectorsModal(){
+                this.$Progress.start();
+                this.$store.dispatch('BureauById', this.$route.params.id) //action from index.js
+                    .then((response)=>{
+                       $('#DirectorsModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Bureau Directors data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#DirectorsModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
             },
             viewDirectorModal(id){
                 console.log(id)
@@ -2368,6 +3710,27 @@
                       }
 
             },
+            AdminsModal(){
+                this.$Progress.start();
+                this.$store.dispatch('BureauById', this.$route.params.id) //action from index.js
+                    .then((response)=>{
+                       $('#AdminsModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Bureau Admins data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#AdminsModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
+            },
             viewAdminModal(id){
                 console.log(id)
                 this.$Progress.start();
@@ -2668,6 +4031,27 @@
                         }
                       }
 
+            },
+            EmployeesModal(){
+                this.$Progress.start();
+                this.$store.dispatch('BureauById', this.$route.params.id) //action from index.js
+                    .then((response)=>{
+                       $('#EmployeesModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Bureau Employees data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#EmployeesModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
             },
             viewEmployeeModal(id){
                 console.log(id)

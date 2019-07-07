@@ -37,7 +37,7 @@
                             <div class="col-sm-9" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
                                 <div>{{user.full_name}},</div>
                                 <div>
-                                     Bureau: <span style="color:#9a009a;">{{director.name}},</span>
+                                     Organisation: <span style="color:#9a009a;">{{director.organisation_name}},</span>
                                 </div>
                                 <div> ID: ,<span style="color:#9a009a;">{{director.pivot.id_no}}</span>,
                                     Phone: <span style="color:#9a009a;">{{director.pivot.phone}},</span>

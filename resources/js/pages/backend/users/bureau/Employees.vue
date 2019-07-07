@@ -27,54 +27,46 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(bureauemployee, index) in Bureauemployees" :key="bureauemployee.id">
+                  <tr v-for="(user, index) in Users" :key="user.id">
                     <td >{{index+1}}</td>
                     <td style="width: 500px;">
-                        <div class="row" style="width:100%" v-for="bureau in bureauemployee.bureauemployees" :key="bureau.id">
+                        <div class="row" style="width:100%" v-for="employee in user.bureauemployees" :key="employee.id">
                             <div class="col-sm-3" style="padding: 3px;">
-                                 <img class="card-img-top" :src="bureauemployeeLoadPassPhoto(bureau.pivot.photo)" style="width:100%" alt="Card image cap">
+                                 <img class="card-img-top" :src="bureauemployeeLoadPassPhoto(employee.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="bureauemployeeLoadIDFrontPhoto(bureau.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="bureauemployeeLoadIDBackPhoto(bureau.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
-                            </div>
-                            <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
-                                <div>{{bureauemployee.full_name}},</div>
-                                <div v-for="position in bureauemployee.positions" :key="position.id">
-                                    {{position.name}},
+                            <div class="col-sm-9" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
+                                <div>{{user.full_name}},</div>
+                                <div > Bureau
                                     <span style="color:#9a009a;">
-                                        {{bureau.name}},
+                                        {{employee.name}},
                                     </span>
                                 </div>
-                                <div> ID: ,<span style="color:#9a009a;">{{bureau.pivot.id_no}}</span>,
-                                    Phone: <span style="color:#9a009a;">{{bureau.pivot.phone}},</span>
+                                <div> ID: ,<span style="color:#9a009a;">{{employee.pivot.id_no}}</span>,
+                                    Phone: <span style="color:#9a009a;">{{employee.pivot.phone}},</span>
                                 </div>
                                 <div>
-                                     Mail: <span style="color:#9a009a;">{{bureauemployee.email}},</span>
+                                     Mail: <span style="color:#9a009a;">{{user.email}},</span>
                                 </div>
-                                    <div>P. O. Box , <span style="color:#9a009a;">{{bureau.pivot.address}}</span>,
+                                    <div>P. O. Box , <span style="color:#9a009a;">{{employee.pivot.address}}</span>,
                                     </div>
-                                <div v-for="ward in bureauemployee.wards" :key="ward.id">
-                                    <span style="color:#9a009a;">{{ward.name}}</span> ward,
-                                    <span v-for="constituency in bureauemployee.constituencies" :key="constituency.id" style="color:#9a009a;">
-                                        {{constituency.name}}</span> constituency,
+                                <div>
+                                    <span style="color:#9a009a;">{{employee.ward_name}}</span> ward,
+                                    <span style="color:#9a009a;">{{employee.constituency_name}}</span> constituency,
                                 </div>
-                                <div v-for="county in bureauemployee.counties" :key="county.id" >
-                                    <span style="color:#9a009a;">{{county.name}}</span> county,
-                                    <span v-for="country in bureauemployee.countries" :key="country.id" style="color:#9a009a;">
-                                        {{country.name}},
-                                    </span>
+                                <div >
+                                    <span style="color:#9a009a;">{{employee.county_name}}</span> county,
+                                    <span style="color:#9a009a;">{{employee.country_name}},</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="role in bureauemployee.roles" :key="role.id" class="pl-2">
+                        <span v-for="role in user.roles" :key="role.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 " >{{role.name}} </div>
                         </span>
                     </td>
                     <td style="padding: 3px;">
-                        <span v-for="permission in bureauemployee.permissions" :key="permission.id" class="pl-2">
+                        <span v-for="permission in user.permissions" :key="permission.id" class="pl-2">
                             <div class="btn btn-primary btn-sm ml-1 mb-2 ">{{permission.name}} </div>
                         </span>
                     </td>
@@ -82,15 +74,15 @@
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em"> Updated at:
-                                    <span style="color:#9a009a;">{{bureauemployee.created_at | dateformat}} </span>
+                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
                                 </div>
                             </span>
                             <span class="float-right">
-                                <a href=""  @click.prevent="editBureauemployeeModal(bureauemployee.id)">
+                                <a href=""  @click.prevent="editBureauemployeeModal(user.id)">
                                     <i class="fa fa-edit blue"></i>
                                 </a>
                                 /
-                                <a href=""  @click.prevent="deleteBureauemployee(bureauemployee.id)">
+                                <a href=""  @click.prevent="deleteBureauemployee(user.id)">
                                     <i class="fa fa-trash red"></i>
                                 </a>
                             </span>
@@ -99,25 +91,25 @@
                   </tr>
                 </tbody>
               </table>
-              <div v-if="Bureauemployees.length" >
-                   <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
-                           <span class="float-left" style="margin-bottom:-0.5em" >
-                               <div style="margin-bottom:0.25em">
-                                   Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                   & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                   out of <span style="color:#9a009a;"> {{pagination.total}} </span> Bureauemployees
-                               </div>
-                               <button class="btn btn-info" v-on:click="fetchPaginatedBureauemployees(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
-                           </span>
-                           <span class="float-right" style="margin-bottom:-0.5em" >
-                               <div style="margin-bottom:0.25em">
-                                   Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                   of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
-                               </div>
-                               <button class="btn btn-info" v-on:click="fetchPaginatedBureauemployees(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
-                           </span>
-                   </div>
-               </div>
+              <div v-if="Users.length" >
+                <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
+                        <span class="float-left" style="margin-bottom:-0.5em" >
+                            <div style="margin-bottom:0.25em">
+                                Between <span style="color:#9a009a;"> {{pagination.from}} </span>
+                                & <span style="color:#9a009a;"> {{pagination.to}} </span>
+                                out of <span style="color:#9a009a;"> {{pagination.total}} </span> Bureauemployees
+                            </div>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedBureauemployees(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                        </span>
+                        <span class="float-right" style="margin-bottom:-0.5em" >
+                            <div style="margin-bottom:0.25em">
+                                Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
+                                of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                            </div>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedBureauemployees(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                        </span>
+                </div>
+              </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -128,8 +120,7 @@
       <!-- /.row -->
     </section>
 
-    <!-- Role Modal -->
-        <div class="modal fade " id="BureauemployeeModal" tabindex="-1" role="dialog" aria-labelledby="BureauemployeeModalLabel" aria-hidden="true">
+    <div class="modal fade " id="BureauemployeeModal" tabindex="-1" role="dialog" aria-labelledby="BureauemployeeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,146 +132,43 @@
                         <div class="modal-body">
                             <h5 class="modal-title" v-show="editmodeBureauemployee" id="BureauemployeeModalLabel">Update Bureauemployee</h5>
                             <h5 class="modal-title" v-show="!editmodeBureauemployee" id="BureauemployeeModalLabel">Add New Bureauemployee</h5>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="first_name" class="col-form-label"> Bureauemployee Passport</label>
+                                    <img v-show="editmodeBureauemployee" :src="updateBureauemployeePassPhoto(bureauemployeeform.photo)" alt="" width="100%" >
+                                </div>
+                                <div class="form-group col-md-8">
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="first_name" class="col-form-label"> Bureauemployee First Name</label>
                                             <input v-model="bureauemployeeform.first_name" type="text" name="first_name" placeholder="Bureauemployee First Name"
                                                 class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('first_name') }" >
                                             <has-error style="color: #e83e8c" :form="bureauemployeeform" field="first_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="last_name" class=" col-form-label">bureauemployee_Last Name </label>
                                             <input v-model="bureauemployeeform.last_name" type="bureauemployee_last_name" name="last_name" placeholder="Bureauemployee Last Name"
                                                 class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('last_name') }" >
                                             <has-error style="color: #e83e8c" :form="bureauemployeeform" field="last_name"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                    </div>
+                                    <div class="row">
+                                         <div class="form-group col-md-6">
                                             <label for="email" class=" col-form-label">Email </label>
                                             <input v-model="bureauemployeeform.email" type="email" name="email" placeholder="Email Address"
                                                 class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('email') }" >
                                             <has-error style="color: #e83e8c" :form="bureauemployeeform" field="email"></has-error>
                                         </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
+                                            <label for="password" class=" col-form-label">Password </label>
                                             <input v-model="bureauemployeeform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('password') }">
                                             <has-error :form="bureauemployeeform" field="password"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="phone" class="col-form-label"> Bureauemployee Phone</label>
-                                                <div>
-                                                    <vue-tel-input v-model="bureauemployeeform.phone" name="phone" @onInput="InputPhone"
-                                                    class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('phone') }">
-                                                    </vue-tel-input>
-                                                    <has-error style="color: #e83e8c" :form="bureauemployeeform" field="phone"></has-error>
-                                                </div>
-                                                <div v-if="bureauemployeeform.phone" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{phone.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{phone.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="landline" class=" col-form-label">Landline</label>
-                                                <vue-tel-input v-model="bureauemployeeform.landline" name="landline" @onInput="InputLandline"
-                                                    class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('landline') }">
-                                                </vue-tel-input>
-                                                <has-error style="color: #e83e8c" :form="bureauemployeeform" field="landline"></has-error>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                <div v-if="bureauemployeeform.landline" style="color: #e83e8c">
-                                                    <span>Is valid: <strong>{{landline.isValid}}</strong>,&nbsp;</span>
-                                                    <span>Country: <strong>{{landline.country}}</strong></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="id_no" class="col-form-label">ID no.</label>
-                                            <input v-model="bureauemployeeform.id_no" type="text" name="id_no" placeholder="ID NO"
-                                                class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('id_no') }" >
-                                            <has-error style="color: #e83e8c" :form="bureauemployeeform" field="id_no"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="address" class=" col-form-label">Address</label>
-                                            <input v-model="bureauemployeeform.address" type="text" name="address" placeholder="Address"
-                                                class="form-control" :class="{ 'is-invalid': bureauemployeeform.errors.has('address') }" >
-                                            <has-error style="color: #e83e8c" :form="bureauemployeeform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="gender_id">Select Gender</label>
-                                            <select class="form-control" v-model="bureauemployeeform.gender_id"
-                                                    :class="{ 'is-invalid':bureauemployeeform.errors.has('gender_id') }">
-                                                    <option disabled value="">Select gender</option>
-                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="bureauemployeeform" field="gender_id"></has-error>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-3">
-                                            <label for="country_id">Select Country</label>
-                                            <select class="form-control" @change="countryCounties(bureauemployeeform.country_id)"
-                                            v-model="bureauemployeeform.country_id" :class="{ 'is-invalid': bureauemployeeform.errors.has('country_id') }">
-                                                    <option disabled value="">Select Country</option>{{bureauemployeeform.country_id}}
-                                                    <option v-for="country in Countries" :value="country.id" :key="country.id">{{country.name}}</option>
-                                            </select>
-                                                <has-error style="color: #e83e8c" :form="bureauemployeeform" field="country_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="county_id" class=" col-form-label">County</label>
-                                            <select class="form-control" @change="countyConstituencies(bureauemployeeform.county_id)"
-                                            v-model="bureauemployeeform.county_id" :class="{ 'is-invalid': bureauemployeeform.errors.has('county_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="county in Counties" :value="county.id" :key="county.id">{{county.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="bureauemployeeform" field="county_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="constituency_id" class=" col-form-label">Constituency</label>
-                                            <select class="form-control" @change="constituencyWards(bureauemployeeform.constituency_id)"
-                                            v-model="bureauemployeeform.constituency_id" :class="{ 'is-invalid': bureauemployeeform.errors.has('constituency_id') }">
-                                                    <option disabled value="">Select County</option>
-                                                    <option v-for="constituency in Constituencies" :value="constituency.id" :key="constituency.id">{{constituency.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="bureauemployeeform" field="constituency_id"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="ward_id" class="col-form-label"> Ward </label>
-                                            <select class="form-control"
-                                            v-model="bureauemployeeform.ward_id" :class="{ 'is-invalid': bureauemployeeform.errors.has('ward_id') }">
-                                                    <option disabled value="">Select Ward</option>
-                                                    <option v-for="ward in Wards" :value="ward.id" :key="ward.id">{{ward.name}}</option>
-                                            </select>
-                                            <has-error style="color: #e83e8c" :form="bureauemployeeform" field="ward_id"></has-error>
-                                        </div>
-
-                                    </div>
-                                    <div class=" row">
-                                        <div class="form-group col-md-4">
-                                            <label for="photo" class=" col-form-label">Bureauemployee PassPort Image</label><br>
-                                                <input @change="bureauemployeeChangePassPhoto($event)" type="file" name="photo"
-                                                    :class="{ 'is-invalid': bureauemployeeform.errors.has('photo') }">
-                                                    <img v-show="editmodeBureauemployee" :src="updateBureauemployeePassPhoto(bureauemployeeform.photo)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeBureauemployee" :src="bureauemployeeform.photo" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="bureauemployeeform" field="photo"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="id_photo_front" class=" col-form-label">Bureauemployee FrontSide ID Photo</label><br>
-                                                <input @change="bureauemployeeChangeIDFrontPhoto($event)" type="file" name="id_photo_front"
-                                                    :class="{ 'is-invalid': bureauemployeeform.errors.has('id_photo_front') }">
-                                                    <img v-show="editmodeBureauemployee" :src="updateBureauemployeeIDFrontPhoto(bureauemployeeform.id_photo_front)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeBureauemployee" :src="bureauemployeeform.id_photo_front" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="bureauemployeeform" field="id_photo_front"></has-error>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="backside_i_photod" class=" col-form-label">BackSide ID Photo</label><br>
-                                                <input @change="bureauemployeeChangeIDBackPhoto($event)" type="file" name="id_photo_back"
-                                                    :class="{ 'is-invalid': bureauemployeeform.errors.has('backside_id') }">
-                                                    <img v-show="editmodeBureauemployee" :src="updateBureauemployeeIDBackPhoto(bureauemployeeform.id_photo_back)" alt="" width="100%" >
-                                                    <img  v-show="!editmodeBureauemployee" :src="bureauemployeeform.id_photo_back" alt="" width="100%" >
-                                                <has-error style="color: #e83e8c" :form="bureauemployeeform" field="id_photo_back"></has-error>
-                                        </div>
-                                    </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -292,6 +180,8 @@
             </div>
         </div>
 
+
+
   </div>
 </div>
 
@@ -299,7 +189,7 @@
 
 <script>
     export default {
-        name:"Bureauemployees",
+        name:"Organisation-Bureauemployees",
         data(){
             return{
                 newBureauemployee: false,
@@ -311,34 +201,9 @@
                         email:'',
                         password:'',
                         user_type:'',
-                        user_id:'',
-                        bureau_id:'',
-                        position_id:'',
-                        gender_id:'',
                         photo:'',
-                        active:'',
-                        id_no:'',
-                        id_photo_front:'',
-                        id_photo_back:'',
-                        about_me:'',
-                        phone:'',
-                        landline:'',
-                        address:'',
-                        country_id:'',
-                        county_id:'',
-                        constituency_id:'',
-                        ward_id:'',
                 }),
-                 //bureauemployee
-                phone:{
-                        isValid: false,
-                        country: undefined,
-                },
-                landline:{
-                        isValid: false,
-                        country: undefined,
-                },
-                 url:'/api/bureauemployee/get',
+                url:'/api/bureauemployee/get',
                 pagination:[],
             }
         },
@@ -366,9 +231,10 @@
             Genders(){
                return this.$store.getters.Genders
             },
-            Bureauemployees(){
+            Users(){
                 return this.$store.getters.BureauEmployees
             },
+
         },
         methods:{
             //bureauemployee
@@ -407,17 +273,16 @@
                return this.$store.dispatch("genders")
             },
             loadBureauemployees(){
-                this.$Progress.start();
+               this.$Progress.start();
                 return this.$store.dispatch( "bureauemployees", this.url)
                  .then((response)=>{
-                     console.log(response.data, 'dddd')
                      this.makingPagination(response.data.employees),
                     toast({
                      type: 'success',
-                     title: 'Fetched the Bureaueemployee data successfully'
+                     title: 'Fetched the Bureauemployee data successfully'
                     })
                 })
-                .catch((response)=>{
+                .catch(()=>{
                     this.$Progress.fail();
                     toast({
                     type: 'error',
@@ -436,6 +301,7 @@
                     prev_page_url: data.prev_page_url,
                 }
                 this.pagination = pagination;
+                console.log( this.pagination, 'pagination')
             },
             fetchPaginatedBureauemployees(url){
                 this.url = url;
@@ -586,30 +452,12 @@
                             type: 'success',
                             title: 'Fetched the Bureauemployee data successfully'
                             })
-                            console.log(response.data.employee)
-                            this.bureauemployeeform.fill(response.data.employee)
-                            this.bureauemployeeform.user_id = response.data.employee.bureauemployees[0].pivot.user_id
-                            this.bureauemployeeform.organisation_id = response.data.employee.bureauemployees[0].pivot.organisation_id
-                            this.bureauemployeeform.position_id = response.data.employee.bureauemployees[0].pivot.position_id
-                            this.bureauemployeeform.gender_id = response.data.employee.bureauemployees[0].pivot.gender_id
-                            this.bureauemployeeform.photo = response.data.employee.bureauemployees[0].pivot.photo
-                            this.bureauemployeeform.id_no = response.data.employee.bureauemployees[0].pivot.id_no
-                            this.bureauemployeeform.id_photo_front = response.data.employee.bureauemployees[0].pivot.id_photo_front
-                            this.bureauemployeeform.id_photo_back = response.data.employee.bureauemployees[0].pivot.id_photo_back
-                            this.bureauemployeeform.phone = response.data.employee.bureauemployees[0].pivot.phone
-                            this.bureauemployeeform.landline = response.data.employee.bureauemployees[0].pivot.landline
-                            this.bureauemployeeform.address = response.data.employee.bureauemployees[0].pivot.address
-
-                            this.bureauemployeeform.country_id = response.data.employee.bureauemployees[0].pivot.country_id
-                            //get county id using the country id
-                            this.bureauemployeeform.county_id = response.data.employee.bureauemployees[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.employee.bureauemployees[0].pivot.country_id);
-                            //get contituency using county id
-                            this.bureauemployeeform.constituency_id = response.data.employee.bureauemployees[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.employee.bureauemployees[0].pivot.county_id);
-                            // //get ward usng constituency id
-                            this.bureauemployeeform.ward_id = response.data.employee.bureauemployees[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.employee.bureauemployees[0].pivot.constituency_id);
+                            this.bureauemployeeform.fill(response.data.user)
+                            this.bureauemployeeform.first_name = response.data.user.first_name;
+                            this.bureauemployeeform.last_name = response.data.user.last_name;
+                            this.bureauemployeeform.email = response.data.user.email;
+                            this.bureauemployeeform.user_type = response.data.user.user_type;
+                            this.bureauemployeeform.photo = response.data.user.bureauemployees[0].pivot.photo
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -623,7 +471,7 @@
                         })
             },
             addBureauemployee() {
-                this.bureauemployeeform.user_type = "Bureauemployee";
+                this.bureauemployeeform.user_type = "Organisation Bureauemployee";
                 this.$Progress.start();
                 this.bureauemployeeform.patch('/api/bureauemployee')
                     .then((response)=>{
@@ -649,9 +497,8 @@
                     })
             },
             updateBureauemployee(id){
-                  console.log('update bureauemployee')
                   this.$Progress.start();
-                     this.bureauemployeeform.patch('/api/bureauemployee/update/'+id)
+                     this.bureauemployeeform.patch('/api/user/update/'+id)
                         .then(()=>{
                             this.loadBureauemployees();
                          $('#BureauemployeeModal').modal('hide')

@@ -41,7 +41,6 @@ class HousehelpController extends Controller
             if (auth('api')->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
                 if (auth('api')->user()->hasAnyRole(['Bureau Director'])) {
                     $bureaudirector = auth('api')->user()->bureaudirectors()->first();
-                    // return $bureaudirector;
                     $users = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
                                 {
                                   $query ->where('bureau_id', $bureaudirector->bureau_id);
@@ -51,11 +50,11 @@ class HousehelpController extends Controller
                             ->paginate(7);
                 }
                 else if (auth('api')->user()->hasAnyRole(['Bureau Admin'])) {
-                    $bureaudirector = auth('api')->user()->bureauadmins()->first();
+                    $bureauadmin = auth('api')->user()->bureauadmins()->first();
 
-                    $users = User::whereHas('bureauhousehelps', function($query) use( $bureaudirector)
+                    $users = User::whereHas('bureauhousehelps', function($query) use( $bureauadmin)
                                 {
-                                  $query ->where('bureau_id',  $bureaudirector->bureau_id);
+                                  $query ->where('bureau_id',  $bureauadmin->bureau_id);
                                 }
                             )
                             ->with('roles','permissions','bureauhousehelps')
@@ -73,26 +72,50 @@ class HousehelpController extends Controller
            if (auth('api')->check()) {
                if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
                    $users = User::whereHas('bureauhousehelps')->with('roles','permissions','bureauhousehelps')->role('Househelp')
-                            ->paginate(20);
+                            ->paginate(7);
                }
            }
            return response()-> json([
                'users'=>$users,
            ], 200);
     }
-    // houselps emloyed
+    // houselps employed
     public function unemployed()
     {
            if (auth('api')->check()) {
-               if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
-                   $users = User::whereHas('bureauhousehelps', function($query)
-                                        {
-                                        $query ->where('employmentstatus', false)
-                                               ->where('hiredstatus', false);
-                                        }
-                                    )->with('roles','permissions','bureauhousehelps')->role('Househelp')
-                            ->paginate(20);
-               }
+                if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                    $users = User::whereHas('bureauhousehelps', function($query)
+                                            {
+                                            $query ->where('employmentstatus', false)
+                                                ->where('hiredstatus', false);
+                                            }
+                                        )->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                                ->paginate(7);
+
+                }else if (auth('api')->user()->hasAnyRole(['Bureau Director'])) {
+                    $bureaudirector = auth('api')->user()->bureaudirectors()->first();
+                    $users = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
+                                {
+                                $query ->where('bureau_id', $bureaudirector->bureau_id)
+                                       ->where('employmentstatus', false)
+                                       ->where('hiredstatus', false);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+
+                }else if (auth('api')->user()->hasAnyRole(['Bureau Admin'])) {
+                    $bureauadmin = auth('api')->user()->bureauadmins()->first();
+                    $users = User::whereHas('bureauhousehelps', function($query) use( $bureauadmin)
+                                {
+                                $query ->where('bureau_id',  $bureauadmin->bureau_id)
+                                       ->where('employmentstatus', false)
+                                       ->where('hiredstatus', false);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+                }
            }
            return response()-> json([
                'users'=>$users,
@@ -103,12 +126,36 @@ class HousehelpController extends Controller
            if (auth('api')->check()) {
                if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
                    $users = User::whereHas('bureauhousehelps', function($query)
-                                        {
-                                        $query ->where('employmentstatus', true)
-                                               ->where('hiredstatus', false);
-                                        }
-                                    )->with('roles','permissions','bureauhousehelps')->role('Househelp')
-                            ->paginate(20);
+                               {
+                               $query ->where('employmentstatus', true)
+                                      ->where('hiredstatus', false);
+                               }
+                           )->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                   ->paginate(7);
+
+               }else if (auth('api')->user()->hasAnyRole(['Bureau Director'])) {
+                   $bureaudirector = auth('api')->user()->bureaudirectors()->first();
+                   $users = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
+                               {
+                               $query ->where('bureau_id', $bureaudirector->bureau_id)
+                                      ->where('employmentstatus', true)
+                                      ->where('hiredstatus', false);
+                               }
+                           )
+                           ->with('roles','permissions','bureauhousehelps')
+                           ->paginate(7);
+
+               }else if (auth('api')->user()->hasAnyRole(['Bureau Admin'])) {
+                   $bureauadmin = auth('api')->user()->bureauadmins()->first();
+                   $users = User::whereHas('bureauhousehelps', function($query) use( $bureauadmin)
+                               {
+                               $query ->where('bureau_id',  $bureauadmin->bureau_id)
+                                      ->where('employmentstatus', true)
+                                      ->where('hiredstatus', false);
+                               }
+                           )
+                           ->with('roles','permissions','bureauhousehelps')
+                           ->paginate(7);
                }
            }
            return response()-> json([
@@ -120,13 +167,96 @@ class HousehelpController extends Controller
            if (auth('api')->check()) {
                if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
                    $users = User::whereHas('bureauhousehelps', function($query)
-                                        {
-                                        $query ->where('employmentstatus', false)
-                                               ->where('hiredstatus', true);
-                                        }
-                                    )->with('roles','permissions','bureauhousehelps')->role('Househelp')
-                            ->paginate(20);
+                                {
+                                $query ->where('employmentstatus', false)
+                                       ->where('hiredstatus', true);
+                                }
+                            )->with('roles','permissions','bureauhousehelps')->role('Househelp')
+                             ->paginate(7);
+
+                }else if (auth('api')->user()->hasAnyRole(['Bureau Director'])) {
+                    $bureaudirector = auth('api')->user()->bureaudirectors()->first();
+                    $users = User::whereHas('bureauhousehelps', function($query) use($bureaudirector)
+                                {
+                                $query ->where('bureau_id', $bureaudirector->bureau_id)
+                                       ->where('employmentstatus', false)
+                                       ->where('hiredstatus', true);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+
+                }else if (auth('api')->user()->hasAnyRole(['Bureau Admin'])) {
+                    $bureauadmin = auth('api')->user()->bureauadmins()->first();
+                    $users = User::whereHas('bureauhousehelps', function($query) use( $bureauadmin)
+                                {
+                                $query ->where('bureau_id',  $bureauadmin->bureau_id)
+                                       ->where('employmentstatus', false)
+                                       ->where('hiredstatus', true);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+                }
+           }
+           return response()-> json([
+               'users'=>$users,
+           ], 200);
+    }
+    // houselps employed by bueau
+    public function bureau_id_unemployed($id)
+    {
+           if (auth('api')->check()) {
+                 if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                    $users = User::whereHas('bureauhousehelps', function($query) use($id)
+                                {
+                                $query ->where('bureau_id', $id)
+                                       ->where('employmentstatus', false)
+                                       ->where('hiredstatus', false);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+                }
+           }
+           return response()-> json([
+               'users'=>$users,
+           ], 200);
+    }
+    public function bureau_id_employed($id)
+    {
+           if (auth('api')->check()) {
+               if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                   $users = User::whereHas('bureauhousehelps', function($query) use($id)
+                               {
+                               $query ->where('bureau_id', $id)
+                                      ->where('employmentstatus', true)
+                                      ->where('hiredstatus', false);
+                               }
+                           )
+                           ->with('roles','permissions','bureauhousehelps')
+                           ->paginate(7);
+
                }
+           }
+           return response()-> json([
+               'users'=>$users,
+           ], 200);
+    }
+    public function bureau_id_pending($id)
+    {
+           if (auth('api')->check()) {
+               if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                    $users = User::whereHas('bureauhousehelps', function($query) use($id)
+                                {
+                                $query ->where('bureau_id', $id)
+                                       ->where('employmentstatus', false)
+                                       ->where('hiredstatus', true);
+                                }
+                            )
+                            ->with('roles','permissions','bureauhousehelps')
+                            ->paginate(7);
+                }
            }
            return response()-> json([
                'users'=>$users,
@@ -136,7 +266,7 @@ class HousehelpController extends Controller
     public function age()
     {
 
-        $value1 = '15-20';
+        $value1 = '15-7';
         $value2 = '21-25';
         $value3 = '26-30';
         $value4 = '31-35';
@@ -223,7 +353,7 @@ class HousehelpController extends Controller
 
                 $output1 = [
                     $id => '1',
-                    $name => '15-20',
+                    $name => '15-7',
                     $count => $househelps1->count()];
                 $output2 = [
                     $id => '2',
@@ -409,7 +539,7 @@ class HousehelpController extends Controller
                 'househelp_password'  =>  'required',
                 'househelp_phone'  =>  'phone:AUTO,MOBILE',
                 'househelp_landline'  =>  'phone:AUTO,MOBILE',
-                'househelp_address'  =>  'required|digits_between:1,20',
+                'househelp_address'  =>  'required|digits_between:1,7',
                 'househelp_birth_date'  =>  'required',
                 'househelp_gender_id'  =>  'required',
                 'househelp_country_id'  =>  'required',
@@ -433,7 +563,7 @@ class HousehelpController extends Controller
                 'househelp_password'  =>  'required',
                 'househelp_phone'  =>  'phone:AUTO,MOBILE',
                 'househelp_landline'  =>  'phone:AUTO,MOBILE',
-                'househelp_address'  =>  'required|digits_between:1,20',
+                'househelp_address'  =>  'required|digits_between:1,7',
                 'househelp_birth_date'  =>  'required',
                 'househelp_gender_id'  =>  'required',
                 'househelp_country_id'  =>  'required',
@@ -456,7 +586,7 @@ class HousehelpController extends Controller
                 'househelp_password'  =>  'required',
                 'househelp_phone'  =>  'phone:AUTO,MOBILE',
                 'househelp_landline'  =>  'phone:AUTO,MOBILE',
-                'househelp_address'  =>  'required|digits_between:1,20',
+                'househelp_address'  =>  'required|digits_between:1,7',
                 'househelp_birth_date'  =>  'required',
                 'househelp_gender_id'  =>  'required',
                 'househelp_country_id'  =>  'required',
@@ -479,7 +609,7 @@ class HousehelpController extends Controller
                 'househelp_password'  =>  'required',
                 'househelp_phone'  =>  'phone:AUTO,MOBILE',
                 'househelp_landline'  =>  'phone:AUTO,MOBILE',
-                'househelp_address'  =>  'required|digits_between:1,20',
+                'househelp_address'  =>  'required|digits_between:1,7',
                 'househelp_birth_date'  =>  'required',
                 'househelp_gender_id'  =>  'required',
                 'househelp_country_id'  =>  'required',
@@ -564,7 +694,7 @@ class HousehelpController extends Controller
                 // 'password'  =>  'required',
                 'househelpkin_phone'  =>  'phone:AUTO,MOBILE',
                 'househelpkin_id_no'  =>  'required|digits_between:7,10',
-                'househelpkin_address'  =>  'required|digits_between:1,20',
+                'househelpkin_address'  =>  'required|digits_between:1,7',
                 'househelpkin_relationship_id'  =>  'required',
                 'househelpkin_gender_id'  =>  'required',
                 'househelpkin_country_id'  =>  'required',
@@ -588,7 +718,7 @@ class HousehelpController extends Controller
                     // 'email'  =>  'sometimes|required|email|max:255|unique:users',
                     'password'  =>  'sometimes|required',
                     'phone'  =>  'phone:AUTO,MOBILE',
-                    'address'  =>  'required|digits_between:1,20',
+                    'address'  =>  'required|digits_between:1,7',
                     'birth_date'  =>  'sometimes|required',
                     'gender_id'  =>  'required',
                     'country_id'  =>  'required',
@@ -611,7 +741,7 @@ class HousehelpController extends Controller
                     // 'email'  =>  'sometimes|required|email|max:255|unique:users',
                     'password'  =>  'sometimes|required',
                     'phone'  =>  'phone:AUTO,MOBILE',
-                    'address'  =>  'required|digits_between:1,20',
+                    'address'  =>  'required|digits_between:1,7',
                     'birth_date'  =>  'sometimes|required',
                     'gender_id'  =>  'required',
                     'country_id'  =>  'required',
@@ -633,7 +763,7 @@ class HousehelpController extends Controller
                     // 'email'  =>  'sometimes|required|email|max:255|unique:users',
                     'password'  =>  'sometimes|required',
                     'phone'  =>  'phone:AUTO,MOBILE',
-                    'address'  =>  'required|digits_between:1,20',
+                    'address'  =>  'required|digits_between:1,7',
                     'birth_date'  =>  'sometimes|required',
                     'gender_id'  =>  'required',
                     'country_id'  =>  'required',
@@ -655,7 +785,7 @@ class HousehelpController extends Controller
                     // 'email'  =>  'sometimes|required|email|max:255|unique:users',
                     'password'  =>  'sometimes|required',
                     'phone'  =>  'phone:AUTO,MOBILE',
-                    'address'  =>  'required|digits_between:1,20',
+                    'address'  =>  'required|digits_between:1,7',
                     'birth_date'  =>  'sometimes|required',
                     'gender_id'  =>  'required',
                     'country_id'  =>  'required',

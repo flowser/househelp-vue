@@ -195,7 +195,10 @@
                         user_type:'',
                         photo:'',
                 }),
-                url:'/api/househelp/bureau/get',
+                urlform: new Form({
+                    bureau_id:'',
+                    url:'/api/househelp/bureau/get/',
+                }),
                 pagination:[],
             }
         },
@@ -233,7 +236,7 @@
         methods:{
              loadHousehelps(){
                 this.$Progress.start();
-                return this.$store.dispatch( "househelpsbureaulist", this.url)
+                return this.$store.dispatch( "househelpsbureaulist", this.urlform)
                  .then((response)=>{
                     toast({
                      type: 'success',
@@ -249,7 +252,7 @@
                 })
             },
             fetchPaginatedHousehelps(url){
-                this.url = url;
+                this.urlform.url = url;
                 this.loadHousehelps();
             },
             //househelp

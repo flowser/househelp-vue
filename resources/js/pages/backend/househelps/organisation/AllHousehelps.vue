@@ -9,25 +9,23 @@
           <div class="card">
             <div class="card-header">
                 <div v-if="Unemployed ==true && Employed ==false && Pending ==false">
-                    <el-button type="success">Unemployed ({{unemployed.length}}) </el-button>
-                    <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{employed.length}})</el-button>
-                    <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{pending.length}})</el-button>
+                    <el-button type="success">Unemployed ({{UnemployedPagination.total}}) </el-button>
+                    <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{EmployedPagination.total}})</el-button>
+                    <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{PendingPagination.total}})</el-button>
                 </div>
                 <div v-else-if="Unemployed ==false && Employed ==true && Pending ==false">
-                    <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{unemployed.length}})</el-button>
-                     <el-button type="success">Employed ({{employed.length}}) </el-button>
-                    <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{pending.length}})</el-button>
+                    <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{UnemployedPagination.total}})</el-button>
+                     <el-button type="success">Employed ({{EmployedPagination.total}}) </el-button>
+                    <el-button type="danger" v-on:click="getPendingEmployementHousehelps()" plain>Pending Employement ({{PendingPagination.total}})</el-button>
                 </div>
                 <div v-else-if="Unemployed ==false && Employed ==false && Pending ==true">
-                    <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{unemployed.length}})</el-button>
-                    <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{employed.length}})</el-button>
-                    <el-button type="success">Pending Employement ({{pending.length}})</el-button>
-                </div>
-              <h3 class="card-title">Welcome to All {{Status}}</h3>
-
+                    <el-button type="danger" v-on:click="getUnemployedHousehelps()" plain>Unemployed ({{UnemployedPagination.total}})</el-button>
+                    <el-button type="danger" v-on:click="getEmployedHousehelps()" plain>Employed ({{EmployedPagination.total}})</el-button>
+                    <el-button type="success">Pending Employement ({{PendingPagination.total}})</el-button>
+                </div>   
               <!-- <div class="card-tools">
                     <button class="btn btn-success"  @click.prevent="newHousehelpKinModal()">Add New Househelp and Their Next of Kins                         <i class="fas fa-plus fw"></i>
-                     </button>
+                     </el-button>
               </div> -->
             </div>
             <!-- /.card-header -->
@@ -185,7 +183,13 @@
                 Status:'',
                 employmentstatus:false,
                 hirestatus:false,
-                url:'/api/househelp/get/unemployed',
+                urlform: new Form({
+                    bureau_id:'',
+                          url:'/api/househelp/get/unemployed/',
+                unemployedurl: '/api/househelp/get/unemployed/',
+                  employedurl: '/api/househelp/get/employed/',
+                   pendingurl: '/api/househelp/get/pending/',
+                }),
             }
         },
         mounted() {
@@ -195,18 +199,27 @@
             Users(){
                return this.$store.getters.HousehelpsList
             },
-            unemployed(){
-               return this.$store.getters.unemployedhousehelps
-            },
-            employed(){
-               return this.$store.getters.employedhousehelps
-            },
-            pending(){
-               return this.$store.getters.pendinghousehelps
-            },
+            // unemployed(){
+            //    return this.$store.getters.unemployedhousehelps
+            // },
+            // employed(){
+            //    return this.$store.getters.employedhousehelps
+            // },
+            // pending(){
+            //    return this.$store.getters.pendinghousehelps
+            // },
             Pagination(){
                 return this.$store.getters.Pagination
-            }
+            },
+            UnemployedPagination(){
+                return this.$store.getters.UnemployedPagination
+            },
+            EmployedPagination(){
+                return this.$store.getters.EmployedPagination
+            },
+            PendingPagination(){
+                return this.$store.getters.PendingPagination
+            },
         },
         methods:{
             loadHousehelps(){
@@ -215,7 +228,7 @@
                 let hirestatus = this.hirestatus;
                if(employmentstatus==false && hirestatus==false){
                 //    console.log(employmentstatus,"false", hirestatus, "false geting unemployed")
-                   return this.$store.dispatch( "househelpslist", this.url)
+                   return this.$store.dispatch( "househelpslist", this.urlform)
                     .then((response)=>{
                         toast({
                         type: 'success',
@@ -232,7 +245,7 @@
 
                }else if(employmentstatus==true && hirestatus==false){
                 //    console.log(employmentstatus,"true", hirestatus, "false geting employed")
-                   return this.$store.dispatch( "househelpslist", this.url)
+                   return this.$store.dispatch( "househelpslist", this.urlform)
                     .then((response)=>{
                         toast({
                         type: 'success',
@@ -249,7 +262,7 @@
 
                }else if(employmentstatus==false && hirestatus==true){
                 //    console.log(employmentstatus,"false", hirestatus, "true geting pending employment")
-                   return this.$store.dispatch( "househelpslist", this.url)
+                   return this.$store.dispatch( "househelpslist", this.urlform)
                     .then((response)=>{
                         toast({
                         type: 'success',
@@ -269,40 +282,43 @@
                 this.Unemployed = true;
                 this.Employed = false;
                 this.Pending = false;
+                this.Status = 'Unemployed';
                 this.employmentstatus = false;
                 this.hirestatus = false;//not pending
-                this.url = '/api/househelp/get/unemployed';
-                this.$store.dispatch("unemployedhousehelps")
-                this.$store.dispatch("employedhousehelps")
-                this.$store.dispatch("pendinghousehelps")
+                this.urlform.url = '/api/househelp/get/unemployed/';
+                this.$store.dispatch("unemployedhousehelps", this.urlform)
+                this.$store.dispatch("employedhousehelps", this.urlform)
+                this.$store.dispatch("pendinghousehelps", this.urlform)
                 this.loadHousehelps();
             },
             getEmployedHousehelps(){
                 this.Unemployed = false;
                 this.Employed = true;
                 this.Pending = false;
+                this.Status = 'Employed';
                 this.employmentstatus = true;
                 this.hirestatus = false;//not pending
-                this.url = '/api/househelp/get/employed';
-                this.$store.dispatch("unemployedhousehelps")
-                this.$store.dispatch("employedhousehelps")
-                this.$store.dispatch("pendinghousehelps")
+                this.urlform.url = '/api/househelp/get/employed/';
+                this.$store.dispatch("unemployedhousehelps", this.urlform)
+                this.$store.dispatch("employedhousehelps", this.urlform)
+                this.$store.dispatch("pendinghousehelps", this.urlform)
                 this.loadHousehelps();
             },
             getPendingEmployementHousehelps(){
                 this.Unemployed = false;
                 this.Employed = false;
                 this.Pending = true;
+                this.Status = 'Pending Employement';
                 this.employmentstatus = false;
                 this.hirestatus = true;// pending
-                this.url = '/api/househelp/get/pending';
-                this.$store.dispatch("unemployedhousehelps")
-                this.$store.dispatch("employedhousehelps")
-                this.$store.dispatch("pendinghousehelps")
+                this.urlform.url = '/api/househelp/get/pending/';
+                this.$store.dispatch("unemployedhousehelps", this.urlform)//for counting
+                this.$store.dispatch("employedhousehelps", this.urlform)//for counting
+                this.$store.dispatch("pendinghousehelps", this.urlform)//for counting
                 this.loadHousehelps();
             },
             fetchPaginatedHousehelps(url){
-                this.url = url;
+                this.urlform.url = url;
                 this.loadHousehelps();
             },
             househelpLoadPassPhoto(househelppivot_photo){

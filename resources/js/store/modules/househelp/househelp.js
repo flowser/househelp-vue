@@ -11,6 +11,9 @@ const state = {
     filter:[],
     filterform:[],
     pagination:[],
+    UnemployedPagination:[],
+    EmployedPagination:[],
+    PendingPagination:[],
   };
 const getters = {
         Househelps(state){
@@ -39,7 +42,16 @@ const getters = {
         },
         Pagination(){
             return state.pagination;
-        }
+        },
+        UnemployedPagination(){
+            return state.UnemployedPagination;
+        },
+        EmployedPagination(){
+            return state.EmployedPagination;
+        },
+        PendingPagination(){
+            return state.PendingPagination;
+        },
   };
 const actions = {
     househelps({ dispatch, commit, getters }, payload){
@@ -80,9 +92,9 @@ const actions = {
     filterform({ dispatch, commit }, payload){
         commit('filterform', payload)
     },
-    househelpslist({ dispatch, commit }, url){
+    househelpslist({ dispatch, commit }, payload){
         return new Promise((resolve, reject) =>{
-            axios.get(url)
+            axios.get(payload.url +payload.bureau_id)
             .then((response)=>{
                 commit('househelpslist', response.data.users.data);
                 commit('pagination', response.data.users)
@@ -92,31 +104,35 @@ const actions = {
                 console.log(error, 'error')
                 reject(error);
             });
+
         });
     },
-    unemployedhousehelps({dispatch,commit}, url){
-        axios.get('/api/househelp/get/unemployed')
+    unemployedhousehelps({dispatch,commit}, payload){
+        axios.get(payload.unemployedurl +payload.bureau_id)
               .then((response)=>{
-                  commit('unemployedhousehelps', response.data.users.data);
+                //   commit('unemployedhousehelps', response.data.users.data);
+                console.log(response.data.users, 'lllllll')
+                  commit('unemployedpagination', response.data.users);
               });
     },
-    employedhousehelps({dispatch,commit}, url){
-        axios.get('/api/househelp/get/employed')
+    employedhousehelps({dispatch,commit}, payload){
+        axios.get(payload.employedurl +payload.bureau_id)
               .then((response)=>{
-                  commit('employedhousehelps', response.data.users.data);
+                //   commit('employedhousehelps', response.data.users.data);
+                  commit('employedpagination', response.data.users);
               });
     },
-    pendinghousehelps({dispatch,commit}, url){
-        axios.get('/api/househelp/get/pending')
+    pendinghousehelps({dispatch,commit}, payload){
+        axios.get(payload.pendingurl +payload.bureau_id)
               .then((response)=>{
-                  commit('pendinghousehelps', response.data.users.data);
+                //   commit('pendinghousehelps', response.data.users.data);
+                  commit('pendingpagination', response.data.users);
               });
     },
     househelpsbureaulist({ dispatch, commit }, url){
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                console.log('househelpslist', response)
                 commit('househelpslist', response.data.users.data);
                 commit('pagination', response.data.users)
 
@@ -175,6 +191,42 @@ const mutations = {
                 prev_page_url: data.prev_page_url,
             }
         return state.pagination = pagination;
+    },
+    unemployedpagination(state, data){
+            var pagination = {
+                current_page : data.current_page,
+                last_page: data.last_page,
+                from: data.from,
+                to: data.to,
+                total: data.total,
+                next_page_url: data.next_page_url,
+                prev_page_url: data.prev_page_url,
+            }
+        return state.UnemployedPagination = pagination;
+    },
+    employedpagination(state, data){
+            var pagination = {
+                current_page : data.current_page,
+                last_page: data.last_page,
+                from: data.from,
+                to: data.to,
+                total: data.total,
+                next_page_url: data.next_page_url,
+                prev_page_url: data.prev_page_url,
+            }
+        return state.EmployedPagination = pagination;
+    },
+    pendingpagination(state, data){
+            var pagination = {
+                current_page : data.current_page,
+                last_page: data.last_page,
+                from: data.from,
+                to: data.to,
+                total: data.total,
+                next_page_url: data.next_page_url,
+                prev_page_url: data.prev_page_url,
+            }
+        return state.PendingPagination = pagination;
     },
   };
 

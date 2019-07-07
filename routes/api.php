@@ -536,6 +536,11 @@ Route::get('healthstatus/delete/{healthstatus}', [HealthstatusController::class,
    Route::get('househelp/get/employed', [HousehelpController::class, 'employed'])->name('househelp.unemployed');
    Route::get('househelp/get/pending', [HousehelpController::class, 'pending'])->name('househelp.pending');
 
+//    by bureau id veiwded by organisation through bureaus
+   Route::get('househelp/get/unemployed/{househelp}', [HousehelpController::class, 'bureau_id_unemployed'])->name('househelp.unemployed'); //view househelps
+   Route::get('househelp/get/employed/{househelp}', [HousehelpController::class, 'bureau_id_employed'])->name('househelp.unemployed');
+   Route::get('househelp/get/pending/{househelp}', [HousehelpController::class, 'bureau_id_pending'])->name('househelp.pending');
+
    Route::get('agehousehelps/get', [HousehelpController::class, 'age'])->name('agehousehelp.index');
    Route::get('genderhousehelps/get/{househelp}', [HousehelpController::class, 'gender'])->name('genderhousehelp.index');
    Route::get('educationhousehelps/get/{househelp}', [HousehelpController::class, 'education'])->name('educationhousehelp.index');
