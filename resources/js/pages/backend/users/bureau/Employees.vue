@@ -276,7 +276,7 @@
                this.$Progress.start();
                 return this.$store.dispatch( "bureauemployees", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.employees),
+                     this.makingPagination(response.data.users),
                     toast({
                      type: 'success',
                      title: 'Fetched the Bureauemployee data successfully'
@@ -500,7 +500,7 @@
                   this.$Progress.start();
                      this.bureauemployeeform.patch('/api/user/update/'+id)
                         .then(()=>{
-                            this.loadBureauemployees();
+                            this.$store.dispatch( "bureauemployees", this.url)
                          $('#BureauemployeeModal').modal('hide')
                          toast({
                             type: 'success',

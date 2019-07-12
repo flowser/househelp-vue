@@ -276,7 +276,7 @@
                 this.$Progress.start();
                 return this.$store.dispatch( "bureauadmins", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.admins),
+                     this.makingPagination(response.data.users),
                     toast({
                      type: 'success',
                      title: 'Fetched the Bureaueadmin data successfully'

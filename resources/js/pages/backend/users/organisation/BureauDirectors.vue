@@ -8,11 +8,11 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Bureau Directors Table</h3>
-              <div class="card-tools">
+              <!-- <div class="card-tools">
                     <button class="btn btn-success"  @click.prevent="newBureaudirectorModal()">Add New Bureaudirector
                          <i class="fas fa-plus fw"></i>
                      </button>
-              </div>
+              </div> -->
             </div>
             <!-- /.card-header -->
             <div class="card-body">

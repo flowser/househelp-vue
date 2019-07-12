@@ -193,7 +193,6 @@ class OrgDirectorController extends Controller
             'first_name'  =>  'required',
             'last_name'  =>  'required',
             'email'  =>  'required|email|max:255|unique:users,email,'.$id,
-            'password'  =>  'sometimes|required',
             'phone'  =>  'phone:AUTO,MOBILE',
             'landline'  =>  'phone:AUTO,MOBILE',
             'id_no'  =>  'required|digits_between:7,10',
@@ -204,8 +203,8 @@ class OrgDirectorController extends Controller
             'constituency_id'  =>  'required',
             'ward_id'  =>  'required',
             'photo'  =>  'sometimes|required',
-            'id_photo_front'  =>  'sometimes|required',
-            'id_photo_back'  =>  'sometimes|required',
+            // 'id_photo_front'  =>  'sometimes|required',
+            // 'id_photo_back'  =>  'sometimes|required',
        ]);
 
        $user = User::find($id);

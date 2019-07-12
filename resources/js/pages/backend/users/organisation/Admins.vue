@@ -9,9 +9,9 @@
             <div class="card-header">
               <h3 class="card-title">Admins Table</h3>
               <div class="card-tools">
-                    <button class="btn btn-success"  @click.prevent="newAdminModal()">Add New Admin
+                    <!-- <button class="btn btn-success"  @click.prevent="newAdminModal()">Add New Admin
                          <i class="fas fa-plus fw"></i>
-                     </button>
+                     </button> -->
               </div>
             </div>
             <!-- /.card-header -->
@@ -47,7 +47,7 @@
                                     Phone: <span style="color:#9a009a;">{{admin.pivot.phone}},</span>
                                 </div>
                                 <div>
-                                     Mail: <span style="color:#9a009a;">{{user.mail}},</span>
+                                     Mail: <span style="color:#9a009a;">{{user.email}},</span>s
                                 </div>
                                     <div>P. O. Box , <span style="color:#9a009a;">{{admin.pivot.address}}</span>,
                                     </div>

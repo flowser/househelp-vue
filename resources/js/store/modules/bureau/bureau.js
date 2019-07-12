@@ -4,7 +4,8 @@
 const state = {
     bureaus:[],
     bureau:[],
-    pagination:[],
+    bureaupagination:[],
+    
   },
   getters = {
     Bureaus(state){
@@ -14,8 +15,8 @@ const state = {
     Bureau(state){
       return state.bureau;
     },
-    BureausPagination(){
-        return state.pagination;
+    BureausPagination(){        
+        return state.bureaupagination;
     }
   }
 const actions = {
@@ -24,7 +25,7 @@ const actions = {
             axios.get(url)
             .then((response)=>{
                 commit('bureaus', response.data.bureaus.data);
-                commit('pagination', response.data.bureaus)
+                commit('bureaupagination', response.data.bureaus)
                 resolve(response)
             })
             .catch(error => {
@@ -55,7 +56,7 @@ const mutations = {
     bureau(state, data){
       return state.bureau = data;
     },
-    pagination(state, data){
+    bureaupagination(state, data){
             var pagination = {
                 current_page : data.current_page,
                 last_page: data.last_page,
@@ -65,7 +66,7 @@ const mutations = {
                 next_page_url: data.next_page_url,
                 prev_page_url: data.prev_page_url,
             }
-        return state.pagination = pagination;
+        return state.bureaupagination = pagination;
     },
   }
 

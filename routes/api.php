@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Standard\CountyController;
 use App\Http\Controllers\Backend\Standard\GenderController;
 use App\Http\Controllers\Backend\Webpage\FeatureController;
 use App\Http\Controllers\Backend\Webpage\ServiceController;
+use App\Http\Controllers\Backend\Househelp\ReviewController;
 use App\Http\Controllers\Backend\Standard\CountryController;
 use App\Http\Controllers\Backend\Organisation\RoleController;
 use App\Http\Controllers\Backend\Organisation\UserController;
@@ -593,7 +594,7 @@ Route::patch('cart/checkout/{cart}', [CartController::class, 'checkout'])->name(
 Route::get('order/get', [OrderController::class, 'index'])->name('order.index');
 Route::get('order/get/list/{order}', [OrderController::class, 'OrderList'])->name('order.list-index');
 Route::patch('order/checkout/{order}', [OrderController::class, 'store'])->name('order.checkout');
-//     /*
+//     /*rev
 //      * Specifics
 //      */
 Route::get('order/show/{order}', [OrderController::class, 'show'])->name('order.show');
@@ -622,3 +623,24 @@ Route::get('sharelink/show/{sharelink}', [SharelinkController::class, 'show'])->
 Route::get('sharelink/edit/{sharelink}', [SharelinkController::class, 'edit'])->name('sharelink.edit');
 Route::patch('sharelink/update/{sharelink}', [SharelinkController::class, 'update'])->name('sharelink.update');
 Route::get('sharelink/delete/{sharelink}', [SharelinkController::class, 'destroy'])->name('sharelink.destroy');
+
+//reviews             // review
+Route::get('review/get', [ReviewController::class, 'index'])->name('review.index');
+Route::get('reviews/get', [ReviewController::class, 'bureaus'])->name('review.bureaus');
+
+//    by bureau id veiwded by organisation through bureaus
+Route::get('review/get/approved/{review}', [ReviewController::class, 'bureau_id_approved']); //view househelps
+Route::get('review/get/pending/{review}', [ReviewController::class, 'bureau_id_pending']);
+
+Route::get('review/get/approved', [ReviewController::class, 'approved']); //view househelps
+Route::get('review/get/pending', [ReviewController::class, 'pending']);
+
+
+Route::patch('review/{review}', [ReviewController::class, 'store'])->name('review.store');
+Route::get('review/show/{review}', [ReviewController::class, 'show'])->name('review.show');
+Route::get('review/edit/{review}', [ReviewController::class, 'edit'])->name('review.edit');
+Route::patch('review/update/{review}', [ReviewController::class, 'update'])->name('review.update');
+Route::get('review/delete/{review}/', [ReviewController::class, 'destroy'])->name('review.destroy');
+
+
+

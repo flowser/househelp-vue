@@ -12,11 +12,11 @@
                 <!-- </div> -->
                 <div class="card card-widget widget-user" >
                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header text-white" style="background-color: #070075c4; center center;width:100%;height:300px">
+                    <div class="widget-user-header text-white" style="background-color: #070075c4; center center;width:100%;height:190px">
                     <div class="clearfix">
                                 <span class="float-left">
                                     <h3 class="widget-user-username">{{Organisation.name}}</h3>
-                                    <h5 class="widget-user-desc bg-green" style="margin-bottom:0">Phone: {{Organisation.phone}}, <span>{{Organisation.landline}}</span> </h5>
+                                    <h5 class="widget-user-desc " style="margin-bottom:0">Phone: {{Organisation.phone}}, <span>{{Organisation.landline}}</span> </h5>
                                     <h5 class="widget-user-desc" style="margin-bottom:0">P.O. Box {{Organisation.address}},</h5>
                                     <h5 class="widget-user-desc" style="margin-bottom:0" v-if="Organisation.ward">{{Organisation.ward.name}} Ward,
                                         <span v-if="Organisation.constituency">{{Organisation.constituency.name}} Constituency,</span>
@@ -43,50 +43,7 @@
                                     </a> -->
                                 </span>
                             </div>
-                            <div class="card-footer" style="padding-top:0px; margin-top: 60px;">
-                                <div class="row">
-                                    <div class="col-sm-4 border-right">
-                                        <div class="description-block">
-                                            <h5 class="description-header">3,200</h5>
-                                            <span class="description-header green " >Twitter Followers</span>
-                                            <div class="card-tools">
-                                                <button class="btn btn-info" style="background-color: purple; color: #fff" >Follow us
-                                                    <i class="fas fa-plus fw"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- /.description-block -->
-                                    </div>
-                                    <!-- /.col -->
-                                    <div class="col-sm-4 border-right">
-                                        <div class="description-block">
-                                            <h5 class="description-header">13,000</h5>
-                                            <span class="description-header green">Facebook Followers</span>
-                                            <div class="card-tools">
-                                                <button class="btn btn-info " style="background-color: purple; color: #fff">Follow us
-                                                    <i class="fas fa-plus fw"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- /.description-block -->
-                                    </div>
-                                    <!-- /.col -->
-                                    <div class="col-sm-4">
-                                        <div class="description-block">
-                                            <h5 class="description-header">3544</h5>
-                                            <span class="description-header green">Linkedin Followers</span>
-                                            <div class="card-tools">
-                                                <button class="btn btn-info" style="background-color: purple; color: #fff" >Follow us
-                                                    <i class="fas fa-plus fw"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- /.description-block -->
-                                    </div>
-                                    <!-- /.col -->
-                                </div>
-                                <!-- /.row -->
-                            </div>
+
                     </div>
                     <div class="widget-user-image" style="top:5px;">
                         <img :src="organisationLoadLogo(Organisation.logo)"  class="border-0" alt="" style="width:160px;">
@@ -95,213 +52,79 @@
                     </div>
                 </div>
                 <!-- /.widget-user -->
-
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="card col-md">
-                            <div class="card-header">
-                               <h3 class="card-title">Organisation Directors Table</h3>
-                                <div class="card-tools">
-                                        <button class="btn btn-success"  @click.prevent="newDirectorModal(Organisation.id)">Add New Director
-                                            <i class="fas fa-plus fw"></i>
-                                        </button>
+                <section class="content">
+                    <div class="container-fluid">
+                        <!-- Small boxes (Stat box) -->
+                        <div class="row">
+                            <div class="col-lg-4 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-info">
+                                    <div class="inner" v-if="Organisation.organisationdirectors">
+                                        <h3 >{{Organisation.organisationdirectors.length}}</h3>
+                                        <p>Directors </p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-bag"></i>
+                                    </div>
+                                    <a href="" class="small-box-footer"  @click.prevent="DirectorsModal()">
+                                        More info <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
                                 </div>
                             </div>
-
-                            <div class="card-body">
-                                 <div class="row" v-for="director in Organisation.organisationdirectors" :key="director.id">
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="directorLoadPassPhoto(director.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                            <!-- ./col -->
+                            <div class="col-lg-4 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-success">
+                                    <div class="inner" v-if="Organisation.organisationadmins">
+                                        <h3 >{{Organisation.organisationadmins.length}}</h3>
+                                        <p>Admins</p>
                                     </div>
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="directorLoadIDFrontPhoto(director.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="directorLoadIDBackPhoto(director.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
                                     </div>
-                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                        <div>{{director.full_name}},</div>
-                                        <div>
-                                            {{director.position_name}},
-                                            <span style="color:#9a009a;">
-                                                {{Organisation.name}},
-                                            </span>
-                                        </div>
-                                        <div> ID: ,<span style="color:#9a009a;">{{director.pivot.id_no}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{director.pivot.phone}},</span>
-                                        </div>
-                                        <div>
-                                            Mail: <span style="color:#9a009a;">{{director.email}},</span>
-                                        </div>
-                                            <div>P. O. Box , <span style="color:#9a009a;">{{director.pivot.address}}</span>,
-                                            </div>
-                                        <div>
-                                            <span style="color:#9a009a;">{{director.ward_name}}</span> ward,
-                                            <span style="color:#9a009a;">{{director.constituency_name}}</span> constituency,
-                                        </div>
-                                        <div >
-                                            <span style="color:#9a009a;">{{director.county_name}}</span> county,
-                                            <span style="color:#9a009a;">{{director.country_name}},</span>
-                                        </div>
-                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
-                                            <span class="float-left" style="margin-bottom:-0.5em" >
-                                                <div style="margin-bottom:0.25em"> Updated at:
-                                                    <span style="color:#9a009a;">{{director.created_at | dateformat}} </span>
-                                                </div>
-                                            </span>
-                                            <span class="float-right">
-                                                <a href=""  @click.prevent="viewDirectorModal(director.user_id)">
-                                                    <i class="fa fa-eye purple"></i>
-                                                </a>
-                                                <a href=""  @click.prevent="editDirectorModal(director.user_id)">
-                                                    <i class="fa fa-edit blue"></i>
-                                                </a>
-                                                /
-                                                <a href=""  @click.prevent="deleteDirector(director.user_id)">
-                                                    <i class="fa fa-trash red"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
+                                    <a href="" class="small-box-footer"  @click.prevent="AdminsModal()">
+                                        More info <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card col-md">
-                            <div class="card-header">
-                               <h3 class="card-title">Organisation Admins Table</h3>
-                                <div class="card-tools">
-                                        <button class="btn btn-success"  @click.prevent="newAdminModal(Organisation.id)">Add New Admin
-                                            <i class="fas fa-plus fw"></i>
-                                        </button>
+                            <!-- ./col -->
+                            <div class="col-lg-4 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-warning">
+                                    <div class="inner" v-if="Organisation.organisationemployees">
+                                        <h3 >{{Organisation.organisationemployees.length}}</h3>
+                                        <p>Employees </p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-person-add"></i>
+                                    </div>
+                                    <a href="" class="small-box-footer"  @click.prevent="EmployeesModal()">
+                                        More info <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                 <div class="row" v-for="admin in Organisation.organisationadmins" :key="admin.id">
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="adminLoadPassPhoto(admin.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                            <!-- ./col -->
+                            <!-- <div class="col-lg-4 col-6">
+                                <div class="small-box bg-danger">
+                                    <div class="inner" v-if="Organisation.organisationaffiliates">
+                                        <h3>{{Organisation.organisationaffiliates.length}}</h3>
+                                        <p>Affiliates </p>
                                     </div>
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="adminLoadIDFrontPhoto(admin.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="adminLoadIDBackPhoto(admin.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    <div class="icon">
+                                        <i class="ion ion-pie-graph"></i>
                                     </div>
-                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                        <div>{{admin.full_name}},</div>
-                                        <div>
-                                            {{admin.position_name}},
-                                            <span style="color:#9a009a;">
-                                                {{Organisation.name}},
-                                            </span>
-                                        </div>
-                                        <div> ID: ,<span style="color:#9a009a;">{{admin.pivot.id_no}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{admin.pivot.phone}},</span>
-                                        </div>
-                                        <div>
-                                            Mail: <span style="color:#9a009a;">{{admin.email}},</span>
-                                        </div>
-                                            <div>P. O. Box , <span style="color:#9a009a;">{{admin.pivot.address}}</span>,
-                                            </div>
-                                        <div>
-                                            <span style="color:#9a009a;">{{admin.ward_name}}</span> ward,
-                                            <span style="color:#9a009a;">{{admin.constituency_name}}</span> constituency,
-                                        </div>
-                                        <div >
-                                            <span style="color:#9a009a;">{{admin.county_name}}</span> county,
-                                            <span style="color:#9a009a;">{{admin.country_name}},</span>
-                                        </div>
-                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
-                                            <span class="float-left" style="margin-bottom:-0.5em" >
-                                                <div style="margin-bottom:0.25em"> Updated at:
-                                                    <span style="color:#9a009a;">{{admin.created_at | dateformat}} </span>
-                                                </div>
-                                            </span>
-                                            <span class="float-right">
-                                                <a href=""  @click.prevent="viewAdminModal(admin.user_id)">
-                                                    <i class="fa fa-eye purple"></i>
-                                                </a>
-                                                <a href=""  @click.prevent="editAdminModal(admin.user_id)">
-                                                    <i class="fa fa-edit blue"></i>
-                                                </a>
-                                                /
-                                                <a href=""  @click.prevent="deleteAdmin(admin.user_id)">
-                                                    <i class="fa fa-trash red"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
+                                    <a href="" class="small-box-footer"  @click.prevent="AffiliatesModal()">
+                                        More info <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
                                 </div>
-                            </div>
+                            </div> -->
+                            <!-- ./col -->
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="card col-md-6">
-                            <div class="card-header">
-                                <h3> Organisation Employees</h3>
-                                <div class="card-tools">
-                                        <button class="btn btn-success"  @click.prevent="newEmployeeModal(Organisation.id)">Add New Employee
-                                            <i class="fas fa-plus fw"></i>
-                                        </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                 <div class="row" v-for="employee in Organisation.organisationemployees" :key="employee.id">
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="employeeLoadPassPhoto(employee.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
-                                    </div>
-                                    <div class="col" style="padding: 3px;">
-                                        <img class="card-img-top" :src="employeeLoadIDFrontPhoto(employee.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
-                                        <img class="card-img-top" :src="employeeLoadIDBackPhoto(employee.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
-                                    </div>
-                                    <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
-                                        <div>{{employee.full_name}},</div>
-                                        <div>
-                                            {{employee.position_name}},
-                                            <span style="color:#9a009a;">
-                                                {{Organisation.name}},
-                                            </span>
-                                        </div>
-                                        <div> ID: ,<span style="color:#9a009a;">{{employee.pivot.id_no}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{employee.pivot.phone}},</span>
-                                        </div>
-                                        <div>
-                                            Mail: <span style="color:#9a009a;">{{employee.email}},</span>
-                                        </div>
-                                            <div>P. O. Box , <span style="color:#9a009a;">{{employee.pivot.address}}</span>,
-                                            </div>
-                                        <div>
-                                            <span style="color:#9a009a;">{{employee.ward_name}}</span> ward,
-                                            <span style="color:#9a009a;">{{employee.constituency_name}}</span> constituency,
-                                        </div>
-                                        <div >
-                                            <span style="color:#9a009a;">{{employee.county_name}}</span> county,
-                                            <span style="color:#9a009a;">{{employee.country_name}},</span>
-                                        </div>
-                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
-                                            <span class="float-left" style="margin-bottom:-0.5em" >
-                                                <div style="margin-bottom:0.25em"> Updated at:
-                                                    <span style="color:#9a009a;">{{employee.created_at | dateformat}} </span>
-                                                </div>
-                                            </span>
-                                            <span class="float-right">
-                                                <a href=""  @click.prevent="viewEmployeeModal(employee.user_id)">
-                                                    <i class="fa fa-eye purple"></i>
-                                                </a>
-                                                <a href=""  @click.prevent="editEmployeeModal(employee.user_id)">
-                                                    <i class="fa fa-edit blue"></i>
-                                                </a>
-                                                /
-                                                <a href=""  @click.prevent="deleteEmployee(employee.user_id)">
-                                                    <i class="fa fa-trash red"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </section>
 
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-2">
+                <!-- <div class="card"> -->
+                    <!-- <div class="card-header p-2">
                       <ul class="nav nav-pills">
                         <li class="nav-item">
                             <a href="#about_us" class="nav-link" data-toggle="tab"
@@ -328,17 +151,15 @@
                             </a>
                         </li>
                         </ul>
-                    </div><!-- /.card-header -->
-                    <div class="card-body">
+                    </div> -->
+                    <!-- <div class="card-body">
                             <div class="tab-content">
-                                <!-- /.tab-pane -->
                                 <div class="tab-pane active show" id="about_us">
                                     <div class="card-header">
                                         <h3 class="card-title">
                                              <a href="#general_configuration">About Us Settings</a>
                                         </h3>
                                     </div>
-                                    <!-- about us -->
                                      <div >
                                          <div class="card" v-if="About <1 ">
                                              <div class="card-body">
@@ -400,9 +221,6 @@
                                                     <a href="" class="card-link" @click.prevent="editAboutModal(About.id)">
                                                          <i class="fa fa-edit blue"> Edit</i>
                                                     </a>
-                                                    <!-- <a href="" class="card-link" @click.prevent="deleteAbout(about.id)">
-                                                        <i class="fa fa-trash red"></i>
-                                                    </a> -->
                                                 </div>
                                                 <div class="float-left">
                                                     <a href="#about_us" class="card-link" v-if="About.user">Updated BY: {{About.user.full_name}}</a>
@@ -422,7 +240,6 @@
                                                     <i class="fas fa-plus fw"></i>
                                                 </button>
                                         </div>
-                                         <!-- service -->
                                     </div>
                                      <div class="card" v-if="Services.length <1 ">
                                           <div class="card-body">
@@ -470,10 +287,8 @@
                                                     </div>
                                                 </div>
                                                 <ul class="pagination" style="padding: 0px;margin: 0px;">
-                                                        <!-- {{ $fulltime_courses->links()}} -->
                                                 </ul>
                                             </div>
-                                            <!--end service  -->
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="features">
@@ -499,7 +314,6 @@
                                             </h5>
                                           </div>
                                         </div>
-                                            <!-- feature -->
                                         <div class="card" v-else>
                                             <div class="row ">
                                                 <div  v-for="feature in Features" :key="feature.id" class="col-md-3 d-flex">
@@ -508,9 +322,7 @@
                                                         <div class="card-body" >
                                                             <h5 class="card-title text-center">{{feature.title}}</h5>
                                                             <p style="margin-bottom:-0.5em" class="card-text">{{feature.details }}</p>
-                                                            <!-- <p style="margin-bottom:-0.5em" class="card-text">{{feature.why | sortlength(80, "...") }}</p> -->
                                                         </div>
-                                                            <!-- <router-link  :to="`/feature/${feature.id}`" class="pull-right blue">Read More <i class="icon-angle-right"></i></router-link> -->
                                                         <div class="clearfix">
                                                             <span class="float-left" style="margin-bottom:-0.5em" >
                                                                 <p style="margin-bottom:-0.5em">
@@ -533,11 +345,9 @@
                                                     </div>
                                                 </div>
                                                 <ul class="pagination" style="padding: 0px;margin: 0px;">
-                                                        <!-- {{ $fulltime_courses->links()}} -->
                                                 </ul>
                                             </div>
                                         </div>
-                                            <!--end feature  -->
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="adverts">
@@ -563,7 +373,6 @@
                                             </h5>
                                           </div>
                                         </div>
-                                         <!-- Advert -->
                                           <div class="card" v-else>
                                             <div class="row ">
                                                  <div  v-for="advert in Adverts" :key="advert.id" class="col-md-3 d-flex">
@@ -597,18 +406,14 @@
                                                     </div>
                                                 </div>
                                                 <ul class="pagination" style="padding: 0px;margin: 0px;">
-                                                        <!-- {{ $fulltime_courses->links()}} -->
                                                 </ul>
                                             </div>
                                           </div>
-                                            <!--end Advert  -->
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.tab-content -->
-                    </div>
-                </div>
-                <!-- /.nav-tabs-custom -->
+                    </div> -->
+                <!-- </div> -->
         </div>
         <!-- Role Modal -->
         <div class="modal fade " id="OrganisationModal" tabindex="-1" role="dialog" aria-labelledby="OrganisationModalLabel" aria-hidden="true">
@@ -721,7 +526,7 @@
                                             <input @change="organisationChangeLogo($event)" type="file" name="logo"
                                                 :class="{ 'is-invalid': organisationform.errors.has('logo') }">
                                                 <img v-show="editmodeOrganisation" :src="updateOrganisationLogo(organisationform.logo)" alt="" width="100%" >
-                                                <img  v-show="!editmodeOrganisation" :src="organisationform.logo" alt="" width="100%" >
+                                                <img  v-show="!editmodeOrganisation" :src="organisationLoadLogo(organisationform.logo)" alt="" width="100%" >
                                             <has-error style="color: #e83e8c" :form="organisationform" field="logo"></has-error>
                                     </div>
                                 </div>
@@ -732,6 +537,81 @@
                             <button v-show="!editmodeOrganisation" type="submit" class="btn btn-primary">Create</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+                <!-- Directors modal -->
+        <div class="modal fade " id="DirectorsModal" tabindex="-1" role="dialog" aria-labelledby="DirectorsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"  id="DirectorsModalLabel">Organisation Directors</h3>
+                        <span>
+                            <button class="btn btn-success"  @click.prevent="newDirectorModal(Organisation.id)">Add New Director
+                                            <i class="fas fa-plus fw"></i>
+                                        </button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" v-for="director in Organisation.organisationdirectors" :key="director.id">
+                             <div class="col-sm-3" style="padding: 3px;">
+                                 <img class="card-img-top" :src="directorLoadPassPhoto(director.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                             </div>
+                             <div class="col-sm-3" style="padding: 3px;">
+                                 <img class="card-img-top" :src="directorLoadIDFrontPhoto(director.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                 <img class="card-img-top" :src="directorLoadIDBackPhoto(director.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                             </div>
+                             <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div>{{director.full_name}},</div>
+                                        <div>
+                                            {{director.position_name}},
+                                            <span style="color:#9a009a;">
+                                                {{Organisation.name}},
+                                            </span>
+                                        </div>
+                                        <div> ID: ,<span style="color:#9a009a;">{{director.pivot.id_no}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{director.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{director.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{director.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{director.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{director.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{director.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{director.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{director.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewDirectorModal(director.user_id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editDirectorModal(director.user_id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteDirector(director.user_id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -769,12 +649,12 @@
                                         </div>
                                     </div>
                                     <div class=" row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <input v-model="directorform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': directorform.errors.has('password') }">
                                             <has-error :form="directorform" field="password"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="phone" class="col-form-label"> Director Phone</label>
                                                 <div>
                                                     <vue-tel-input v-model="directorform.phone" name="phone" @onInput="DirectorInputPhone"
@@ -787,7 +667,7 @@
                                                     <span>Country: <strong>{{phone2.country}}</strong></span>
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="landline" class=" col-form-label">Landline</label>
                                                 <vue-tel-input v-model="directorform.landline" name="landline" @onInput="DirectorInputLandline"
                                                     class="form-control" :class="{ 'is-invalid': directorform.errors.has('landline') }">
@@ -798,6 +678,15 @@
                                                     <span>Is valid: <strong>{{landline2.isValid}}</strong>,&nbsp;</span>
                                                     <span>Country: <strong>{{landline2.country}}</strong></span>
                                             </div>
+                                        </div>
+                                         <div class="form-group col-md-3">
+                                            <label for="gender_id">Select Gender</label>
+                                            <select class="form-control" v-model="directorform.gender_id"
+                                                    :class="{ 'is-invalid': directorform.errors.has('gender_id') }">
+                                                    <option disabled value="">Select gender</option>
+                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
+                                            </select>
+                                                <has-error style="color: #e83e8c" :form="directorform" field="gender_id"></has-error>
                                         </div>
                                     </div>
                                     <div class=" row">
@@ -901,12 +790,11 @@
                     <div class="modal-body" v-for="director in Director.organisationdirectors" :key="director.id">
                         <div class="card card-widget widget-user" >
                         <!-- Add the bg color to the header using any of the bg-* classes -->
-                            <div class="widget-user-header text-white" style="background: url('assets/organisation/img/background/background-1.jpg')
-                                 center center;width:100%;height:300px">
+                            <div class="widget-user-header text-white" style="background-color: #070075c4; center center;width:100%;height:190px">
                                 <div class="clearfix">
                                     <span class="float-left">
                                         <h3 class="widget-user-username">{{Director.full_name}}</h3>
-                                        <h5 class="widget-user-desc bg-green" style="margin-bottom:0">Phone: {{director.pivot.phone}} , <span>{{director.pivot.landline}}</span> </h5>
+                                        <h5 class="widget-user-desc " style="margin-bottom:0">Phone: {{director.pivot.phone}} , <span>{{director.pivot.landline}}</span> </h5>
                                         <h5 class="widget-user-desc" style="margin-bottom:0">P.O. Box {{director.pivot.address}},</h5>
                                         <h5 class="widget-user-desc" style="margin-bottom:0" >{{director.ward_name}} Ward,
                                             <span >{{director.constituency_name}} Constituency,</span>
@@ -1035,6 +923,81 @@
             </div>
         </div>
 
+                        <!-- Admins modal -->
+        <div class="modal fade " id="AdminsModal" tabindex="-1" role="dialog" aria-labelledby="AdminsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"  id="AdminsModalLabel">Organisation Admins</h3>
+                        <span>
+                            <button class="btn btn-success"  @click.prevent="newAdminModal(Organisation.id)">Add  <i class="fas fa-plus fw"></i></button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <div >
+                        <div class="modal-body">
+                            <div class="row" v-for="admin in Organisation.organisationadmins" :key="admin.id">
+                                    <div  class="col-sm-3" style="padding: 3px;">
+                                        <img class="card-img-top" :src="adminLoadPassPhoto(admin.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                                    </div>
+                                    <div  class="col-sm-3" style="padding: 3px;">
+                                        <img class="card-img-top" :src="adminLoadIDFrontPhoto(admin.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        <img class="card-img-top" :src="adminLoadIDBackPhoto(admin.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    </div>
+                                    <div class="col-sm-6"  style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div>{{admin.full_name}},</div>
+                                        <div>
+                                            {{admin.position_name}},
+                                            <span style="color:#9a009a;">
+                                                {Organisation.name}},
+                                            </span>
+                                        </div>
+                                        <div> ID: ,<span style="color:#9a009a;">{{admin.pivot.id_no}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{admin.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{admin.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{admin.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{admin.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{admin.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{admin.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{admin.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{admin.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewAdminModal(admin.user_id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editAdminModal(admin.user_id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteAdmin(admin.user_id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       <!-- create & edit Admin modal -->
         <div class="modal fade " id="AdminModal" tabindex="-1" role="dialog" aria-labelledby="AdminModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
@@ -1069,12 +1032,12 @@
                                         </div>
                                     </div>
                                     <div class=" row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <input v-model="adminform.password" type="password" id="password" placeholder="Password"
                                                 class="form-control" :class="{ 'is-invalid': adminform.errors.has('password') }">
                                             <has-error :form="adminform" field="password"></has-error>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="phone" class="col-form-label"> Admin Phone</label>
                                                 <div>
                                                     <vue-tel-input v-model="adminform.phone" name="phone" @onInput="AdminInputPhone"
@@ -1087,7 +1050,7 @@
                                                     <span>Country: <strong>{{phone3.country}}</strong></span>
                                                </div>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="landline" class=" col-form-label">Landline</label>
                                                 <vue-tel-input v-model="adminform.landline" name="landline" @onInput="AdminInputLandline"
                                                     class="form-control" :class="{ 'is-invalid': adminform.errors.has('landline') }">
@@ -1098,6 +1061,15 @@
                                                     <span>Is valid: <strong>{{landline3.isValid}}</strong>,&nbsp;</span>
                                                     <span>Country: <strong>{{landline3.country}}</strong></span>
                                             </div>
+                                        </div>
+                                         <div class="form-group col-md-3">
+                                            <label for="gender_id">Select Gender</label>
+                                            <select class="form-control" v-model="adminform.gender_id"
+                                                    :class="{ 'is-invalid': adminform.errors.has('gender_id') }">
+                                                    <option disabled value="">Select gender</option>
+                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
+                                            </select>
+                                                <has-error style="color: #e83e8c" :form="adminform" field="gender_id"></has-error>
                                         </div>
                                     </div>
                                     <div class=" row">
@@ -1202,12 +1174,11 @@
                     <div class="modal-body" v-for="admin in Admin.organisationadmins" :key="admin.id">
                         <div class="card card-widget widget-user" >
                         <!-- Add the bg color to the header using any of the bg-* classes -->
-                            <div class="widget-user-header text-white" style="background: url('assets/organisation/img/background/background-1.jpg')
-                                 center center;width:100%;height:300px">
+                            <div class="widget-user-header text-white" style="background-color: #070075c4; center center;width:100%;height:190px">
                                 <div class="clearfix">
                                     <span class="float-left">
                                         <h3 class="widget-user-username">{{Admin.full_name}}</h3>
-                                        <h5 class="widget-user-desc bg-green" style="margin-bottom:0">Phone: {{admin.pivot.phone}} , <span>{{admin.pivot.landline}}</span> </h5>
+                                        <h5 class="widget-user-desc " style="margin-bottom:0">Phone: {{admin.pivot.phone}} , <span>{{admin.pivot.landline}}</span> </h5>
                                         <h5 class="widget-user-desc" style="margin-bottom:0">P.O. Box {{admin.pivot.address}},</h5>
                                         <h5 class="widget-user-desc" style="margin-bottom:0" >{{admin.ward_name}} Ward,
                                             <span >{{admin.constituency_name}} Constituency,</span>
@@ -1336,6 +1307,81 @@
             </div>
         </div>
 
+                        <!-- Employees modal -->
+        <div class="modal fade " id="EmployeesModal" tabindex="-1" role="dialog" aria-labelledby="EmployeesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"  id="EmployeesModalLabel">Organisation Employees</h3>
+                        <span>
+                            <button class="btn btn-success"  @click.prevent="newEmployeeModal(Organisation.id)">Add  <i class="fas fa-plus fw"></i></button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <div >
+                        <div class="modal-body">
+                            <div class="row" v-for="employee in Organisation.organisationemployees" :key="employee.id">
+                                    <div class="col-sm-3" style="padding: 3px;">
+                                        <img class="card-img-top" :src="employeeLoadPassPhoto(employee.pivot.photo)" style="width:100%; height:130px" alt="Card image cap">
+                                    </div>
+                                    <div class="col-sm-3" style="padding: 3px;">
+                                        <img class="card-img-top" :src="employeeLoadIDFrontPhoto(employee.pivot.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        <img class="card-img-top" :src="employeeLoadIDBackPhoto(employee.pivot.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
+                                    </div>
+                                    <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
+                                        <div>{{employee.full_name}},</div>
+                                        <div>
+                                            {{employee.position_name}},
+                                            <span style="color:#9a009a;">
+                                                {{Organisation.name}},
+                                            </span>
+                                        </div>
+                                        <div> ID: ,<span style="color:#9a009a;">{{employee.pivot.id_no}}</span>,
+                                            Phone: <span style="color:#9a009a;">{{employee.pivot.phone}},</span>
+                                        </div>
+                                        <div>
+                                            Mail: <span style="color:#9a009a;">{{employee.email}},</span>
+                                        </div>
+                                            <div>P. O. Box , <span style="color:#9a009a;">{{employee.pivot.address}}</span>,
+                                            </div>
+                                        <div>
+                                            <span style="color:#9a009a;">{{employee.ward_name}}</span> ward,
+                                            <span style="color:#9a009a;">{{employee.constituency_name}}</span> constituency,
+                                        </div>
+                                        <div >
+                                            <span style="color:#9a009a;">{{employee.county_name}}</span> county,
+                                            <span style="color:#9a009a;">{{employee.country_name}},</span>
+                                        </div>
+                                         <div class="clearfix" style="font-weight:bold;font-size:0.9em;">
+                                            <span class="float-left" style="margin-bottom:-0.5em" >
+                                                <div style="margin-bottom:0.25em"> Updated at:
+                                                    <span style="color:#9a009a;">{{employee.created_at | dateformat}} </span>
+                                                </div>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href=""  @click.prevent="viewEmployeeModal(employee.user_id)">
+                                                    <i class="fa fa-eye purple"></i>
+                                                </a>
+                                                <a href=""  @click.prevent="editEmployeeModal(employee.user_id)">
+                                                    <i class="fa fa-edit blue"></i>
+                                                </a>
+                                                /
+                                                <a href=""  @click.prevent="deleteEmployee(employee.user_id)">
+                                                    <i class="fa fa-trash red"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- create & edit Employee modal -->
         <div class="modal fade " id="EmployeeModal" tabindex="-1" role="dialog" aria-labelledby="EmployeeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
@@ -1399,6 +1445,16 @@
                                                     <span>Is valid: <strong>{{landline4.isValid}}</strong>,&nbsp;</span>
                                                     <span>Country: <strong>{{landline4.country}}</strong></span>
                                             </div>
+                                        </div>
+                                         <div class="form-group col-md-3">
+                                            <label for="gender_id">Select Gender</label>
+                                            <select class="form-control" v-model="employeeform.gender_id"
+                                                    :class="{ 'is-invalid': employeeform.errors.has('gender_id') }">
+                                                    :class="{ 'is-invalid': employeeform.errors.has('gender_id') }">
+                                                    <option disabled value="">Select gender</option>
+                                                    <option v-for="gender in Genders" :value="gender.id" :key="gender.id">{{gender.name}}</option>
+                                            </select>
+                                                <has-error style="color: #e83e8c" :form="employeeform" field="gender_id"></has-error>
                                         </div>
                                     </div>
                                     <div class=" row">
@@ -1502,12 +1558,11 @@
                     <div class="modal-body" v-for="employee in Employee.organisationemployees" :key="employee.id">
                         <div class="card card-widget widget-user" >
                         <!-- Add the bg color to the header using any of the bg-* classes -->
-                            <div class="widget-user-header text-white" style="background: url('assets/organisation/img/background/background-1.jpg')
-                                 center center;width:100%;height:300px">
+                            <div class="widget-user-header text-white" style="background-color: #070075c4; center center;width:100%;height:190px">
                                 <div class="clearfix">
                                     <span class="float-left">
                                         <h3 class="widget-user-username">{{Employee.full_name}}</h3>
-                                        <h5 class="widget-user-desc bg-green" style="margin-bottom:0">Phone: {{employee.pivot.phone}} , <span>{{employee.pivot.landline}}</span> </h5>
+                                        <h5 class="widget-user-desc " style="margin-bottom:0">Phone: {{employee.pivot.phone}} , <span>{{employee.pivot.landline}}</span> </h5>
                                         <h5 class="widget-user-desc" style="margin-bottom:0">P.O. Box {{employee.pivot.address}},</h5>
                                         <h5 class="widget-user-desc" style="margin-bottom:0" >{{employee.ward_name}} Ward,
                                             <span >{{employee.constituency_name}} Constituency,</span>
@@ -1634,6 +1689,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
         <div class="modal fade " id="AboutModal" tabindex="-1" role="dialog" aria-labelledby="AboutModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1964,10 +2022,11 @@
                         last_name:'',
                         email:'',
                         password:'',
-                        director_type:'',
+                        user_type:'',
                         permissions:[],
                         roles:[],
                         user_id:'',
+                        gender_id:'',
                         organisation_id:'',
                         position_id:'',
                         photo:'',
@@ -1996,6 +2055,7 @@
                         permissions:[],
                         roles:[],
                         user_id:'',
+                        gender_id:'',
                         organisation_id:'',
                         position_id:'',
                         photo:'',
@@ -2024,6 +2084,36 @@
                         permissions:[],
                         roles:[],
                         user_id:'',
+                        gender_id:'',
+                        organisation_id:'',
+                        position_id:'',
+                        photo:'',
+                        active:'',
+                        id_no:'',
+                        id_photo_front:'',
+                        id_photo_back:'',
+                        about_me:'',
+                        phone:'',
+                        landline:'',
+                        address:'',
+                        country_id:'',
+                        county_id:'',
+                        constituency_id:'',
+                        ward_id:'',
+                }),
+                      newAffiliate: false,
+                editmodeAffiliate: false,
+                affiliateform: new Form({
+                        id:'',
+                        first_name:'',
+                        last_name:'',
+                        email:'',
+                        password:'',
+                        admin_type:'',
+                        permissions:[],
+                        roles:[],
+                        user_id:'',
+                        gender_id:'',
                         organisation_id:'',
                         position_id:'',
                         photo:'',
@@ -2073,6 +2163,11 @@
                         country: undefined,
                 },
                 landline4:{
+                        isValid: false,
+                        country: undefined,
+                },
+                  //afiliate
+                phone5:{
                         isValid: false,
                         country: undefined,
                 },
@@ -2129,13 +2224,13 @@
             this.loadCounties();
             this.loadConstituencies();///linked to methods and actions store
             this.loadWards();///linked to methods and actions store
+            this.loadGenders();
             this.loadOrganisation();
             this.loadAbout();
             this.loadServices();
             this.loadFeatures();
             this.loadServiceModel();
             this.loadAdverts();
-
         },
         computed:{
             backgroundImage(){
@@ -2161,17 +2256,20 @@
             Organisation(){
                return this.$store.getters.Organisation
             },
+            Genders(){
+               return this.$store.getters.Genders
+            },
             Director(){
-                console.log(this.$store.getters.director)
                return this.$store.getters.director//reminder to updater index
             },
             Admin(){
-                console.log(this.$store.getters.Admin)
                return this.$store.getters.Admin//reminder to updater index
             },
             Employee(){
-                console.log(this.$store.getters.Employee)
                return this.$store.getters.Employee//reminder to updater index
+            },
+            AffiliateEmployee(){
+               return this.$store.getters.AffiliateEmployee//reminder to updater index
             },
             About(){
                return this.$store.getters.About
@@ -2245,6 +2343,13 @@
             this.employeeform.landline = number;
             this.landline4.isValid = isValid;
             this.landline4.country = country && country.name;
+            },
+ //Affiliate
+            AffiliateInputPhone({ number, isValid, country }) {
+            console.log(number, isValid, country);
+            this.affiliateform.phone = number;
+            this.phone5.isValid = isValid;
+            this.phone5.country = country && country.name;
             },
             //Organisation verification
             validateOrganisation() {
@@ -2333,8 +2438,6 @@
                         })
                     })
             },
-
-
             loadCountries(){
                 return this.$store.dispatch( "countries")//get all from roles.index
             },
@@ -2347,10 +2450,12 @@
             loadWards(){
                 return this.$store.dispatch( "constituencywards")//get all from towns.index
             },
+            loadGenders(){
+               return this.$store.dispatch("genders")
+            },
             loadOrganisation(){
                 return this.$store.dispatch( "organisation")//get all from organisation. organisation linked to user
             },
-
             loadAbout(){
                 return this.$store.dispatch( "about")
             },
@@ -2488,13 +2593,12 @@
             },
             organisationLoadLogo(logo_id){
                  if(logo_id){
-                    return "assets/organisation/img/logo/"+logo_id;
+                    return "/assets/organisation/img/logo/"+logo_id;
                 }else{
                     return "/assets/organisation/img/website/empty.png";
                 }
             },
             updateOrganisationLogo(organisationformlogo){
-                console.log(organisationformlogo)
                 let img = this.organisationform.logo;
                       if(img ==null){
                           return "/assets/organisation/img/website/empty.png";
@@ -2504,7 +2608,7 @@
                             return this.organisationform.logo;
                         }else{
                             if(organisationformlogo){
-                                return "assets/organisation/img/logo/"+organisationformlogo;
+                                return "/assets/organisation/img/logo/"+organisationformlogo;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -2516,16 +2620,21 @@
 
                  this.editmodeOrganisation = true;
                  this.organisationform.reset()
-                   console.log('edit organisationanisaton', id)
                     this.$Progress.start();
                       axios.get('/api/organisation/edit/'+id)
                         .then((response)=>{
-                           $('#OrganisationModal').modal('show')
-                           toast({
-                            type: 'success',
-                            title: 'Fetched the Organisation data successfully'
-                            })
+
+                            console.log(response.data.organisation,'organisa')
+                            this.organisationform.id =  response.data.organisation.id
+                            this.organisationform.name =  response.data.organisation.name
+                            this.organisationform.organisation_email =  response.data.organisation.organisation_email
+                            this.organisationform.phone =  response.data.organisation.phone
+                            this.organisationform.landline =  response.data.organisation.landline
+                            this.organisationform.website =  response.data.organisation.website
+                            this.organisationform.address =  response.data.organisation.address
+                            this.organisationform.logo =  response.data.organisation.logo
                             this.organisationform.fill(response.data.organisation);
+
                             //get country id
                             this.organisationform.country_id = response.data.organisation.country.id;
                             //get county id using the country id
@@ -2537,7 +2646,11 @@
                             //get ward usng constituency id
                             this.organisationform.ward_id = response.data.organisation.ward.id
                             this.$store.dispatch('constituencywards', response.data.organisation.constituency.id);
-
+                           toast({
+                            type: 'success',
+                            title: 'Fetched the Organisation data successfully'
+                            })
+                            $('#OrganisationModal').modal('show')
                             this.$Progress.finish();
 
                         })
@@ -2696,7 +2809,7 @@
                             return this.directorform.photo;
                         }else{
                             if(directorform_organisationdirector_photo){
-                                return "assets/organisation/img/directors/passports/"+directorform_organisationdirector_photo;
+                                return "/assets/organisation/img/directors/passports/"+directorform_organisationdirector_photo;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -2738,7 +2851,7 @@
                             return this.directorform.id_photo_front;
                         }else{
                             if(directorform_id_photo_front){
-                                return "assets/organisation/img/directors/IDs/front/"+directorform_id_photo_front;
+                                return "/assets/organisation/img/directors/IDs/front/"+directorform_id_photo_front;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -2779,13 +2892,97 @@
                             return this.directorform.id_photo_back;
                         }else{
                             if(directorform_id_photo_back){
-                                return "assets/organisation/img/directors/IDs/back/"+directorform_id_photo_back;
+                                return "/assets/organisation/img/directors/IDs/back/"+directorform_id_photo_back;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
                         }
                       }
 
+            },
+            DirectorsModal(){
+                this.$Progress.start();
+                this.$store.dispatch( "organisation")
+                    .then((response)=>{
+                       $('#DirectorsModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Organisation Directors data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#DirectorsModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
+            },
+            AdminsModal(){
+                this.$Progress.start();
+                this.$store.dispatch( "organisation")
+                    .then((response)=>{
+                       $('#AdminsModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Organisation Admins data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#AdminsModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
+            },
+            EmployeesModal(){
+                this.$Progress.start();
+                this.$store.dispatch( "organisation")
+                    .then((response)=>{
+                       $('#EmployeesModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Organisation Employees data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#EmployeesModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
+            },
+            AffiliatesModal(){
+                this.$Progress.start();
+                this.$store.dispatch( "organisation")
+                    .then((response)=>{
+                       $('#AffiliatesModal').modal('show')
+                       toast({
+                        type: 'success',
+                        title: 'Fetched the Organisation Afiliates data successfully'
+                        })
+                        this.$Progress.finish();
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        //errors
+                        $('#AffiliatesModal').modal('hide');
+                        toast({
+                        type: 'error',
+                        title: 'There was something Wrong When feching data, try again'
+                        })
+                    })
             },
             viewDirectorModal(id){
                 console.log(id)
@@ -2822,30 +3019,38 @@
                             type: 'success',
                             title: 'Fetched the Director data successfully'
                             })
-                            console.log(response.data)
-                            this.directorform.fill(response.data.director)
-                            this.directorform.user_id = response.data.director.organisationdirectors[0].pivot.user_id
-                            this.directorform.organisation_id = response.data.director.organisationdirectors[0].pivot.organisation_id
-                            // // this.directorform.position_id = response.data.director.organisationdirectors[0].pivot.position_id
-                            this.directorform.photo = response.data.director.organisationdirectors[0].pivot.photo
-                            this.directorform.id_no = response.data.director.organisationdirectors[0].pivot.id_no
-                            this.directorform.id_photo_front = response.data.director.organisationdirectors[0].pivot.id_photo_front
-                            this.directorform.id_photo_back = response.data.director.organisationdirectors[0].pivot.id_photo_back
-                            this.directorform.phone = response.data.director.organisationdirectors[0].pivot.phone
-                            this.directorform.landline = response.data.director.organisationdirectors[0].pivot.landline
-                            this.directorform.address = response.data.director.organisationdirectors[0].pivot.address
-
-                        // //    //get country id
-                            this.directorform.country_id = response.data.director.organisationdirectors[0].pivot.country_id
+                            console.log(response.data, 'director')
+                            this.directorform.id = response.data.user.id
+                            this.directorform.first_name = response.data.user.first_name
+                            this.directorform.last_name = response.data.user.last_name
+                            this.directorform.email = response.data.user.email
+                            this.directorform.user_type = response.data.user.user_type
+                            this.directorform.permissions = response.data.user.permissions
+                            this.directorform.roles = response.data.user.roles
+                            this.directorform.user_id = response.data.user.organisationdirectors[0].pivot.user_id
+                            this.directorform.gender_id = response.data.user.organisationdirectors[0].pivot.gender_id
+                            this.directorform.organisation_id = response.data.user.organisationdirectors[0].pivot.organisation_id
+                            this.directorform.position_id = response.data.user.organisationdirectors[0].pivot.position_id
+                            this.directorform.photo = response.data.user.organisationdirectors[0].pivot.photo
+                            this.directorform.active = response.data.user.organisationdirectors[0].pivot.active
+                            this.directorform.id_no = response.data.user.organisationdirectors[0].pivot.id_no
+                            this.directorform.id_photo_front = response.data.user.organisationdirectors[0].pivot.id_photo_front
+                            this.directorform.id_photo_back = response.data.user.organisationdirectors[0].pivot.id_photo_back
+                            this.directorform.about_me = response.data.user.organisationdirectors[0].pivot.about_me
+                            this.directorform.phone = response.data.user.organisationdirectors[0].pivot.phone
+                            this.directorform.landline = response.data.user.organisationdirectors[0].pivot.landline
+                            this.directorform.address = response.data.user.organisationdirectors[0].pivot.address
+                        // // //    //get country id
+                            this.directorform.country_id = response.data.user.organisationdirectors[0].pivot.country_id
                             //get county id using the country id
-                            this.directorform.county_id = response.data.director.organisationdirectors[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.director.organisationdirectors[0].pivot.country_id);
+                            this.directorform.county_id = response.data.user.organisationdirectors[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.user.organisationdirectors[0].pivot.country_id);
                             //get contituency using county id
-                            this.directorform.constituency_id = response.data.director.organisationdirectors[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.director.organisationdirectors[0].pivot.county_id);
+                            this.directorform.constituency_id = response.data.user.organisationdirectors[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.user.organisationdirectors[0].pivot.county_id);
                             // //get ward usng constituency id
-                            this.directorform.ward_id = response.data.director.organisationdirectors[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.director.organisationdirectors[0].pivot.constituency_id);
+                            this.directorform.ward_id = response.data.user.organisationdirectors[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.user.organisationdirectors[0].pivot.constituency_id);
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -2859,10 +3064,8 @@
                         })
             },
             addDirector(Organisation_id) {
-                // let organisation = this.$store.getters.Organisation[0];
-                console.log(Organisation_id)
                 this.$Progress.start();
-                this.directorform.patch('/api/orgdirector/'+Organisation_id)
+                this.directorform.patch('/api/orgdirector')
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -2939,9 +3142,6 @@
                      }
                 })
             },
-
-
-
             AdmincountryCounties(country_id){
                 console.log(country_id);
                 this.$store.dispatch('countrycounties', country_id);
@@ -2999,13 +3199,12 @@
                             return this.adminform.photo;
                         }else{
                             if(adminform_organisationadmin_photo){
-                                return "assets/organisation/img/admins/passports/"+adminform_organisationadmin_photo;
+                                return "/assets/organisation/img/admins/passports/"+adminform_organisationadmin_photo;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
                         }
                       }
-
             },
             adminLoadIDFrontPhoto(adminpivot_id_photo_front){
                 if(adminpivot_id_photo_front){
@@ -3041,13 +3240,12 @@
                             return this.adminform.id_photo_front;
                         }else{
                             if(adminform_id_photo_front){
-                                return "assets/organisation/img/admins/IDs/front/"+adminform_id_photo_front;
+                                return "/assets/organisation/img/admins/IDs/front/"+adminform_id_photo_front;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
                         }
                       }
-
             },
             adminLoadIDBackPhoto(adminform_id_photo_back){
                 if(adminform_id_photo_back){
@@ -3082,13 +3280,12 @@
                             return this.adminform.id_photo_back;
                         }else{
                             if(adminform_id_photo_back){
-                                return "assets/organisation/img/admins/IDs/back/"+adminform_id_photo_back;
+                                return "/assets/organisation/img/admins/IDs/back/"+adminform_id_photo_back;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
                         }
                       }
-
             },
             viewAdminModal(id){
                 console.log(id)
@@ -3126,29 +3323,44 @@
                             title: 'Fetched the Admin data successfully'
                             })
                             console.log(response.data)
-                            this.adminform.fill(response.data.admin)
-                            this.adminform.user_id = response.data.admin.organisationadmins[0].pivot.user_id
-                            this.adminform.organisation_id = response.data.admin.organisationadmins[0].pivot.organisation_id
-                            // // this.adminform.position_id = response.data.admin.organisationadmins[0].pivot.position_id
-                            this.adminform.photo = response.data.admin.organisationadmins[0].pivot.photo
-                            this.adminform.id_no = response.data.admin.organisationadmins[0].pivot.id_no
-                            this.adminform.id_photo_front = response.data.admin.organisationadmins[0].pivot.id_photo_front
-                            this.adminform.id_photo_back = response.data.admin.organisationadmins[0].pivot.id_photo_back
-                            this.adminform.phone = response.data.admin.organisationadmins[0].pivot.phone
-                            this.adminform.landline = response.data.admin.organisationadmins[0].pivot.landline
-                            this.adminform.address = response.data.admin.organisationadmins[0].pivot.address
+                            // this.adminform.fill(response.data.admin)
+                            this.adminform.id = response.data.user.id
+                            this.adminform.first_name = response.data.user.first_name
+                            this.adminform.last_name = response.data.user.last_name
+                            this.adminform.email = response.data.user.email
+                            this.adminform.password = response.data.user.password
+                            this.adminform.user_type = response.data.user.user_type
+                            this.adminform.permissions = response.data.user.permissions
+                            this.adminform.roles = response.data.user.roles
+                            this.adminform.user_id = response.data.user.organisationadmins[0].pivot.user_id
+                            this.adminform.gender_id = response.data.user.organisationadmins[0].pivot.gender_id
+                            this.adminform.organisation_id = response.data.user.organisationadmins[0].pivot.organisation_id
+                            this.adminform.position_id = response.data.user.organisationadmins[0].pivot.position_id
+                            this.adminform.photo = response.data.user.organisationadmins[0].pivot.photo
+                            this.adminform.active = response.data.user.organisationadmins[0].pivot.active
+                            this.adminform.id_no = response.data.user.organisationadmins[0].pivot.id_no
+                            this.adminform.id_photo_front = response.data.user.organisationadmins[0].pivot.id_photo_front
+                            this.adminform.id_photo_back = response.data.user.organisationadmins[0].pivot.id_photo_back
+                            this.adminform.about_me = response.data.user.organisationadmins[0].pivot.about_me
+                            this.adminform.phone = response.data.user.organisationadmins[0].pivot.phone
+                            this.adminform.landline = response.data.user.organisationadmins[0].pivot.landline
+                            this.adminform.address = response.data.user.organisationadmins[0].pivot.address
+
+                            this.adminform.county_id = response.data.user.organisationadmins[0].pivot.county_id
+                            this.adminform.constituency_id = response.data.user.organisationadmins[0].pivot.constituency_id
+                            this.adminform.ward_id = response.data.user.organisationadmins[0].pivot.ward_id
+
 
                         // //    //get country id
-                            this.adminform.country_id = response.data.admin.organisationadmins[0].pivot.country_id
-                            //get county id using the country id
-                            this.adminform.county_id = response.data.admin.organisationadmins[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.admin.organisationadmins[0].pivot.country_id);
+                            this.adminform.country_id = response.data.user.organisationadmins[0].pivot.country_id
+                            this.adminform.county_id = response.data.user.organisationadmins[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.user.organisationadmins[0].pivot.country_id);
                             //get contituency using county id
-                            this.adminform.constituency_id = response.data.admin.organisationadmins[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.admin.organisationadmins[0].pivot.county_id);
+                            this.adminform.constituency_id = response.data.user.organisationadmins[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.user.organisationadmins[0].pivot.county_id);
                             // //get ward usng constituency id
-                            this.adminform.ward_id = response.data.admin.organisationadmins[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.admin.organisationadmins[0].pivot.constituency_id);
+                            this.adminform.ward_id = response.data.user.organisationadmins[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.user.organisationadmins[0].pivot.constituency_id);
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -3173,8 +3385,8 @@
                             })
                             this.$store.dispatch('organisation');
                             $('#AdminModal').modal('hide')
-                            this.$refs.wizard.reset()
-                              this.$Progress.finish()
+                            // this.$refs.wizard.reset()
+                            this.$Progress.finish()
                     })
                     .catch(()=>{
                         this.$Progress.fail()
@@ -3301,7 +3513,7 @@
                             return this.employeeform.photo;
                         }else{
                             if(employeeform_orgemployee_photo){
-                                return "assets/organisation/img/employees/passports/"+employeeform_orgemployee_photo;
+                                return "/assets/organisation/img/employees/passports/"+employeeform_orgemployee_photo;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -3343,7 +3555,7 @@
                             return this.employeeform.id_photo_front;
                         }else{
                             if(employeeform_id_photo_front){
-                                return "assets/organisation/img/employees/IDs/front/"+employeeform_id_photo_front;
+                                return "/assets/organisation/img/employees/IDs/front/"+employeeform_id_photo_front;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -3384,7 +3596,7 @@
                             return this.employeeform.id_photo_back;
                         }else{
                             if(employeeform_id_photo_back){
-                                return "assets/organisation/img/employees/IDs/back/"+employeeform_id_photo_back;
+                                return "/assets/organisation/img/employees/IDs/back/"+employeeform_id_photo_back;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -3427,30 +3639,43 @@
                             type: 'success',
                             title: 'Fetched the Employee data successfully'
                             })
-                            console.log(response.data)
-                            this.employeeform.fill(response.data.employee)
-                            this.employeeform.user_id = response.data.employee.organisationemployees[0].pivot.user_id
-                            this.employeeform.organisation_id = response.data.employee.organisationemployees[0].pivot.organisation_id
-                            // // this.employeeform.position_id = response.data.employee.organisationemployees[0].pivot.position_id
-                            this.employeeform.photo = response.data.employee.organisationemployees[0].pivot.photo
-                            this.employeeform.id_no = response.data.employee.organisationemployees[0].pivot.id_no
-                            this.employeeform.id_photo_front = response.data.employee.organisationemployees[0].pivot.id_photo_front
-                            this.employeeform.id_photo_back = response.data.employee.organisationemployees[0].pivot.id_photo_back
-                            this.employeeform.phone = response.data.employee.organisationemployees[0].pivot.phone
-                            this.employeeform.landline = response.data.employee.organisationemployees[0].pivot.landline
-                            this.employeeform.address = response.data.employee.organisationemployees[0].pivot.address
+                            this.employeeform.id = response.data.user.id
+                            this.employeeform.first_name = response.data.user.first_name
+                            this.employeeform.last_name = response.data.user.last_name
+                            this.employeeform.email = response.data.user.email
+                            this.employeeform.password = response.data.user.password
+                            this.employeeform.admin_type = response.data.user.admin_type
+                            this.employeeform.permissions = response.data.user.permissions
+                            this.employeeform.roles = response.data.user.roles
+                            this.employeeform.user_id = response.data.user.organisationemployees[0].pivot.user_id
+                            this.employeeform.gender_id = response.data.user.organisationemployees[0].pivot.gender_id
+                            this.employeeform.organisation_id = response.data.user.organisationemployees[0].pivot.organisation_id
+                            this.employeeform.position_id = response.data.user.organisationemployees[0].pivot.position_id
+                            this.employeeform.photo = response.data.user.organisationemployees[0].pivot.photo
+                            this.employeeform.active = response.data.user.organisationemployees[0].pivot.active
+                            this.employeeform.id_no = response.data.user.organisationemployees[0].pivot.id_no
+                            this.employeeform.id_photo_front = response.data.user.organisationemployees[0].pivot.id_photo_front
+                            this.employeeform.id_photo_back = response.data.user.organisationemployees[0].pivot.id_photo_back
+                            this.employeeform.about_me = response.data.user.organisationemployees[0].pivot.about_me
+                            this.employeeform.phone = response.data.user.organisationemployees[0].pivot.phone
+                            this.employeeform.landline = response.data.user.organisationemployees[0].pivot.landline
+                            this.employeeform.address = response.data.user.organisationemployees[0].pivot.address
+                            this.employeeform.country_id = response.data.user.organisationemployees[0].pivot.country_id
+                            this.employeeform.county_id = response.data.user.organisationemployees[0].pivot.county_id
+                            this.employeeform.constituency_id = response.data.user.organisationemployees[0].pivot.constituency_id
+                            this.employeeform.ward_id = response.data.user.organisationemployees[0].pivot.ward_id
 
                         // //    //get country id
-                            this.employeeform.country_id = response.data.employee.organisationemployees[0].pivot.country_id
+                            this.employeeform.country_id = response.data.user.organisationemployees[0].pivot.country_id
                             //get county id using the country id
-                            this.employeeform.county_id = response.data.employee.organisationemployees[0].pivot.county_id
-                            this.$store.dispatch('countrycounties', response.data.employee.organisationemployees[0].pivot.country_id);
+                            this.employeeform.county_id = response.data.user.organisationemployees[0].pivot.county_id
+                            this.$store.dispatch('countrycounties', response.data.user.organisationemployees[0].pivot.country_id);
                             //get contituency using county id
-                            this.employeeform.constituency_id = response.data.employee.organisationemployees[0].pivot.constituency_id
-                            this.$store.dispatch('countyconstituencies', response.data.employee.organisationemployees[0].pivot.county_id);
+                            this.employeeform.constituency_id = response.data.user.organisationemployees[0].pivot.constituency_id
+                            this.$store.dispatch('countyconstituencies', response.data.user.organisationemployees[0].pivot.county_id);
                             // //get ward usng constituency id
-                            this.employeeform.ward_id = response.data.employee.organisationemployees[0].pivot.ward_id
-                            this.$store.dispatch('constituencywards', response.data.employee.organisationemployees[0].pivot.constituency_id);
+                            this.employeeform.ward_id = response.data.user.organisationemployees[0].pivot.ward_id
+                            this.$store.dispatch('constituencywards', response.data.user.organisationemployees[0].pivot.constituency_id);
                             this.$Progress.finish();
                         })
                         .catch(()=>{
@@ -3466,7 +3691,7 @@
             addEmployee(Organisation_id) {
                 console.log(Organisation_id)
                 this.$Progress.start();
-                this.employeeform.patch('/api/orgemployee/'+Organisation_id)
+                this.employeeform.patch('/api/orgemployee')
                     .then((response)=>{
                         //  console.log(response.data)
                          toast({
@@ -3612,7 +3837,7 @@
                             return this.aboutform.front_image;
                         }else{
                             if(aboutformfront_image){
-                                return "assets/organisation/img/website/frontimage/"+aboutformfront_image;
+                                return "/assets/organisation/img/website/frontimage/"+aboutformfront_image;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -3742,7 +3967,7 @@
                             return this.serviceform.service_image;
                         }else{
                             if(serviceformimage){
-                                return "assets/organisation/img/website/services/"+serviceformimage;
+                                return "/assets/organisation/img/website/services/"+serviceformimage;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -3874,7 +4099,7 @@
                             return this.advertform.advert_image;
                         }else{
                             if(advertformimage){
-                                return "assets/organisation/img/website/adverts/"+advertformimage;
+                                return "/assets/organisation/img/website/adverts/"+advertformimage;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -4044,7 +4269,7 @@
                             return this.featureform.image;
                         }else{
                             if(featureformimage){
-                                return "assets/organisation/img/website/features/"+featureformimage;
+                                return "/assets/organisation/img/website/features/"+featureformimage;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }
@@ -4216,7 +4441,7 @@
                             return this.servicemodelform.image;
                         }else{
                             if(servicemodelformimage){
-                                return "assets/organisation/img/website/image/"+servicemodelformimage;
+                                return "/assets/organisation/img/website/image/"+servicemodelformimage;
                             }else{
                                 return "/assets/organisation/img/website/empty.png";
                             }

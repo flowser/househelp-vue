@@ -83,9 +83,12 @@ import VueRouter from 'vue-router';
         import SingleHousehelp  from './pages/backend/househelps/SingleHousehelp.vue';
 
         // reviews can share single
-        import HousehelpsReviews  from './pages/backend/househelps/organisation/AllReviews.vue';
-        import BureauHousehelpsReviews  from './pages/backend/househelps/bureau/Reviews.vue';
-        import HousehelpSingleReview  from './pages/backend/househelps/SingleReview.vue';
+        import HousehelpsReviews  from './pages/backend/client/organisation/AllReviews.vue';
+        import BureauHousehelpsReviews  from './pages/backend/client/bureau/Reviews.vue';
+
+    //    clients
+        import HousehelpsClients  from './pages/backend/client/organisation/AllClients.vue';
+        import BureauHousehelpsClients  from './pages/backend/client/bureau/Clients.vue';
 
         //ORders
         import SearchOrders  from './pages/backend/orders/organisation/AllOrders.vue';
@@ -240,6 +243,22 @@ let routes = [
                             path:'/B/bureaus',
                             name: 'Bureaus',
                             component: Bureaus,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
+                          {
+                            path:'/B/clients',
+                            name: 'Bureaus',
+                            component: HousehelpsClients,
+                            meta:{
+                                  requiresAuth:true,
+                              }
+                          },
+                          {
+                            path:'/B/bclients/clients',
+                            name: 'Bureaus',
+                            component: BureauHousehelpsClients,
                             meta:{
                                   requiresAuth:true,
                               }
@@ -447,23 +466,23 @@ let routes = [
                               }
                           },
                           //2.2.2.6 all organisation Househelps reviews
-                          {
-                            path: '/B/househelps/review:id',
-                            name: 'single.househelp.review', //single Househelp review
-                            component: HousehelpSingleReview,
-                            meta:{
-                                  requiresAuth:true,
-                              }
-                          },
+                        //   {
+                        //     path: '/B/househelps/review:id',
+                        //     name: 'single.househelp.review', //single Househelp review
+                        //     component: HousehelpSingleReview,
+                        //     meta:{
+                        //           requiresAuth:true,
+                        //       }
+                        //   },
                        //2.2.2.5 all bureau Househelps
-                          {
-                            path: '/B/bureau/househelps/review/:id',
-                            name: 'bureau.single.househelp.review.id', //bureau single Househelp review
-                            component: HousehelpSingleReview,
-                            meta:{
-                                  requiresAuth:true,
-                              }
-                          },
+                        //   {
+                        //     path: '/B/bureau/househelps/review/:id',
+                        //     name: 'bureau.single.househelp.review.id', //bureau single Househelp review
+                        //     component: HousehelpSingleReview,
+                        //     meta:{
+                        //           requiresAuth:true,
+                        //       }
+                        //   },
                           //2.2.2.6 all search orders
                           {
                             path: '/B/searchorders',

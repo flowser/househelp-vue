@@ -10,6 +10,11 @@ import storeData from "./store/index";
 const store = new Vuex.Store(
     storeData
 )
+import StarRating from 'vue-star-rating';
+Vue.component('star-rating', StarRating);
+
+
+
 //support moemnt js
 import {filter} from './filter';
 

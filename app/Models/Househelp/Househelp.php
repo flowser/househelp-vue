@@ -194,23 +194,25 @@ class Househelp extends Model
                     )
                     ->withTimestamps();
     }
-    // public function househelpkin()
-    // {
-    //     return $this->hasOne(HousehelpKin::class, 'bureau_househelp_id')
-    //                 ->join('users', 'househelp_kin.user_id', '=', 'users.id')
-    //                 ->join('relationships', 'househelp_kin.relationship_id', '=', 'relationships.id')
-    //                 ->join('countries', 'househelp_kin.country_id', '=', 'countries.id')
-    //                 ->join('counties', 'househelp_kin.county_id', '=', 'counties.id')
-    //                 ->join('constituencies', 'househelp_kin.constituency_id', '=', 'constituencies.id')
-    //                 ->join('wards', 'househelp_kin.ward_id', '=', 'wards.id')
-    //                 ->select('househelp_kin.*',
-    //                         'users.*',
-    //                         'relationships.name as relationship_name',
-    //                         'countries.name as country_name',
-    //                         'counties.name as county_name',
-    //                         'constituencies.name as constituency_name',
-    //                         'wards.name as ward_name'
-    //                 )
-    //                 ;
-    // }
+    public function reviews()
+    {
+        return $this->belongsToMany(OrganisationClient::class, 'reviews', 'bureau_househelp_id', 'organisation_client_id')
+        ->withPivot(
+            'review',
+            'what_to_improve',
+            'work_efficiency_rating',
+            'hygiene_rating',
+            'children_rapport_rating',
+            'truthfullness_rating',
+            'morality_rating',
+            'obedience_rating',
+            'approval_status'
+            )
+               ->leftjoin('users', 'organisation_client.user_id', '=', 'users.id')
+               ->select('users.*',
+                   'reviews.*'
+               )
+
+            ->withTimestamps();
+    }
 }

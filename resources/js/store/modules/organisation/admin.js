@@ -36,7 +36,7 @@ const actions = {
         axios.get('/api/orgadmin/show/'+payload)
               .then((response)=>{
                   console.log(response.data);
-                  context.commit('admin', response.data.admin);
+                  context.commit('admin', response.data.user);
               });
     }
  }

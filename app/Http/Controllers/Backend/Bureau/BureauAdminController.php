@@ -23,9 +23,10 @@ class BureauAdminController extends Controller
     {
         if (auth()->check()) {
             if (auth()->user()->hasAnyRole(['Bureau Director','Bureau Admin'])) {
+
                 if (auth()->user()->hasAnyRole(['Bureau Director'])) {
                     $bureau = auth('api')->user()->bureaudirectors()->first();
-                    $admins = User::whereHas('bureauadmins', function($query) use($bureau)
+                    $users = User::whereHas('bureauadmins', function($query) use($bureau)
                                 {
                                   $query ->where('bureau_id', $bureau->bureau_id);
                                 }
@@ -35,7 +36,7 @@ class BureauAdminController extends Controller
                 }else if (auth()->user()->hasAnyRole(['Bureau Admin'])) {
                     $bureau = auth('api')->user()->bureauadmins()->first();
 
-                    $admins = User::whereHas('bureauadmins', function($query) use($bureau)
+                    $users = User::whereHas('bureauadmins', function($query) use($bureau)
                                 {
                                   $query ->where('bureau_id', $bureau->bureau_id);
                                 }
@@ -44,7 +45,7 @@ class BureauAdminController extends Controller
                             ->paginate(7);
                 }
                 return response()-> json([
-                    'admins'=>$admins,
+                    'users'=>$users,
                 ], 200);
             }
         }
@@ -54,12 +55,12 @@ class BureauAdminController extends Controller
     {
            if (auth()->check()) {
                if (auth()->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
-                   $admins = User::whereHas('bureauadmins')->with('roles','permissions','bureauadmins')->role('Bureau Admin')
+                   $users = User::whereHas('bureauadmins')->with('roles','permissions','bureauadmins')->role('Bureau Admin')
                    ->paginate(7);
                }
            }
            return response()-> json([
-               'admins'=>$admins,
+               'users'=>$users,
            ], 200);
 
     }
@@ -70,7 +71,7 @@ class BureauAdminController extends Controller
             'first_name'  =>  'required',
             'last_name'  =>  'required',
             'email'  =>  'required|email|max:255|unique:users',
-            'password'  =>  'required',
+            // 'password'  =>  'required',
             'phone'  =>  'phone:AUTO,MOBILE',
             // 'landline'  =>  'phone:AUTO,MOBILE',
             'id_no'  =>  'required|digits_between:7,10',
@@ -171,19 +172,19 @@ class BureauAdminController extends Controller
 
     public function view($id)
     {
-        $admin = Bureau:: with(
+        $user = Bureau:: with(
          'position', 'countries', 'counties', 'constituencies', 'wards')
          ->find($id)->bureauadmins()->first();
         return response()-> json([
-            'admin'=>$admin,
+            'user'=>$user,
         ], 200);
     }
     public function show($id)
     {
-        $bureauadmin = User::with('roles','permissions','bureauadmins')
+        $user = User::with('roles','permissions','bureauadmins')
                             ->find($id);
         return response()-> json([
-            'bureauadmin'=>$bureauadmin,
+            'user'=>$user,
         ], 200);
     }
 

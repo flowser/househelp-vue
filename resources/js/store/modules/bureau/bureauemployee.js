@@ -22,7 +22,7 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                commit('bureauemployees', response.data.employees.data);
+                commit('bureauemployees', response.data.users.data);
                 resolve(response)
             })
             .catch(error => {
@@ -35,7 +35,7 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                commit('employeeslist', response.data.employees.data)
+                commit('employeeslist', response.data.users.data)
                 resolve(response)
             })
             .catch(error => {
@@ -50,7 +50,7 @@ const actions = {
         axios.get('/api/bureauemployee/show/'+payload)
               .then((response)=>{
                   console.log(response.data);
-                  context.commit('employee', response.data.employee);
+                  context.commit('employee', response.data.user);
               });
     }
   }

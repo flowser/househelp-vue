@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Househelp\Standard;
+namespace App\Models\Househelp;
 
 
 use App\Models\Househelp\HousehelpKin;

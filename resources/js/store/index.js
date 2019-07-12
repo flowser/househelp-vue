@@ -47,6 +47,7 @@ import healthstatus    from './modules/househelp/filters/healthstatus';
 //househelps
 import househelp from './modules/househelp/househelp';
 import househelpkin from './modules/househelp/househelpkins/bureauhousehelpkin';
+import review from './modules/househelp/review';
 
 
 //client
@@ -111,6 +112,7 @@ import login from './modules/user/login';
                 //househelp
                 househelp,
                 househelpkin,
+                review,
 
                 //client
                 client,

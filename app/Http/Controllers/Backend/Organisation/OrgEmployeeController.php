@@ -26,7 +26,7 @@ class OrgEmployeeController extends Controller
         if (auth()->check()) {
             if (auth()->user()->hasAnyRole(['Superadmin','Admin'])) {
                 $organisationadmin = auth('api')->user()->organisationadmins()->first();
-                $employees = User::whereHas('organisationemployees', function($query) use($organisationadmin)
+                $users = User::whereHas('organisationemployees', function($query) use($organisationadmin)
                                         {
                                         $query ->where('organisation_id', $organisationadmin->organisation_id);
                                         }
@@ -37,7 +37,7 @@ class OrgEmployeeController extends Controller
             }
         }
         return response()-> json([
-            'employees'=>$employees,
+            'users'=>$users,
         ], 200);
 
     }
@@ -154,10 +154,10 @@ class OrgEmployeeController extends Controller
     }
         public function show($id)
     {
-        $employee = User::with('roles','permissions','organisationemployees')
+        $user = User::with('roles','permissions','organisationemployees')
                             ->find($id);
         return response()-> json([
-            'employee'=>$employee,
+            'user'=>$user,
         ], 200);
     }
 

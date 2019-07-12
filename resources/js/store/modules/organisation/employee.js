@@ -18,7 +18,7 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                commit('employees', response.data.employees.data)
+                commit('employees', response.data.users.data)
                 resolve(response)
             })
             .catch(error => {
@@ -31,7 +31,7 @@ const actions = {
         axios.get('/api/orgemployee/show/'+payload)
               .then((response)=>{
                   console.log(response.data);
-                  context.commit('employee', response.data.employee);
+                  context.commit('employee', response.data.user);
               });
     }
 

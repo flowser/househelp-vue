@@ -4,7 +4,7 @@
     <section class="content">
             <div class="card card-widget widget-user" >
               <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header text-white"  style="background-color: #070075c4; center center;width:100%;height:300px">
+                <div class="widget-user-header text-white" style="background-color: #070075c4; center center;width:100%;height:190px">
                     <div class="clearfix">
                         <span class="float-left">
                             <h3 class="widget-user-username" v-if="Househelp.user">{{Househelp.user.full_name}}</h3>
@@ -91,11 +91,15 @@
                                             <img class="card-img-top" :src="househelpLoadIDFrontPhoto(Househelp.idstatus.id_photo_front)" style="width:100%;height:65px" alt="Card image cap"><br>
                                             <img class="card-img-top" :src="househelpLoadIDBackPhoto(Househelp.idstatus.id_photo_back)" style="width:100%;height:65px" alt="Card image cap">
                                         </div>
-                                         <div  style="padding: 3px;" v-else>
+                                         <div  style="padding: 3px;" v-else-if="Househelp.idstatus.waiting_card_photo !=null">
                                             Waiting Card<br>
                                             <img class="card-img-top" :src="househelpLoadWaitingCard(Househelp.idstatus.waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
                                         </div>
-                                    </div>
+                                         <div  style="padding: 3px;" v-else>
+                                            No ID nor Applied<br>
+                                            <img class="card-img-top" :src="househelpLoadWaitingCard(Househelp.idstatus.waiting_card_photo)" style="width:100%;height:65px" alt="Card image cap"><br>
+                                        </div>
+                                </div>
                                     <div style="font-weight:bold;font-size:0.7em;min-width:210px;max-width:400px;margin-top:4px;padding-top:4px;font-style: italic ">
                                         <div v-if="Househelp.user">{{Househelp.user.full_name}},</div>
                                         <div>
@@ -104,9 +108,20 @@
                                                 <!-- {{Bureau.name}}, -->
                                             </span>
                                         </div>
-                                        <div> ID: ,<span style="color:#9a009a;" v-if="Househelp.idstatus">{{Househelp.idstatus.id_number}}</span>,
-                                            Phone: <span style="color:#9a009a;">{{Househelp.phone}},</span>
-                                        </div>
+                                        <div v-if="Househelp.idstatus">
+                                            <div v-if="Househelp.idstatus.id_photo_front !=null">
+                                                ID: ,<span style="color:#9a009a;">{{Househelp.idstatus.id_number}}</span>,
+                                                Phone: <span style="color:#9a009a;">{{Househelp.phone}},</span>
+                                            </div>
+                                            <div style="padding: 3px;" v-else-if="Househelp.idstatus.waiting_card_photo !=null">
+                                                Waiting No.: ,<span style="color:#9a009a;">{{Househelp.idstatus.ref_number}}</span>,
+                                                Phone: <span style="color:#9a009a;">{{Househelp.phone}},</span>
+                                            </div>
+                                            <div style="padding: 3px;" v-else>
+                                                ID.:<span style="color:#9a009a;"> No ID Nor Applied</span>,
+                                                Phone: <span style="color:#9a009a;">{{Househelp.phone}},</span>
+                                            </div>
+                                       </div>
                                         <div>
                                             Mail: <span style="color:#9a009a;" v-if="Househelp.user">{{Househelp.user.email}},</span>
                                         </div>
@@ -842,7 +857,6 @@ import VueTelInput from 'vue-tel-input';
             this.loadGenders(); //from methods
             this.loadRelationships(); //from methods
             this.singlehousehelp()
-
         },
         computed:{
             Countries(){
@@ -858,7 +872,7 @@ import VueTelInput from 'vue-tel-input';
             Wards(){
                return this.$store.getters.ConstituencyWards
             },
-            Househelp(){                
+            Househelp(){
                return this.$store.getters.Househelp
             },
             Genders(){

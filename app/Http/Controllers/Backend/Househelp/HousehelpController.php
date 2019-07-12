@@ -772,8 +772,8 @@ class HousehelpController extends Controller
                     'ward_id'  =>  'required',
                     'photo'  =>  'required',
                     //default
-                    'househelp_id_status'       =>'required',
-                    'househelp_id_status_reason'=>'required',
+                    'id_status'       =>'required',
+                    'id_status_reason'=>'required',
                     //condition
                     'ref_number'      =>'required',
                     'waiting_card_photo'=>'required',
@@ -1237,6 +1237,8 @@ class HousehelpController extends Controller
                 }else{
                     $id_photo_front = $Idstatus->id_photo_front;
                 }
+            }else{
+                $id_photo_front = $Idstatus->id_photo_front;
             }
 
              // front side id
@@ -1267,6 +1269,8 @@ class HousehelpController extends Controller
                 }else{
                     $id_photo_back = $Idstatus->id_photo_back;
                 }
+            }else{
+                $id_photo_back = $Idstatus->id_photo_back;
             }
              //backside id
              //waiting card photo
@@ -1294,8 +1298,9 @@ class HousehelpController extends Controller
                     $waiting_card_photo = $wc_name;
                 }else{
                     $waiting_card_photo = $Idstatus->waiting_card_photo;
-                    $Idstatus ->waiting_card_photo  = $waiting_card_photo;
                 }
+             }else{
+                $waiting_card_photo = $Idstatus->waiting_card_photo;
              }
 
 

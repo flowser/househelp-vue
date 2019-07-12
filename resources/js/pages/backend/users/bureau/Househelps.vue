@@ -524,12 +524,11 @@
                     })
             },
             updateHousehelp(id){
-                  console.log(this.househelpform, 'update househelp')
                   this.$Progress.start();
                      this.househelpform.patch('/api/user/update/'+id)
                         .then(()=>{
-                            this.loadHousehelps();
                          $('#HousehelpModal').modal('hide')
+                         this.$store.dispatch( "househelpsbureaulist", this.urlform)
                          toast({
                             type: 'success',
                             title: 'Househelp Created successfully'

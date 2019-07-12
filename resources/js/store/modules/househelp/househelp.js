@@ -3,6 +3,7 @@
 
 const state = {
     househelps:{},
+    allhousehelps:{},
     househelpslist:[],
     unemployedhousehelps:[],
     employedhousehelps:[],
@@ -11,6 +12,7 @@ const state = {
     filter:[],
     filterform:[],
     pagination:[],
+    allpagination:[],
     UnemployedPagination:[],
     EmployedPagination:[],
     PendingPagination:[],
@@ -18,6 +20,9 @@ const state = {
 const getters = {
         Househelps(state){
         return state.househelps;
+        },
+        AllHousehelps(state){
+        return state.allhousehelps;
         },
         HousehelpsList(state){
             return state.househelpslist;
@@ -42,6 +47,9 @@ const getters = {
         },
         Pagination(){
             return state.pagination;
+        },
+        AllPagination(){
+            return state.allpagination;
         },
         UnemployedPagination(){
             return state.UnemployedPagination;
@@ -94,10 +102,27 @@ const actions = {
     },
     househelpslist({ dispatch, commit }, payload){
         return new Promise((resolve, reject) =>{
+            console.log(payload.url +payload.bureau_id, 'ffkflf')
             axios.get(payload.url +payload.bureau_id)
             .then((response)=>{
                 commit('househelpslist', response.data.users.data);
                 commit('pagination', response.data.users)
+                resolve(response)
+            })
+            .catch(error => {
+                console.log(error, 'error')
+                reject(error);
+            });
+
+        });
+    },
+    allhousehelps({ dispatch, commit }, payload){ //for dashboards
+        return new Promise((resolve, reject) =>{
+            console.log(payload.allurl +payload.bureau_id, 'nnnnn')
+            axios.get(payload.allurl +payload.bureau_id)
+            .then((response)=>{
+                commit('allhousehelps', response.data.users.data);
+                commit('allpagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -129,9 +154,9 @@ const actions = {
                   commit('pendingpagination', response.data.users);
               });
     },
-    househelpsbureaulist({ dispatch, commit }, url){
+    househelpsbureaulist({ dispatch, commit }, payload){
         return new Promise((resolve, reject) =>{
-            axios.get(url)
+            axios.get(payload.url)
             .then((response)=>{
                 commit('househelpslist', response.data.users.data);
                 commit('pagination', response.data.users)
@@ -158,6 +183,9 @@ const actions = {
 const mutations = {
     househelps(state, data){
       return state.househelps = data;
+    },
+    allhousehelps(state, data){
+        return state.allhousehelps = data;
     },
     househelpslist(state, data){
         return state.househelpslist = data;
@@ -191,6 +219,18 @@ const mutations = {
                 prev_page_url: data.prev_page_url,
             }
         return state.pagination = pagination;
+    },
+    allpagination(state, data){
+            var pagination = {
+                current_page : data.current_page,
+                last_page: data.last_page,
+                from: data.from,
+                to: data.to,
+                total: data.total,
+                next_page_url: data.next_page_url,
+                prev_page_url: data.prev_page_url,
+            }
+        return state.allpagination = pagination;
     },
     unemployedpagination(state, data){
             var pagination = {
