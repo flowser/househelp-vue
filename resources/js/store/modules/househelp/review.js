@@ -48,7 +48,6 @@ const actions = {
                 console.log(error, 'error')
                 reject(error);
             });
-
         });
     },
     approvedreviews({dispatch,commit}, payload){

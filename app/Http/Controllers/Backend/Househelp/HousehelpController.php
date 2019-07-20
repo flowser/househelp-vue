@@ -1084,8 +1084,6 @@ class HousehelpController extends Controller
                 'gender', 'education', 'experience', 'tribe', 'skill','duration',
                 'operation', 'englishstatus','maritalstatus','religion',
                 'idstatus', 'healthstatus', 'househelpkins', 'user')
-
-        // $househelp = User::with('bureauhousehelps', 'househelpkins')
                             ->find($id);
         return response()-> json([
             'househelp'=>$househelp,

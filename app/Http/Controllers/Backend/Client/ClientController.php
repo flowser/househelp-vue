@@ -166,12 +166,12 @@ public function index()
             }
 
     }
-        public function show($id)
-    {
-        $user = User::with('roles','permissions','organisationclients')
+        public function show($id)    {
+
+        $client = OrganisationClient:: with('country', 'county', 'constituency', 'ward','gender', 'education', 'user')
                             ->find($id);
         return response()-> json([
-            'user'=>$user,
+            'client'=>$client,
         ], 200);
     }
 

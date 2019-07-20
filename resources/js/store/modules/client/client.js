@@ -43,7 +43,7 @@ const actions = {
         axios.get('/api/client/show/'+payload)
               .then((response)=>{
                 //   console.log(response.data);
-                  context.commit('client', response.data.user);
+                  context.commit('client', response.data.client);
               });
     }
 

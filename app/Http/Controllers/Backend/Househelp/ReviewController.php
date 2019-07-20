@@ -106,8 +106,7 @@ public function index()
     }
         public function show($id)
     {
-        $review = User::with('roles','permissions','organisationreviews')
-                            ->find($id);
+        $review = Review::find($id);
         return response()-> json([
             'review'=>$review,
         ], 200);
@@ -138,7 +137,20 @@ public function index()
      */
     public function update(Request $request, $id)
     {
-
+        $review = Review ::find($id);
+            if($request->has('approval_status')){
+                   $review->approval_status         = $request->approval_status;
+               }else {
+                   $review->review                  = $request->review;
+                   $review->what_to_improve         = $request->what_to_improve;
+                   $review->work_efficiency_rating  = $request->work_efficiency_rating;
+                   $review->hygiene_rating          = $request->hygiene_rating;
+                   $review->children_rapport_rating = $request->children_rapport_rating;
+                   $review->truthfullness_rating    = $request->truthfullness_rating;
+                   $review->morality_rating         = $request->morality_rating;
+                   $review->obedience_rating        = $request->obedience_rating;
+            }
+            $review->save();
     }
 
     /**
