@@ -36,10 +36,11 @@ const getters = {
 const actions = {
     reviews({ dispatch, commit }, payload){ //for dashboards
         return new Promise((resolve, reject) =>{
-            console.log(payload.reviewurl +payload.bureau_id, 'nnnnn')
-            axios.get(payload.reviewurl +payload.bureau_id)
+            console.log(payload.url +payload.bureau_id, 'nnnnn')
+            axios.get(payload.url +payload.bureau_id)
             .then((response)=>{
                 commit('reviews', response.data.reviews.data);
+                console.log('reviews', response.data.reviews.data)
                 commit('reviewpagination', response.data.reviews)
                 resolve(response)
             })

@@ -94,18 +94,18 @@
                     <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                         <span class="float-left" style="margin-bottom:-0.5em" >
                             <div style="margin-bottom:0.25em">
-                                Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                out of <span style="color:#9a009a;"> {{pagination.total}} </span> Employees
+                                Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Employees
                             </div>
-                            <button class="btn btn-info" v-on:click="fetchPaginatedEmployees(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedEmployees(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
                         </span>
                         <span class="float-right" style="margin-bottom:-0.5em" >
                             <div style="margin-bottom:0.25em">
-                                Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                                Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
                             </div>
-                            <button class="btn btn-info" v-on:click="fetchPaginatedEmployees(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                            <button class="btn btn-info" v-on:click="fetchPaginatedEmployees(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
                         </span>
                     </div>
                 </div>
@@ -233,6 +233,9 @@
             Users(){
                 return this.$store.getters.Employees
             },
+            Pagination(){
+                return this.$store.getters.EmployeePagination
+            }
 
         },
         methods:{
@@ -275,7 +278,6 @@
                 this.$Progress.start();
                 return this.$store.dispatch( "employees", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.employees),
                     toast({
                      type: 'success',
                      title: 'Fetched the Employee data successfully'
@@ -288,19 +290,6 @@
                     title: 'There was something Wrong'
                     })
                 })
-            },
-            makingPagination(data){
-                let pagination = {
-                    current_page : data.current_page,
-                    last_page: data.last_page,
-                    from: data.from,
-                    to: data.to,
-                    total: data.total,
-                    next_page_url: data.next_page_url,
-                    prev_page_url: data.prev_page_url,
-                }
-                this.pagination = pagination;
-                console.log( this.pagination, 'pagination')
             },
             fetchPaginatedEmployees(url){
                 this.url = url;

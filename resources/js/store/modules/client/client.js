@@ -4,6 +4,7 @@
 const state = {
     clients:[],
     client:[],
+    clientspagination:[],
   };
 const getters = {
     Clients(state){
@@ -11,7 +12,10 @@ const getters = {
     },
     Client(state){
       return state.client;
-    }
+    },
+    ClientPagination(state){
+      return state.clientspagination;
+    },
   };
 const actions = {
     client(context){//permission.index route laravel
@@ -25,7 +29,8 @@ const actions = {
         return new Promise((resolve, reject) =>{
             axios.get(url)
             .then((response)=>{
-                commit('clients', response.data.clients.data)
+                commit('clients', response.data.users.data)
+                commit('clientspagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -38,7 +43,7 @@ const actions = {
         axios.get('/api/client/show/'+payload)
               .then((response)=>{
                 //   console.log(response.data);
-                  context.commit('client', response.data.client);
+                  context.commit('client', response.data.user);
               });
     }
 
@@ -49,7 +54,19 @@ const mutations = {
     },
     client(state, data){
       return state.client = data;
-    }
+    },
+    clientspagination(state, data){
+        var pagination = {
+            current_page: data.current_page,
+            last_page: data.last_page,
+            from: data.from,
+            to: data.to,
+            total: data.total,
+            next_page_url: data.next_page_url,
+            prev_page_url: data.prev_page_url,
+        }
+        return state.clientspagination = pagination;
+    },
   };
 
 export default {

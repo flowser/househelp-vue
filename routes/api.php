@@ -626,7 +626,7 @@ Route::get('sharelink/delete/{sharelink}', [SharelinkController::class, 'destroy
 
 //reviews             // review
 Route::get('review/get', [ReviewController::class, 'index'])->name('review.index');
-Route::get('reviews/get', [ReviewController::class, 'bureaus'])->name('review.bureaus');
+Route::get('review/bureau/get', [ReviewController::class, 'bureaus'])->name('review.bureaus');
 
 //    by bureau id veiwded by organisation through bureaus
 Route::get('review/get/approved/{review}', [ReviewController::class, 'bureau_id_approved']); //view househelps

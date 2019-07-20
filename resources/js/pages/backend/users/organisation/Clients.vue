@@ -34,12 +34,8 @@
                             <div class="col-sm-3" style="padding: 3px;">
                                  <img class="card-img-top" :src="clientLoadPassPhoto(client.pivot.photo)" style="width:100%" alt="Card image cap">
                             </div>
-                            <div class="col-sm-3" style="padding: 3px;">
-                                <img class="card-img-top" :src="clientLoadIDFrontPhoto(client.pivot.id_photo_front)" style="width:100%" alt="Card image cap"><br>
-                                <img class="card-img-top" :src="clientLoadIDBackPhoto(client.pivot.id_photo_back)" style="width:100%" alt="Card image cap">
-                            </div>
                             <div class="col-sm-6" style="font-weight:bold;font-size:0.7em;margin-top:4px;padding-top:4px;font-style: italic ">
-                                <div>{{client.full_name}},</div>
+                                <div>{{user.full_name}},</div>
                                 <div> Organisation
                                     <span style="color:#9a009a;">
                                         {{client.name}},
@@ -51,18 +47,17 @@
                                 <div>
                                      Mail: <span style="color:#9a009a;">{{user.email}},</span>
                                 </div>
-                                    <div>P. O. Box , <span style="color:#9a009a;">{{client.pivot.address}}</span>,
-                                    </div>
-                                <div v-for="ward in client.wards" :key="ward.id">
-                                    <span style="color:#9a009a;">{{ward.name}}</span> ward,
-                                    <span v-for="constituency in client.constituencies" :key="constituency.id" style="color:#9a009a;">
-                                        {{constituency.name}}</span> constituency,
+                                <div>P. O. Box , <span style="color:#9a009a;">{{client.pivot.address}}</span>,
                                 </div>
-                                <div v-for="county in client.counties" :key="county.id" >
-                                    <span style="color:#9a009a;">{{county.name}}</span> county,
-                                    <span v-for="country in client.countries" :key="country.id" style="color:#9a009a;">
-                                        {{country.name}},
-                                    </span>
+                               <div>P. O. Box , <span style="color:#9a009a;">{{client.pivot.address}}</span>,
+                                </div>
+                                <div>
+                                    <span style="color:#9a009a;">{{client.ward_name}}</span> ward,
+                                    <span style="color:#9a009a;">{{client.constituency_name}}</span> constituency,
+                                </div>
+                                <div >
+                                    <span style="color:#9a009a;">{{client.county_name}}</span> county,
+                                    <span style="color:#9a009a;">{{client.country_name}},</span>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +76,7 @@
                         <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                             <span class="float-left" style="margin-bottom:-0.5em" >
                                 <div style="margin-bottom:0.25em"> Updated at:
-                                    <span style="color:#9a009a;">{{client.created_at | dateformat}} </span>
+                                    <span style="color:#9a009a;">{{user.created_at | dateformat}} </span>
                                 </div>
                             </span>
                             <span class="float-right">
@@ -102,18 +97,18 @@
                   <div class="clearfix" style="font-weight:bold;font-size:0.7em;">
                           <span class="float-left" style="margin-bottom:-0.5em" >
                               <div style="margin-bottom:0.25em">
-                                  Between <span style="color:#9a009a;"> {{pagination.from}} </span>
-                                  & <span style="color:#9a009a;"> {{pagination.to}} </span>
-                                  out of <span style="color:#9a009a;"> {{pagination.total}} </span> Clients
+                                  Between <span style="color:#9a009a;"> {{Pagination.from}} </span>
+                                  & <span style="color:#9a009a;"> {{Pagination.to}} </span>
+                                  out of <span style="color:#9a009a;"> {{Pagination.total}} </span> Clients
                               </div>
-                              <button class="btn btn-info" v-on:click="fetchPaginatedClients(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+                              <button class="btn btn-info" v-on:click="fetchPaginatedClients(Pagination.prev_page_url)" :disabled="!Pagination.prev_page_url">Prev</button>
                           </span>
                           <span class="float-right" style="margin-bottom:-0.5em" >
                               <div style="margin-bottom:0.25em">
-                                  Page <span style="color:#9a009a;"> {{pagination.current_page}} </span>
-                                  of <span style="color:#9a009a;"> {{pagination.last_page}} </span>
+                                  Page <span style="color:#9a009a;"> {{Pagination.current_page}} </span>
+                                  of <span style="color:#9a009a;"> {{Pagination.last_page}} </span>
                               </div>
-                              <button class="btn btn-info" v-on:click="fetchPaginatedClients(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
+                              <button class="btn btn-info" v-on:click="fetchPaginatedClients(Pagination.next_page_url)" :disabled="!Pagination.next_page_url">Next</button>
                           </span>
                   </div>
               </div>
@@ -241,6 +236,9 @@
             Users(){
                 return this.$store.getters.Clients
             },
+            Pagination(){
+                return this.$store.getters.ClientPagination
+            }
 
         },
         methods:{
@@ -283,7 +281,6 @@
                 this.$Progress.start();
                 return this.$store.dispatch( "clients", this.url)
                  .then((response)=>{
-                     this.makingPagination(response.data.clients),
                     toast({
                      type: 'success',
                      title: 'Fetched the Client data successfully'
@@ -296,19 +293,6 @@
                     title: 'There was something Wrong'
                     })
                 })
-            },
-            makingPagination(data){
-                let pagination = {
-                    current_page : data.current_page,
-                    last_page: data.last_page,
-                    from: data.from,
-                    to: data.to,
-                    total: data.total,
-                    next_page_url: data.next_page_url,
-                    prev_page_url: data.prev_page_url,
-                }
-                this.pagination = pagination;
-                console.log( this.pagination, 'pagination')
             },
             fetchPaginatedClients(url){
                 this.url = url;

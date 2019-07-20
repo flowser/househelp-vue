@@ -40,7 +40,7 @@ public function index()
         if (auth()->check()) {
             if (auth()->user()->hasAnyRole(['Superadmin','Admin'])) {
                 $organisation = Organisation::first();
-                $affiliates = User::whereHas('organisationaffiliates', function($query) use($organisation)
+                $users = User::whereHas('organisationaffiliates', function($query) use($organisation)
                                         {
                                         $query ->where('organisation_id', $organisation->id);
                                         }
@@ -51,7 +51,7 @@ public function index()
             }
         }
         return response()-> json([
-            'affiliates'=>$affiliates,
+            'users'=>$users,
         ], 200);
 
     }

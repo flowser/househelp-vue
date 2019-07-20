@@ -5,6 +5,7 @@ const state = {
     bureauadmins:[],
     bureauadminslist:[],
     bureauadmin:[],
+    bureauadminspagination:[],
   };
 const getters = {
     BureauAdmins(state){
@@ -15,6 +16,9 @@ const getters = {
       },
     BureauAdmin(state){
       return state.bureauadmin;
+    },
+    BureauAdminPagination(){
+        return state.bureauadminspagination;
     }
   };
 const actions = {
@@ -24,6 +28,7 @@ const actions = {
             .then((response)=>{
                 console.log(response.data, 'bureau')
                 commit('bureauadmins', response.data.users.data);
+                commit('bureauadminspagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -37,6 +42,7 @@ const actions = {
             axios.get(url)
             .then((response)=>{
                 commit('adminslist', response.data.users.data)
+                commit('bureauadminspagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -62,7 +68,19 @@ const mutations = {
     },
     bureauadmin(state, data){
       return state.bureauadmin = data;
-    }
+    },
+    bureauadminspagination(state, data){
+        var pagination = {
+            current_page: data.current_page,
+            last_page: data.last_page,
+            from: data.from,
+            to: data.to,
+            total: data.total,
+            next_page_url: data.next_page_url,
+            prev_page_url: data.prev_page_url,
+        }
+        return state.bureauadminspagination = pagination;
+    },
   };
 
 export default {

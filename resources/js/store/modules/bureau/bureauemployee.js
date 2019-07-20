@@ -5,6 +5,7 @@ const state = {
     bureauemployees:[],
     bureauemployeeslist:[],
     bureauemployee:[],
+    bureauemployeespagination:[],
   };
 const getters = {
     BureauEmployees(state){
@@ -15,6 +16,9 @@ const getters = {
     },
     BureauEmployee(state){
       return state.bureauemployee;
+    },
+    BureauEmployeePagination(){
+        return state.bureauemployeespagination;
     }
   };
 const actions = {
@@ -23,6 +27,7 @@ const actions = {
             axios.get(url)
             .then((response)=>{
                 commit('bureauemployees', response.data.users.data);
+                commit('bureauemployeespagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -36,6 +41,7 @@ const actions = {
             axios.get(url)
             .then((response)=>{
                 commit('employeeslist', response.data.users.data)
+                commit('bureauemployeespagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -63,7 +69,19 @@ const mutations = {
     },
     employee(state, data){
       return state.bureauemployee = data;
-    }
+    },
+    bureauemployeespagination(state, data){
+        var pagination = {
+            current_page: data.current_page,
+            last_page: data.last_page,
+            from: data.from,
+            to: data.to,
+            total: data.total,
+            next_page_url: data.next_page_url,
+            prev_page_url: data.prev_page_url,
+        }
+        return state.bureauemployeespagination = pagination;
+    },
   };
 
 export default {

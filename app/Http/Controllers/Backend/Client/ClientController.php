@@ -41,7 +41,7 @@ public function index()
         if (auth()->check()) {
             if (auth()->user()->hasAnyRole(['Superadmin','Admin'])) {
                 $organisation = Organisation::first();
-                $clients = User::whereHas('organisationclients', function($query) use($organisation)
+                $users = User::whereHas('organisationclients', function($query) use($organisation)
                                         {
                                         $query ->where('organisation_id', $organisation->id);
                                         }
@@ -52,7 +52,7 @@ public function index()
             }
         }
         return response()-> json([
-            'clients'=>$clients,
+            'users'=>$users,
         ], 200);
 
     }
@@ -168,10 +168,10 @@ public function index()
     }
         public function show($id)
     {
-        $client = User::with('roles','permissions','organisationclients')
+        $user = User::with('roles','permissions','organisationclients')
                             ->find($id);
         return response()-> json([
-            'client'=>$client,
+            'user'=>$user,
         ], 200);
     }
 

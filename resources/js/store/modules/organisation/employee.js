@@ -4,6 +4,7 @@
 const state = {
     employees:[],
     employee:[],
+    employeespagination:[],
   };
 const getters = {
     Employees(state){
@@ -11,6 +12,9 @@ const getters = {
     },
     Employee(state){
       return state.employee;
+    },
+    EmployeePagination(state){
+      return state.employeespagination;
     }
   };
 const actions = {
@@ -19,6 +23,7 @@ const actions = {
             axios.get(url)
             .then((response)=>{
                 commit('employees', response.data.users.data)
+                commit('employeespagination', response.data.users)
                 resolve(response)
             })
             .catch(error => {
@@ -42,7 +47,19 @@ const mutations = {
     },
     employee(state, data){
       return state.employee = data;
-    }
+    },
+    employeespagination(state, data){
+        var pagination = {
+            current_page: data.current_page,
+            last_page: data.last_page,
+            from: data.from,
+            to: data.to,
+            total: data.total,
+            next_page_url: data.next_page_url,
+            prev_page_url: data.prev_page_url,
+        }
+        return state.employeespagination = pagination;
+    },
   };
 
 export default {

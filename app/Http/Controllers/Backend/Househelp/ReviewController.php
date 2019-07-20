@@ -60,13 +60,34 @@ public function index()
             }
         }
     }
-    public function approved ($id)
+    public function approved ()
     {
+        if (auth('api')->check()) {
+            if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                $reviews = Review::
+                        with('bureauhousehelp', 'organisationclient', 'bureau')
+                        ->where('approval_status', true)
+                        ->paginate(7);
+            }
+        }
+        return response()-> json([
+            'reviews'=>$reviews,
+        ], 200);
 
     }
-    public function pending ($id)
+    public function pending ()
     {
-
+        if (auth('api')->check()) {
+            if (auth('api')->user()->hasAnyRole(['Superadmin','Admin','Director'])) {
+                $reviews = Review::
+                        with('bureauhousehelp', 'organisationclient', 'bureau')
+                        ->where('approval_status', false)
+                        ->paginate(7);
+            }
+        }
+        return response()-> json([
+            'reviews'=>$reviews,
+        ], 200);
     }
 // view by organisation reviews by bureau id
     public function bureau_id_approved ($id)
