@@ -35,7 +35,7 @@
         "express": "^4.17.1",
         "laravel-vue-pagination": "^2.3.0",
         "luxon": "^1.16.0",
-        "moment": "^2.24.0",
+        "moment": "^2.29.4",
         "prettyjson": "^1.2.1",
         "sweetalert2": "^7.33.1",
         "vee-validate": "^2.2.11",
